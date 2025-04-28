@@ -61,27 +61,46 @@ module linebuffer(
         .q_a       	(q_tile[1]     ),
         .q_b       	(q_pixel[1]     )
     );
-
+    
     always_comb begin
-        addr_tile[switch] = addr_tile_disp;
-        addr_pixel[switch] = addr_pixel_disp;
-        addr_tile[~switch] = addr_tile_draw;
-        addr_pixel[~switch] = addr_pixel_draw;
+        if (switch) begin
+            // RAM0 disp, RAM1 draw
+            addr_tile[0] = addr_tile_disp;
+            addr_pixel[0] = addr_pixel_disp;
+            data_tile[0] = data_tile_disp;
+            data_pixel[0] = data_pixel_disp;
+            wren_tile[0] = wren_tile_disp;
+            wren_pixel[0] = wren_pixel_disp;
 
-        data_tile[switch] = data_tile_disp;
-        data_pixel[switch] = data_pixel_disp;
-        data_tile[~switch] = data_tile_draw;
-        data_pixel[~switch] = data_pixel_draw;
+            addr_tile[1] = addr_tile_draw;
+            addr_pixel[1] = addr_pixel_draw;
+            data_tile[1] = data_tile_draw;
+            data_pixel[1] = data_pixel_draw;
+            wren_tile[1] = wren_tile_draw;
+            wren_pixel[1] = wren_pixel_draw;
+        end else begin
+            // RAM0 draw, RAM1 disp
+            addr_tile[1] = addr_tile_disp;
+            addr_pixel[1] = addr_pixel_disp;
+            data_tile[1] = data_tile_disp;
+            data_pixel[1] = data_pixel_disp;
+            wren_tile[1] = wren_tile_disp;
+            wren_pixel[1] = wren_pixel_disp;
 
-        wren_tile[switch] = wren_tile_disp;
-        wren_pixel[switch] = wren_pixel_disp;
-        wren_tile[~switch] = wren_tile_draw;
-        wren_pixel[~switch] = wren_pixel_draw;
-
-        q_tile_disp = q_tile[switch];
-        q_pixel_disp = q_pixel[switch];
-        q_tile_draw = q_tile[~switch];
-        q_pixel_draw = q_pixel[~switch];
+            addr_tile[0] = addr_tile_draw;
+            addr_pixel[0] = addr_pixel_draw;
+            data_tile[0] = data_tile_draw;
+            data_pixel[0] = data_pixel_draw;
+            wren_tile[0] = wren_tile_draw;
+            wren_pixel[0] = wren_pixel_draw;
+        end
+    end
+    always_ff @(posedge clk) begin
+        q_tile_disp <= switch ? q_tile[0] : q_tile[1];
+        q_pixel_disp <= switch ? q_pixel[0] : q_pixel[1];
+        
+        q_tile_draw = switch ? q_tile[1] : q_tile[0];
+        q_pixel_draw = switch ? q_pixel[1] : q_pixel[0];
     end
     
 endmodule

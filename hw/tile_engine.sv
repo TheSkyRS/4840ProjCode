@@ -60,7 +60,7 @@ always_ff @(posedge clk) begin
             if (col[0] < 39) begin
                 col[0] <= col[0] + 1;
             end
-            if (col[2] == 39) begin
+            if (col[2] == 38) begin // do not waste cycle
                 tile_done <= 1;
             end
         end

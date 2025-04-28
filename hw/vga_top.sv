@@ -45,7 +45,13 @@ module vga_top(input logic        clk,
 
     logic switch;
 
-    linebuffer(.*);
+    linebuffer u_linebuffer (.*);
+
+    // connection between tile_engine and linebuffer
+    assign addr_tile_draw = tile_col;
+    assign data_tile_draw = tile_data;
+
+    // TODO: connection between sprite_engine and linebuffer
 
 
 	// tile engine
