@@ -15,8 +15,44 @@ module vga_top(input logic        clk,
     logic [10:0]	   hcount;
     logic [9:0]     vcount;
 
-    logic[31:0] status_reg;
-    logic[31:0] ctrl_reg;
+    logic [31:0] status_reg;
+    logic [31:0] ctrl_reg;
+
+    // linebuffer
+    // addr
+    logic [5:0] addr_tile_disp;
+    logic [9:0] addr_pixel_disp;
+    logic [5:0] addr_tile_draw;
+    logic [9:0] addr_pixel_draw;
+
+    // indata
+    logic [255:0] data_tile_disp;
+    logic [15:0]  data_pixel_disp;
+    logic [255:0] data_tile_draw;
+    logic [15:0]  data_pixel_draw;
+
+    // wren
+    logic wren_tile_disp;
+    logic wren_pixel_disp;
+    logic wren_tile_draw;
+    logic wren_pixel_draw;
+
+    // outdata
+    logic [255:0] q_tile_disp;
+    logic [15:0]  q_pixel_disp;
+    logic [255:0] q_tile_draw;
+    logic [15:0]  q_pixel_draw;
+
+    logic switch;
+
+    linebuffer u_linebuffer (.*);
+
+    // connection between tile_engine and linebuffer
+    assign addr_tile_draw = tile_col;
+    assign data_tile_draw = tile_data;
+
+    // TODO: connection between sprite_engine and linebuffer
+
 
 	// tile engine
 	logic tile_start;
@@ -41,8 +77,6 @@ module vga_top(input logic        clk,
     logic sprite_start;
     logic sprite_done;
 
-    parameter TILE_SIZE = 16;
-
     vga_counters counters(.clk50(clk), .*);
 
     always_ff @(posedge clk) begin
@@ -51,9 +85,30 @@ module vga_top(input logic        clk,
 			ctrl_reg <= 0;
 			tile_start <= 0;
 			sprite_start <= 0;
-
+            wren_tile_disp <= 0;
+            wren_pixel_disp <= 0;
+            wren_tile_draw <= 0;
+            wren_pixel_draw <= 0;
         end
         else begin
+            if (vcount < 479 || vcount == 524) begin
+                if (hcount == 0) begin
+                    tile_start <= 1;
+                    wren_tile_draw <= 1;
+                end else begin
+                    tile_start <= 0;
+                end
+            end
+            // sprite start
+            // 2 cycles: start = 1 at hc = 1
+            //           done = 0, start = 0  at hc = 2
+            if (hcount > 1 && tile_done) begin
+                wren_tile_draw <= 0;
+                sprite_start <= 1;
+            end else if (sprite_start) begin // 1 cycle pulse
+                sprite_start <= 0;
+            end
+
             if (chipselect) begin
                 if (write) begin
                     case (address)
@@ -70,22 +125,21 @@ module vga_top(input logic        clk,
         end
     end
 
+    always_ff @(posedge clk) begin
+        if (reset)
+            switch <= 0;
 
-
-    always_comb begin
-        {VGA_R, VGA_G, VGA_B} = 24'h000000;
-        if (VGA_BLANK_n) begin
-            // TODO
-            logic signed [11:0] dx, dy;
-            dx = (hcount >> 1) - (ball_x_eff[10:1] + BALL_SIZE/2);
-            dy = vcount - (ball_y_eff + BALL_SIZE/2);
-
-            if ((dx*dx + dy*dy) <= ((BALL_SIZE/2)*(BALL_SIZE/2)))
-                {VGA_R, VGA_G, VGA_B} = 24'hffffff;
-            else
-                {VGA_R, VGA_G, VGA_B} = {background_r, background_g, background_b};
-        end
+        // 1 cycle flip "switch", 1 cycle read memory
+        // more cycles to insure robust
+        else if ((vcount < 479 || vcount == 524) && hcount == 1590)
+            switch <= ~switch;
     end
+    // 1 cycle delay
+    assign addr_pixel_disp = hcount[10:1] < 639 ? hcount[10:1] + 1 : 0;
+    assign VGA_R = q_pixel_disp[15:11] << 3;
+    assign VGA_G = q_pixel_disp[10:6] << 3;
+    assign VGA_B = q_pixel_disp[5:1] << 3;
+    
 
 endmodule
 
