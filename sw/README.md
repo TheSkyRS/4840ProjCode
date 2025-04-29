@@ -1,10 +1,5 @@
 # Forest Fire and Ice - Software Component
 
-## 概述
-
-本项目是哥伦比亚大学CSEEW4840嵌入式系统课程设计的软件部分，用于控制基于FPGA实现的"Forest Fire and Ice"游戏。
-软件运行在与FPGA相连的ARM处理器上（例如DE1-SoC板上的HPS），通过内存映射I/O（MMIO）与FPGA硬件进行通信，以控制游戏逻辑、精灵渲染、音频播放等。
-
 ## 项目结构
 
 ```
