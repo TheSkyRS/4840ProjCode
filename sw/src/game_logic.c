@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <math.h>
 
 // 定义动画相关参数
 #define NUM_HEAD_FRAMES 8   // 头部动画总帧数（建议包含站立、走路、跳跃、死亡）
@@ -58,6 +59,8 @@ typedef struct
     bool alive;              // 是否存活（false表示角色死亡，不再更新）
     character_state_t state; // 当前角色状态（站立、行走、跳跃、下落、死亡）
     character_type_t type;   // 角色类型（火男孩或水女孩）
+    bool on_ground;          // 是否在地面
+    float velocity_y;         // 垂直速度
 } character_t;
 
 /**
@@ -91,7 +94,7 @@ void update_character_animation(character_t *ch, float delta_time)
         start_frame_body = 6;
         end_frame_body = 6;
         break;
-    case STATE_DEAD: // 死亡状态，可以根据‘alive’变量直接透明化。
+    case STATE_DEAD: // 死亡状态，可以根据'alive'变量直接透明化。
         start_frame_head = 7;
         end_frame_head = 7;
         start_frame_body = 7;
@@ -172,13 +175,97 @@ void update_character_state(character_t *ch, game_action_t input, float dt)
 /**
  * 基于速度简单地更新角色位置。
  */
-void update_character_position(character_t *ch, float dt)
+void update_character_position(character_t *ch, float dt, uint8_t map_id)
 {
     if (!ch->alive)
         return; // 死亡角色不动
 
-    ch->x = ch->x + ch->vx * dt; // 位置 = 旧位置 + 速度 × 时间（水平）
-    ch->y = ch->y + ch->vy * dt; // 位置 = 旧位置 + 速度 × 时间（垂直）
+    // Apply gravity if character is not on ground
+    if (!ch->on_ground) {
+        ch->velocity_y += GRAVITY * dt;
+    }
+
+    // Update position based on velocity
+    float new_x = ch->x + ch->vx * dt;
+    float new_y = ch->y + ch->vy * dt;
+
+    // Store original position for collision response
+    float original_x = ch->x;
+    float original_y = ch->y;
+
+    // Update position
+    ch->x = new_x;
+    ch->y = new_y;
+
+    // Check for collisions and handle them
+    if (handle_character_collisions(ch, map_id)) {
+        // If character collided with a hazard, reset to original position
+        ch->x = original_x;
+        ch->y = original_y;
+        ch->alive = false;
+    }
+}
+
+bool handle_character_collisions(character_t* character, uint8_t map_id) {
+    // Check map boundary collisions
+    if (check_map_boundary_collision(character)) {
+        // Reset character to last valid position
+        character->vx = 0;
+        character->vy = 0;
+        return false;
+    }
+
+    // Get character's current tile position
+    int char_tile_x = (int)(character->x / TILE_SIZE);
+    int char_tile_y = (int)(character->y / TILE_SIZE);
+
+    // Check surrounding tiles for collisions
+    for (int y = char_tile_y - 1; y <= char_tile_y + 1; y++) {
+        for (int x = char_tile_x - 1; x <= char_tile_x + 1; x++) {
+            if (x < 0 || x >= MAP_WIDTH || y < 0 || y >= MAP_HEIGHT) {
+                continue;
+            }
+
+            tile_type_t tile_type = get_tile_at(x * TILE_SIZE, y * TILE_SIZE, map_id);
+            
+            // Skip empty tiles
+            if (tile_type == TILE_EMPTY) {
+                continue;
+            }
+
+            // Check for collision with the tile
+            if (check_character_tile_collision(character, x, y)) {
+                // Create bounding boxes for collision resolution
+                bounding_box_t char_box = {
+                    .x = character->x,
+                    .y = character->y,
+                    .width = character->width,
+                    .height = character->height
+                };
+
+                bounding_box_t tile_box = {
+                    .x = x * TILE_SIZE,
+                    .y = y * TILE_SIZE,
+                    .width = TILE_SIZE,
+                    .height = TILE_SIZE
+                };
+
+                // Calculate penetration depth
+                float penetration_x, penetration_y;
+                calculate_penetration_depth(&char_box, &tile_box, &penetration_x, &penetration_y);
+
+                // Resolve collision
+                resolve_collision(character, penetration_x, penetration_y);
+
+                // Check for hazard collision
+                if (check_hazard_collision(character, tile_type)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -266,7 +353,7 @@ void update_all_characters(character_t *characters, int num_characters, float dt
     {
         game_action_t input = get_player_action(i);        // 读取玩家输入指令
         update_character_state(&characters[i], input, dt); // 更新角色状态（含动画）
-        update_character_position(&characters[i], dt);     // 更新角色物理位置
+        update_character_position(&characters[i], dt, 0);     // 更新角色物理位置
     }
 
     sync_characters_to_hardware(characters, num_characters); // 更新所有角色的Sprite显示到硬件
