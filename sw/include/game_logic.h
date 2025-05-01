@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "../include/hw_interface.h"
 #include "../include/input_handler.h"
+#include "../include/collision_detection.h"
 
 /**
  * @file game_logic.h
@@ -135,24 +136,22 @@ void init_game_state(game_state_t* state, uint8_t map_id);
 void update_character_state(character_t* character, game_action_t action, float delta_time);
 
 /**
- * @brief Updates the position of a single character based on its velocity.
+ * @brief Updates the position of a single character based on its velocity and handles collisions.
  * 
  * @param character Pointer to the character_t structure to update.
  * @param delta_time The time elapsed since the last frame (in seconds).
+ * @param map_id The ID of the current map.
  */
-void update_character_position(character_t* character, float delta_time);
+void update_character_position(character_t* character, float delta_time, uint8_t map_id);
 
 /**
- * @brief Detects collisions between a character and the map tiles.
- * Uses the character's bounding box and checks against the map data.
- * This function might also update the character's `on_ground` status.
+ * @brief Checks and handles all collisions for a character.
  * 
  * @param character Pointer to the character_t structure.
  * @param map_id The ID of the current map.
- * @return The type of tile the character collided with (tile_type_t), or TILE_EMPTY if no collision.
- *         Note: This simplified version might only return the first collision detected.
+ * @return true if character collided with a hazard, false otherwise
  */
-tile_type_t detect_tile_collision(character_t* character, uint8_t map_id);
+bool handle_character_collisions(character_t* character, uint8_t map_id);
 
 /**
  * @brief Detects collisions between the two player characters (AABB check).

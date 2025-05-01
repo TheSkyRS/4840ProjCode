@@ -80,34 +80,34 @@ void update_character_animation(character_t *ch, float delta_time)
         start_frame_body = 0;
         end_frame_body = 1;
         break;
-    case STATE_MOVING_LEFT:
+        case STATE_MOVING_LEFT:
     case STATE_MOVING_RIGHT: // 行走状态
         start_frame_head = 2;
         end_frame_head = 3;
         start_frame_body = 2;
         end_frame_body = 5;
-        break;
-    case STATE_JUMPING:
+            break;
+        case STATE_JUMPING:
     case STATE_FALLING: // 跳跃或下落状态
         start_frame_head = 6;
         end_frame_head = 6;
         start_frame_body = 6;
         end_frame_body = 6;
-        break;
+            break;
     case STATE_DEAD: // 死亡状态，可以根据'alive'变量直接透明化。
         start_frame_head = 7;
         end_frame_head = 7;
         start_frame_body = 7;
         end_frame_body = 7;
-        break;
+            break;
     default: // 其他异常情况，默认站立帧
         start_frame_head = 0;
         end_frame_head = 0;
         start_frame_body = 0;
         end_frame_body = 0;
-        break;
+            break;
     }
-
+    
     // 更新头部动画播放
     ch->anim_timer_head = ch->anim_timer_head + delta_time; // 累加本帧经过的时间
     if (ch->anim_timer_head >= FRAME_INTERVAL)              // 达到切换间隔则切换动画帧

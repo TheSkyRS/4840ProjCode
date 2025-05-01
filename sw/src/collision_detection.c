@@ -3,10 +3,10 @@
 #include <math.h>
 
 bool check_aabb_collision(const bounding_box_t* box1, const bounding_box_t* box2) {
-    return (box1->x < box2->x + box2->width &&
-            box1->x + box1->width > box2->x &&
-            box1->y < box2->y + box2->height &&
-            box1->y + box1->height > box2->y);
+    return (box1->x <= box2->x + box2->width &&
+            box1->x + box1->width >= box2->x &&
+            box1->y <= box2->y + box2->height &&
+            box1->y + box1->height >= box2->y);
 }
 
 bool check_character_tile_collision(const character_t* character, int tile_x, int tile_y) {
