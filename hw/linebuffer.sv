@@ -61,9 +61,18 @@ module linebuffer(
         .q_a       	(q_tile[1]     ),
         .q_b       	(q_pixel[1]     )
     );
-    
+    logic disp_sel;
+
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            disp_sel <= 0;
+        end else begin
+            disp_sel <= switch;
+        end
+    end
+
     always_comb begin
-        if (switch) begin
+        if (disp_sel) begin
             // RAM0 disp, RAM1 draw
             addr_tile[0] = addr_tile_disp;
             addr_pixel[0] = addr_pixel_disp;
@@ -71,6 +80,8 @@ module linebuffer(
             data_pixel[0] = data_pixel_disp;
             wren_tile[0] = wren_tile_disp;
             wren_pixel[0] = wren_pixel_disp;
+            q_tile_disp =  q_tile[0];
+            q_pixel_disp = q_pixel[0];
 
             addr_tile[1] = addr_tile_draw;
             addr_pixel[1] = addr_pixel_draw;
@@ -78,6 +89,8 @@ module linebuffer(
             data_pixel[1] = data_pixel_draw;
             wren_tile[1] = wren_tile_draw;
             wren_pixel[1] = wren_pixel_draw;
+            q_tile_draw =  q_tile[1];
+            q_pixel_draw = q_pixel[1];
         end else begin
             // RAM0 draw, RAM1 disp
             addr_tile[1] = addr_tile_disp;
@@ -86,6 +99,8 @@ module linebuffer(
             data_pixel[1] = data_pixel_disp;
             wren_tile[1] = wren_tile_disp;
             wren_pixel[1] = wren_pixel_disp;
+            q_tile_disp =  q_tile[1];
+            q_pixel_disp = q_pixel[1];
 
             addr_tile[0] = addr_tile_draw;
             addr_pixel[0] = addr_pixel_draw;
@@ -93,14 +108,9 @@ module linebuffer(
             data_pixel[0] = data_pixel_draw;
             wren_tile[0] = wren_tile_draw;
             wren_pixel[0] = wren_pixel_draw;
+            q_tile_draw =  q_tile[0];
+            q_pixel_draw = q_pixel[0];
         end
-    end
-    always_ff @(posedge clk) begin
-        q_tile_disp <= switch ? q_tile[0] : q_tile[1];
-        q_pixel_disp <= switch ? q_pixel[0] : q_pixel[1];
-        
-        q_tile_draw = switch ? q_tile[1] : q_tile[0];
-        q_pixel_draw = switch ? q_pixel[1] : q_pixel[0];
     end
     
 endmodule

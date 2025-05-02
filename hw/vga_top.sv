@@ -136,9 +136,10 @@ module vga_top(input logic        clk,
     end
     // 1 cycle delay
     assign addr_pixel_disp = hcount[10:1] < 639 ? hcount[10:1] + 1 : 0;
-    assign VGA_R = q_pixel_disp[15:11] << 3;
-    assign VGA_G = q_pixel_disp[10:6] << 3;
-    assign VGA_B = q_pixel_disp[5:1] << 3;
+    // MSB is transparency bit ( 1 = transparent, 0 = no)
+    assign VGA_R = q_pixel_disp[14:10] << 3;
+    assign VGA_G = q_pixel_disp[9:5] << 3;
+    assign VGA_B = q_pixel_disp[4:0] << 3;
     
 
 endmodule
