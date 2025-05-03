@@ -97,16 +97,16 @@ module vga_top(input logic        clk,
                     wren_tile_draw <= 1;
                 end else begin
                     tile_start <= 0;
+                end     
+                // sprite start
+                // 2 cycles: start = 1 at hc = 1
+                //           done = 0, start = 0  at hc = 2
+                if (hcount > 1 && tile_done) begin
+                    wren_tile_draw <= 0;
+                    sprite_start <= 1;
+                end else if (sprite_start) begin // 1 cycle pulse
+                    sprite_start <= 0;
                 end
-            end
-            // sprite start
-            // 2 cycles: start = 1 at hc = 1
-            //           done = 0, start = 0  at hc = 2
-            if (hcount > 1 && tile_done) begin
-                wren_tile_draw <= 0;
-                sprite_start <= 1;
-            end else if (sprite_start) begin // 1 cycle pulse
-                sprite_start <= 0;
             end
 
             if (chipselect) begin
