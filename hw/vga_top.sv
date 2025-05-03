@@ -18,6 +18,7 @@ module vga_top(input logic        clk,
     logic [31:0] status_reg;
     logic [31:0] ctrl_reg;
 
+    assign status_reg[19:0] = {hcount[10:1], vcount}
     // linebuffer
     // addr
     logic [5:0] addr_tile_disp;
@@ -69,7 +70,8 @@ module vga_top(input logic        clk,
 		.vcount      	(vcount       ),
 		.tile_col    	(tile_col     ),
 		.tile_data   	(tile_data    ),
-		.tile_done   	(tile_done    )
+		.tile_done   	(tile_done    ),
+        .wren_tile_draw (wren_tile_draw)
 	);
 	
 
@@ -81,20 +83,19 @@ module vga_top(input logic        clk,
 
     always_ff @(posedge clk) begin
         if (reset) begin
-			status_reg <= 0;
+			// status_reg <= 0;
 			ctrl_reg <= 0;
 			tile_start <= 0;
 			sprite_start <= 0;
             wren_tile_disp <= 0;
             wren_pixel_disp <= 0;
-            wren_tile_draw <= 0;
-            wren_pixel_draw <= 0;
+
+            switch <= 0;
         end
         else begin
             if (vcount < 479 || vcount == 524) begin
                 if (hcount == 0) begin
                     tile_start <= 1;
-                    wren_tile_draw <= 1;
                 end else begin
                     tile_start <= 0;
                 end     
@@ -102,11 +103,15 @@ module vga_top(input logic        clk,
                 // 2 cycles: start = 1 at hc = 1
                 //           done = 0, start = 0  at hc = 2
                 if (hcount > 1 && tile_done) begin
-                    wren_tile_draw <= 0;
                     sprite_start <= 1;
                 end else if (sprite_start) begin // 1 cycle pulse
                     sprite_start <= 0;
                 end
+
+                // 1 cycle flip "switch", 1 cycle read "switch" to "disp_sel",1 cycle read memory
+                // more cycles to insure robust
+                if (hcount == 1590)
+                    switch <= ~switch;
             end
 
             if (chipselect) begin
@@ -124,16 +129,7 @@ module vga_top(input logic        clk,
 
         end
     end
-
-    always_ff @(posedge clk) begin
-        if (reset)
-            switch <= 0;
-
-        // 1 cycle flip "switch", 1 cycle read memory
-        // more cycles to insure robust
-        else if ((vcount < 479 || vcount == 524) && hcount == 1590)
-            switch <= ~switch;
-    end
+ 
     // 1 cycle delay
     assign addr_pixel_disp = hcount[10:1] < 639 ? hcount[10:1] + 1 : 0;
     // MSB is transparency bit ( 1 = transparent, 0 = no)
