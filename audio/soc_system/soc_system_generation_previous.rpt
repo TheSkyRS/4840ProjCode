@@ -1,0 +1,52 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate /homes/user/stud/spring25/ym3064/Downloads/lab3-hw/soc_system.qsys --block-symbol-file --output-directory=/homes/user/stud/spring25/ym3064/Downloads/lab3-hw/soc_system --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading lab3-hw/soc_system.qsys
+Progress: Reading input file
+Progress: Adding audio_controller_0 [audio_controller 1.0]
+Error: embeddedsw.dts.vendor not allowed for EModuleProperty, must be in {[DESCRIPTION, NAME, VERSION, MODULE_TCL_FILE, MODULE_DIRECTORY, INTERNAL, HIDE_FROM_SOPC, HIDE_FROM_QSYS, HIDE_FROM_QUARTUS, OPAQUE_ADDRESS_MAP, GROUP, AUTHOR, ICON_PATH, DISPLAY_NAME, DATASHEET_URL, TOP_LEVEL_HDL_FILE, TOP_LEVEL_HDL_MODULE, INSTANTIATE_IN_SYSTEM_MODULE, EDITABLE, VALIDATION_CALLBACK, EDITOR_CALLBACK, ELABORATION_CALLBACK, GENERATION_CALLBACK, COMPOSITION_CALLBACK, PARAMETER_UPGRADE_CALLBACK, OUTDATED_IP_FILE, ANALYZE_HDL, STATIC_TOP_LEVEL_MODULE_NAME, FIX_110_VIP_PATH, SUPPORTED_DEVICE_FAMILIES, REPORT_TO_TALKBACK, ALLOW_GREYBOX_GENERATION, SUPPRESS_WARNINGS, STRUCTURAL_COMPOSITION_CALLBACK, NATIVE_INTERPRETER, PREFERRED_SIMULATION_LANGUAGE, REPORT_HIERARCHY, UPGRADEABLE_FROM]}     while executing "set_module_property embeddedsw.dts.vendor "csee4840""
+Progress: Parameterizing module audio_controller_0
+Progress: Adding clk_0 [clock_source 21.1]
+Progress: Parameterizing module clk_0
+Progress: Adding hps_0 [altera_hps 21.1]
+Progress: Parameterizing module hps_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: soc_system.audio_controller_0: This module has no ports or interfaces
+Error: soc_system.: embeddedsw.dts.vendor not allowed for EModuleProperty, must be in {[DESCRIPTION, NAME, VERSION, MODULE_TCL_FILE, MODULE_DIRECTORY, INTERNAL, HIDE_FROM_SOPC, HIDE_FROM_QSYS, HIDE_FROM_QUARTUS, OPAQUE_ADDRESS_MAP, GROUP, AUTHOR, ICON_PATH, DISPLAY_NAME, DATASHEET_URL, TOP_LEVEL_HDL_FILE, TOP_LEVEL_HDL_MODULE, INSTANTIATE_IN_SYSTEM_MODULE, EDITABLE, VALIDATION_CALLBACK, EDITOR_CALLBACK, ELABORATION_CALLBACK, GENERATION_CALLBACK, COMPOSITION_CALLBACK, PARAMETER_UPGRADE_CALLBACK, OUTDATED_IP_FILE, ANALYZE_HDL, STATIC_TOP_LEVEL_MODULE_NAME, FIX_110_VIP_PATH, SUPPORTED_DEVICE_FAMILIES, REPORT_TO_TALKBACK, ALLOW_GREYBOX_GENERATION, SUPPRESS_WARNINGS, STRUCTURAL_COMPOSITION_CALLBACK, NATIVE_INTERPRETER, PREFERRED_SIMULATION_LANGUAGE, REPORT_HIERARCHY, UPGRADEABLE_FROM]}     while executing "set_module_property embeddedsw.dts.vendor "csee4840""
+Info: soc_system.hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: soc_system.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Error: soc_system.hps_0.h2f_lw_axi_master/audio_controller_0.avalon_slave_0: Missing connection end (try "Remove Dangling Connections")
+Error: soc_system.clk_0.clk/audio_controller_0.clock: Missing connection end (try "Remove Dangling Connections")
+Error: soc_system.clk_0.clk_reset/audio_controller_0.reset: Missing connection end (try "Remove Dangling Connections")
+Error: soc_system.audio_controller_0.avalon_slave_0: Data width must be of power of two and between 8 and 4096  
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate /homes/user/stud/spring25/ym3064/Downloads/lab3-hw/soc_system.qsys --synthesis=VERILOG --output-directory=/homes/user/stud/spring25/ym3064/Downloads/lab3-hw/soc_system/synthesis --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading lab3-hw/soc_system.qsys
+Progress: Reading input file
+Progress: Adding audio_controller_0 [audio_controller 1.0]
+Progress: Parameterizing module audio_controller_0
+Progress: Adding clk_0 [clock_source 21.1]
+Progress: Parameterizing module clk_0
+Progress: Adding hps_0 [altera_hps 21.1]
+Progress: Parameterizing module hps_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: soc_system.audio_controller_0: This module has no ports or interfaces
+Error: soc_system.: embeddedsw.dts.vendor not allowed for EModuleProperty, must be in {[DESCRIPTION, NAME, VERSION, MODULE_TCL_FILE, MODULE_DIRECTORY, INTERNAL, HIDE_FROM_SOPC, HIDE_FROM_QSYS, HIDE_FROM_QUARTUS, OPAQUE_ADDRESS_MAP, GROUP, AUTHOR, ICON_PATH, DISPLAY_NAME, DATASHEET_URL, TOP_LEVEL_HDL_FILE, TOP_LEVEL_HDL_MODULE, INSTANTIATE_IN_SYSTEM_MODULE, EDITABLE, VALIDATION_CALLBACK, EDITOR_CALLBACK, ELABORATION_CALLBACK, GENERATION_CALLBACK, COMPOSITION_CALLBACK, PARAMETER_UPGRADE_CALLBACK, OUTDATED_IP_FILE, ANALYZE_HDL, STATIC_TOP_LEVEL_MODULE_NAME, FIX_110_VIP_PATH, SUPPORTED_DEVICE_FAMILIES, REPORT_TO_TALKBACK, ALLOW_GREYBOX_GENERATION, SUPPRESS_WARNINGS, STRUCTURAL_COMPOSITION_CALLBACK, NATIVE_INTERPRETER, PREFERRED_SIMULATION_LANGUAGE, REPORT_HIERARCHY, UPGRADEABLE_FROM]}     while executing "set_module_property embeddedsw.dts.vendor "csee4840""
+Info: soc_system.hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: soc_system.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Error: soc_system.hps_0.h2f_lw_axi_master/audio_controller_0.avalon_slave_0: Missing connection end (try "Remove Dangling Connections")
+Error: soc_system.clk_0.clk/audio_controller_0.clock: Missing connection end (try "Remove Dangling Connections")
+Error: soc_system.clk_0.clk_reset/audio_controller_0.reset: Missing connection end (try "Remove Dangling Connections")
+Error: soc_system.audio_controller_0.avalon_slave_0: Data width must be of power of two and between 8 and 4096  
+Info: soc_system: Generating soc_system "soc_system" for QUARTUS_SYNTH
+Info: Interconnect is inserted between master hps_0.h2f_lw_axi_master and slave audio_controller_0.avalon_slave_0 because the master is of type axi and the slave is of type missing.
+Info: Interconnect is inserted between master hps_0.h2f_lw_axi_master and slave audio_controller_0.avalon_slave_0 because they have different clock source.
+Error: null
