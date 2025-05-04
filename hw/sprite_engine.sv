@@ -85,7 +85,7 @@ module sprite_engine #(
 
     // ------------------- ROM ------------------------------------------
     logic [15:0] rom_addr, rom_q;
-    sprite_pattern_rom u_rom (.clk(clk), .addr(rom_addr), .q(rom_q));
+    sprite_pattern_rom u_rom (.clock(clk), .address(rom_addr), .q(rom_q));
 
     // ------------------- Drawer ---------------------------------------
     sprite_drawer u_dw (

@@ -18,7 +18,7 @@ module vga_top(input logic        clk,
     logic [31:0] status_reg;
     logic [31:0] ctrl_reg;
 
-    assign status_reg[19:0] = {hcount[10:1], vcount}
+    assign status_reg[19:0] = {hcount[10:1], vcount};
     // linebuffer
     // addr
     logic [5:0] addr_tile_disp;
@@ -79,16 +79,16 @@ module vga_top(input logic        clk,
     logic sprite_start;
     logic sprite_done;
     logic sprite_write;
-    assign sprite_write = (chipselect && write && address[5])
+    assign sprite_write = (chipselect && write && address[5]);
 
-   sprite_engine u_sprite_engine(
+    sprite_engine u_sprite_engine(
         .clk         	(clk          ),
         .reset       	(reset        ),
         .sprite_start  	(sprite_start   ),
         .vcount      	(vcount       ),
         .spr_wr_en    	(sprite_write     ),
         .spr_wr_idx   	(address[4:0]    ),
-        .spr_wr_data   	(write_data    ),
+        .spr_wr_data   	(writedata    ),
         .sprite_pixel_col (addr_pixel_draw),
         .sprite_pixel_data (data_pixel_draw),
         .wren_pixel_draw (wren_pixel_draw),

@@ -6,8 +6,8 @@
 module sprite_frontend #(
     parameter int NUM_SPRITE = 32,
     parameter int MAX_SLOT   = 8,
-    localparam int IDXW      = $clog2(NUM_SPRITE),
-    localparam int PTRW      = $clog2(MAX_SLOT)
+    parameter int IDXW      = $clog2(NUM_SPRITE),
+    parameter int PTRW      = $clog2(MAX_SLOT)
 )(
     input  logic               clk,
     input  logic               reset,
