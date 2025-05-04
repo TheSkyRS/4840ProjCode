@@ -128,7 +128,7 @@ module vga_top(input logic        clk,
 
                 // 1 cycle flip "switch", 1 cycle read "switch" to "disp_sel",1 cycle read memory
                 // more cycles to insure robust
-                if (hcount == 1590)
+                if (hcount > 1279 && tile_done && sprite_done)
                     switch <= ~switch;
             end
 
