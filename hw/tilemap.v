@@ -91,7 +91,7 @@ module tilemap (
 		altsyncram_component.numwords_a = 4096,
 		altsyncram_component.operation_mode = "ROM",
 		altsyncram_component.outdata_aclr_a = "NONE",
-		altsyncram_component.outdata_reg_a = "CLOCK0",
+		altsyncram_component.outdata_reg_a = "UNREGISTERED",
 		altsyncram_component.widthad_a = 12,
 		altsyncram_component.width_a = 8,
 		altsyncram_component.width_byteena_a = 1;

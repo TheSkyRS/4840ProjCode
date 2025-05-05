@@ -7,6 +7,9 @@
 [7:0] : frame_id (0-255)
 
 */
+
+// Test example: 1000 0100 0000 0001 0000 0000 0000 0001
+//               8      4   0   1       0   0   0   1
 module sprite_engine #(
     parameter NUM_SPRITE = 32,
     parameter MAX_SLOT   = 8
@@ -92,6 +95,6 @@ module sprite_engine #(
     );
 
     // ------------------- 行完成输出 -----------------------------------
-    assign done = (fe_done && dw_done) || (vcount >= 479 && vcount < 524);
+    assign done = (fe_done) || (vcount >= 479 && vcount < 524);
 
 endmodule

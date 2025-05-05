@@ -1,6 +1,6 @@
 module sprite_frontend #(
     parameter int NUM_SPRITE = 32,
-    parameter int MAX_SLOT   = 8                 // 2 的整数次幂
+    parameter int MAX_SLOT   = 8
 )(
     input  logic           clk,
     input  logic           reset,
@@ -29,6 +29,8 @@ module sprite_frontend #(
     logic [IDXW:0] scan_idx;
     assign ra = scan_idx[IDXW-1:0];
 
+    logic hit;
+    assign hit = rd_data[31] && (next_vcount >= rd_data[26:18]) && (next_vcount < rd_data[26:18]+16);
     // 环形 FIFO
     typedef struct packed { logic [9:0] col; logic flip; logic [7:0] frame; logic [3:0] rowoff; } ent_t;
     ent_t           fifo [MAX_SLOT];
@@ -39,33 +41,39 @@ module sprite_frontend #(
         //------------------------------------------------ reset / blank
         if (reset) begin
             scan_idx <= NUM_SPRITE;
-            head<=0; tail<=0; cnt<=0;
-            draw_req<=0; fe_done<=1;
+            head<=0;
+            tail<=0;
+            cnt<=0;
+            draw_req<=0;
+            fe_done<=1;
         end
         else if (start_row) begin
-            head<=0; tail<=0; cnt<=0; draw_req<=0;
+            head<=0;
+            tail<=0;
+            cnt<=0;
+            draw_req<=0;
             if (next_vcount < 10'd480) begin
-                scan_idx <= 0;  fe_done <= 0;      // 可见行
+                scan_idx <= 0;
+                fe_done <= 0;      // 可见行
             end else begin
-                scan_idx <= NUM_SPRITE; fe_done <= 1; // blank
+                scan_idx <= NUM_SPRITE;
+                fe_done <= 1; // blank
             end
         end
         //----------------------------- normal run
-        else begin
-            draw_req<=0; fe_done<=0;
-
+        else if (!fe_done) begin
+            draw_req<=0;
+            scan_idx <= scan_idx + 1'b1;
             // 扫描属性
-            if (scan_idx < NUM_SPRITE) begin
-                logic en = rd_data[31];
-                logic [8:0] top = rd_data[26:18];
-                logic hit = en && next_vcount >= top && next_vcount < top+16;
+            if (scan_idx > 0 && scan_idx <= NUM_SPRITE) begin
                 if (hit && cnt < MAX_SLOT) begin   // 入队（队列满则丢弃）
-                    fifo[tail] <= '{ rd_data[17:8], rd_data[30],
-                                     rd_data[7:0], (next_vcount-top)[3:0] };
+                    fifo[tail].col <= rd_data[17:8];
+                    fifo[tail].flip <= rd_data[30];
+                    fifo[tail].frame <=rd_data[7:0];
+                    fifo[tail].rowoff <= (next_vcount-rd_data[26:18]) & 4'hf;
                     tail <= (tail + 1'b1) & MASK;
                     cnt  <= cnt + 1'b1;
                 end
-                scan_idx <= scan_idx + 1'b1;
             end
 
             // drawer 空闲 且 队列非空 → 出队

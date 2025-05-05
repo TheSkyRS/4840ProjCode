@@ -22,7 +22,6 @@ module sprite_drawer (
     logic [3:0] idx_d;        // 延迟 1 拍
     logic       valid_d;      // 延迟 1 拍的有效信号
 
-    logic [9:0] col_now;
 
     assign wren = (!done) && valid_d && (rom_q[15] == 1'b0);
     // === 时序 ===========================================================
@@ -51,11 +50,11 @@ module sprite_drawer (
                 if (valid_d) begin
                     pixel_col  <= flip ? (col_base + (10'd15 - idx_d)) : (col_base + idx_d);;
                     pixel_data <= rom_q;
+                end
 
-                    if (idx_d == 15) begin
-                        done <= 1'b1;
-                        valid_d <= 1'b0;
-                    end
+                if (idx_d == 15) begin
+                    done <= 1'b1;
+                    valid_d <= 1'b0;
                 end
             end
         end

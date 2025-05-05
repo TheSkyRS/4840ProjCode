@@ -52,9 +52,6 @@ module vga_top(input logic        clk,
     assign addr_tile_draw = tile_col;
     assign data_tile_draw = tile_data;
 
-    // TODO: connection between sprite_engine and linebuffer
-
-
 	// tile engine
 	logic tile_start;
 	// output declaration of module tile_engine
@@ -120,15 +117,18 @@ module vga_top(input logic        clk,
                 // sprite start
                 // 2 cycles: start = 1 at hc = 1
                 //           done = 0, start = 0  at hc = 2
-                if (hcount > 1 && tile_done) begin
+                // 60 clk enough to draw tile
+                if (hcount == 60 && tile_done && sprite_done) begin
                     sprite_start <= 1;
-                end else if (sprite_start) begin // 1 cycle pulse
+                end 
+                
+                if (sprite_start) begin // 1 cycle pulse
                     sprite_start <= 0;
                 end
 
                 // 1 cycle flip "switch", 1 cycle read "switch" to "disp_sel",1 cycle read memory
                 // more cycles to insure robust
-                if (hcount > 1279 && tile_done && sprite_done)
+                if (hcount == 1590 && tile_done && sprite_done)
                     switch <= ~switch;
             end
 
