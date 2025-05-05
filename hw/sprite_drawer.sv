@@ -22,8 +22,12 @@ module sprite_drawer (
     logic [3:0] idx_d;        // 延迟 1 拍
     logic       valid_d;      // 延迟 1 拍的有效信号
 
-
-    assign wren = (!done) && valid_d && (rom_q[15] == 1'b0);
+    always_comb begin
+        pixel_col  = flip ? (col_base + (10'd15 - {6'b0, idx_d})) : (col_base + {6'b0, idx_d});
+        pixel_data = rom_q;
+        wren = (!done) && (valid_d) && (rom_q[15] == 1'b0) && (pixel_col <= 639);
+    end
+    // assign wren = (!done) && valid_d && (rom_q[15] == 1'b0);
     // === 时序 ===========================================================
     always_ff @(posedge clk) begin
         if (reset) begin
@@ -45,11 +49,6 @@ module sprite_drawer (
                     rom_addr <= rom_addr + 16'd1;
                     idx      <= idx + 1;
                     valid_d  <= 1;
-                end
-
-                if (valid_d) begin
-                    pixel_col  <= flip ? (col_base + (10'd15 - {6'b0, idx_d})) : (col_base + {6'b0, idx_d});
-                    pixel_data <= rom_q;
                 end
 
                 if (idx_d == 15) begin

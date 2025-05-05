@@ -38,14 +38,28 @@ module sprite_engine #(
     logic [31:0] attr_rd;
     logic [$clog2(NUM_SPRITE)-1:0] attr_ra;
 
-    sprite_attr_ram #(.NUM_SPRITE(NUM_SPRITE)) u_ram (
-        .clk   (clk),
-        .ra    (attr_ra),
-        .q     (attr_rd),
-        .write (spr_wr_en),
-        .wa    (spr_wr_idx),
-        .d     (spr_wr_data)
-    );
+    // sprite_attr_ram #(.NUM_SPRITE(NUM_SPRITE)) u_ram (
+    //     .clk   (clk),
+    //     .ra    (attr_ra),
+    //     .q     (attr_rd),
+    //     .write (spr_wr_en),
+    //     .wa    (spr_wr_idx),
+    //     .d     (spr_wr_data)
+    // );
+
+    logic [31:0] sprite_attr_ram [NUM_SPRITE];
+    always_ff @(posedge clk) begin
+        // if (spr_wr_en) begin
+        //     sprite_attr_ram[spr_wr_idx] <= spr_wr_data;
+        // end
+        attr_rd <= sprite_attr_ram[attr_ra];
+    end
+
+    // Test exmaple:
+    assign sprite_attr_ram[0] = 32'h83010001;
+    assign sprite_attr_ram[1] = 32'h90F14001;
+    assign sprite_attr_ram[2] = 32'h84016001;
+    assign sprite_attr_ram[3] = 32'h91F18001;
 
     // ------------------- 前端 -----------------------------------------
     logic fe_draw_req, fe_flip, fe_done;
