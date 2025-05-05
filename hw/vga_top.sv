@@ -135,12 +135,12 @@ module vga_top(input logic        clk,
             if (chipselect) begin
                 if (write) begin
                     case (address)
-                        5'h0: ctrl_reg <= writedata;
+                        6'h0: ctrl_reg <= writedata;
                     endcase
                 end
                 else begin // read
                     case (address)
-                        5'h1: readdata <= status_reg;
+                        6'h1: readdata <= status_reg;
                     endcase
                 end
             end

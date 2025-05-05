@@ -37,7 +37,7 @@ module sprite_drawer (
                 done  <= 0;
                 valid_d <= 0;
                 idx      <= 0;
-                rom_addr <= {frame_id, 8'b0} + {row_off, 4'b0};
+                rom_addr <= {frame_id, row_off, 4'b0};
             end
             else if (!done) begin
                 idx_d   <= idx;
@@ -48,7 +48,7 @@ module sprite_drawer (
                 end
 
                 if (valid_d) begin
-                    pixel_col  <= flip ? (col_base + (10'd15 - idx_d)) : (col_base + idx_d);;
+                    pixel_col  <= flip ? (col_base + (10'd15 - {6'b0, idx_d})) : (col_base + {6'b0, idx_d});
                     pixel_data <= rom_q;
                 end
 

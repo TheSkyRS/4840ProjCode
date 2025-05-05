@@ -1,6 +1,6 @@
 module sprite_frontend #(
-    parameter int NUM_SPRITE = 32,
-    parameter int MAX_SLOT   = 8
+    parameter NUM_SPRITE = 32,
+    parameter MAX_SLOT   = 8
 )(
     input  logic           clk,
     input  logic           reset,
@@ -30,12 +30,14 @@ module sprite_frontend #(
     assign ra = scan_idx[IDXW-1:0];
 
     logic hit;
-    assign hit = rd_data[31] && (next_vcount >= rd_data[26:18]) && (next_vcount < rd_data[26:18]+16);
+    assign hit = rd_data[31] && (next_vcount >= {1'b0,rd_data[26:18]}) && (next_vcount < rd_data[26:18]+16);
     // 环形 FIFO
     typedef struct packed { logic [9:0] col; logic flip; logic [7:0] frame; logic [3:0] rowoff; } ent_t;
     ent_t           fifo [MAX_SLOT];
     logic [QPW-1:0] head, tail;
     logic [QPW:0]   cnt;                 // 0‥MAX_SLOT
+
+    logic drawing;
 
     always_ff @(posedge clk) begin
         //------------------------------------------------ reset / blank
@@ -45,6 +47,7 @@ module sprite_frontend #(
             tail<=0;
             cnt<=0;
             draw_req<=0;
+            drawing <= 0;
             fe_done<=1;
         end
         else if (start_row) begin
@@ -52,6 +55,7 @@ module sprite_frontend #(
             tail<=0;
             cnt<=0;
             draw_req<=0;
+            drawing <= 0;
             if (next_vcount < 10'd480) begin
                 scan_idx <= 0;
                 fe_done <= 0;      // 可见行
@@ -62,8 +66,8 @@ module sprite_frontend #(
         end
         //----------------------------- normal run
         else if (!fe_done) begin
-            draw_req<=0;
-            scan_idx <= scan_idx + 1'b1;
+            if(scan_idx < NUM_SPRITE)
+                scan_idx <= scan_idx + 1'b1;
             // 扫描属性
             if (scan_idx > 0 && scan_idx <= NUM_SPRITE) begin
                 if (hit && cnt < MAX_SLOT) begin   // 入队（队列满则丢弃）
@@ -77,14 +81,24 @@ module sprite_frontend #(
             end
 
             // drawer 空闲 且 队列非空 → 出队
-            if (draw_done && cnt != 0) begin
+            if (!drawing && cnt != 0) begin
                 col_base <= fifo[head].col;
                 flip     <= fifo[head].flip;
                 frame_id <= fifo[head].frame;
                 row_off  <= fifo[head].rowoff;
+                // 1 clk pulse
                 draw_req <= 1;
+
+                // drawing state long period
+                drawing <= 1;
                 head <= (head + 1'b1) & MASK;
                 cnt  <= cnt - 1'b1;
+            end
+
+            if(drawing) begin
+                draw_req <= 0;
+                if (draw_done)
+                    drawing <= 0;
             end
 
             // 行完成
