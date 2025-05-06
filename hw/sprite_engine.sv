@@ -45,14 +45,21 @@ module sprite_engine #(
     //     .wa    (spr_wr_idx),
     //     .d     (spr_wr_data)
     // );
+    sprite_attr_ram u_ram(
+        .clock (clk),
+        .data (spr_wr_data),
+        .rdaddress (attr_ra),
+        .wraddress (spr_wr_idx),
+        .wren (spr_wr_en),
+        .q(attr_rd) );
 
-    logic [31:0] sprite_attr_ram [NUM_SPRITE];
-    always_ff @(posedge clk) begin
+    // logic [31:0] sprite_attr_ram [NUM_SPRITE];
+    // always_ff @(posedge clk) begin
         // if (spr_wr_en) begin
         //     sprite_attr_ram[spr_wr_idx] <= spr_wr_data;
         // end
-        attr_rd <= sprite_attr_ram[attr_ra];
-    end
+    //     attr_rd <= sprite_attr_ram[attr_ra];
+    // end
 
     // Test exmaple:
     // assign sprite_attr_ram[0] = 32'h83010001;
@@ -100,38 +107,38 @@ module sprite_engine #(
     // assign sprite_attr_ram[31] = 32'h8672501F;
 
     // Diagonal Sprite Positions (leftup to rightdown)
-    assign sprite_attr_ram[0]  = 32'h80000000;
-    assign sprite_attr_ram[1]  = 32'h80381401;
-    assign sprite_attr_ram[2]  = 32'h80702802;
-    assign sprite_attr_ram[3]  = 32'h80A83C03;
-    assign sprite_attr_ram[4]  = 32'h80E05004;
-    assign sprite_attr_ram[5]  = 32'h81186405;
-    assign sprite_attr_ram[6]  = 32'h81507806;
-    assign sprite_attr_ram[7]  = 32'h81888C07;
-    assign sprite_attr_ram[8]  = 32'h81C0A008;
-    assign sprite_attr_ram[9]  = 32'h81F8B409;
-    assign sprite_attr_ram[10] = 32'h8230C80A;
-    assign sprite_attr_ram[11] = 32'h8268DC0B;
-    assign sprite_attr_ram[12] = 32'h82A0F00C;
-    assign sprite_attr_ram[13] = 32'h82D9040D;
-    assign sprite_attr_ram[14] = 32'h8311180E;
-    assign sprite_attr_ram[15] = 32'h83492C0F;
-    assign sprite_attr_ram[16] = 32'h83814010;
-    assign sprite_attr_ram[17] = 32'h83B95411;
-    assign sprite_attr_ram[18] = 32'h83F16812;
-    assign sprite_attr_ram[19] = 32'h84297C13;
-    assign sprite_attr_ram[20] = 32'h84619014;
-    assign sprite_attr_ram[21] = 32'h8499A415;
-    assign sprite_attr_ram[22] = 32'h84D1B816;
-    assign sprite_attr_ram[23] = 32'h8509CC17;
-    assign sprite_attr_ram[24] = 32'h8541E018;
-    assign sprite_attr_ram[25] = 32'h8579F419;
-    assign sprite_attr_ram[26] = 32'h85B2081A;
-    assign sprite_attr_ram[27] = 32'h85EA1C1B;
-    assign sprite_attr_ram[28] = 32'h8622301C;
-    assign sprite_attr_ram[29] = 32'h865A441D;
-    assign sprite_attr_ram[30] = 32'h8692581E;
-    assign sprite_attr_ram[31] = 32'h86CA6C1F;
+    // assign sprite_attr_ram[0]  = 32'h80000000;
+    // assign sprite_attr_ram[1]  = 32'h80381401;
+    // assign sprite_attr_ram[2]  = 32'h80702802;
+    // assign sprite_attr_ram[3]  = 32'h80A83C03;
+    // assign sprite_attr_ram[4]  = 32'h80E05004;
+    // assign sprite_attr_ram[5]  = 32'h81186405;
+    // assign sprite_attr_ram[6]  = 32'h81507806;
+    // assign sprite_attr_ram[7]  = 32'h81888C07;
+    // assign sprite_attr_ram[8]  = 32'h81C0A008;
+    // assign sprite_attr_ram[9]  = 32'h81F8B409;
+    // assign sprite_attr_ram[10] = 32'h8230C80A;
+    // assign sprite_attr_ram[11] = 32'h8268DC0B;
+    // assign sprite_attr_ram[12] = 32'h82A0F00C;
+    // assign sprite_attr_ram[13] = 32'h82D9040D;
+    // assign sprite_attr_ram[14] = 32'h8311180E;
+    // assign sprite_attr_ram[15] = 32'h83492C0F;
+    // assign sprite_attr_ram[16] = 32'h83814010;
+    // assign sprite_attr_ram[17] = 32'h83B95411;
+    // assign sprite_attr_ram[18] = 32'h83F16812;
+    // assign sprite_attr_ram[19] = 32'h84297C13;
+    // assign sprite_attr_ram[20] = 32'h84619014;
+    // assign sprite_attr_ram[21] = 32'h8499A415;
+    // assign sprite_attr_ram[22] = 32'h84D1B816;
+    // assign sprite_attr_ram[23] = 32'h8509CC17;
+    // assign sprite_attr_ram[24] = 32'h8541E018;
+    // assign sprite_attr_ram[25] = 32'h8579F419;
+    // assign sprite_attr_ram[26] = 32'h85B2081A;
+    // assign sprite_attr_ram[27] = 32'h85EA1C1B;
+    // assign sprite_attr_ram[28] = 32'h8622301C;
+    // assign sprite_attr_ram[29] = 32'h865A441D;
+    // assign sprite_attr_ram[30] = 32'h8692581E;
+    // assign sprite_attr_ram[31] = 32'h86CA6C1F;
 
     // ------------------- 前端 -----------------------------------------
     logic fe_draw_req, fe_flip, fe_done;
