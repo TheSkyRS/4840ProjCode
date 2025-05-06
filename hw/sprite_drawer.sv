@@ -40,7 +40,8 @@ module sprite_drawer (
             if (start) begin
                 done  <= 0;
                 valid_d <= 0;
-                idx      <= 0;
+                idx <= 0;
+                idx_d <= 0; // FxxKKK, I forgot to reset it, it let me struggle for a long time.
                 rom_addr <= {frame_id, row_off, 4'b0};
             end
             else if (!done) begin
