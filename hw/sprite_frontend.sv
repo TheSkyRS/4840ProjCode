@@ -69,8 +69,14 @@ module sprite_frontend #(
         end
         //----------------------------- normal run
         else if (!fe_done) begin
+            draw_req <= 0;
+
             scan_idx_d <= scan_idx;
-            if(scan_idx < NUM_SPRITE - 1 && cnt < MAX_SLOT - 1) begin
+            /*
+            Why we need "-2": Important, because if we just -1, scan_idx will become 9 and keep this value, scan_idx_d become 8 for 1 clk,
+            then after 1clk, scan_idx_d become 9, so we lost 8(scan_idx_d)'s value, it becomes 9's value, waiting for enqueue.
+            */
+            if(scan_idx < NUM_SPRITE - 1 && cnt < MAX_SLOT - 2) begin
                 scan_idx <= scan_idx + 1'b1;
             end
             // Enqueue
@@ -98,7 +104,7 @@ module sprite_frontend #(
             end
 
             if(drawing) begin
-                draw_req <= 0;
+                // draw_req <= 0;
                 // Warning!!: should be very careful, because "after" draw_req 1 clk pulse, draw_done set to 0. 
                 // So we can not quickly check draw_done, since it is "1" when draw_req = 1
                 // After draw_req drop to 0(lasting 1 clk), draw_done set to 0. Then we can check draw_done to detect "drawing" state.
