@@ -1,0 +1,7 @@
+# Kbuild file for FPGA Sprite Engine kernel module
+
+# Module name
+obj-m := fpga_sprite.o
+
+# Source file
+fpga_sprite-objs := fpga_sprite.o 
