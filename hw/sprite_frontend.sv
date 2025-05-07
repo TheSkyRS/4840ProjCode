@@ -73,7 +73,7 @@ module sprite_frontend #(
             if(scan_idx < NUM_SPRITE - 1 && cnt < MAX_SLOT - 1) begin
                 scan_idx <= scan_idx + 1'b1;
             end
-            // 扫描属性
+            // Enqueue
             if (hit && cnt < MAX_SLOT - 1 && ({1'b0,scan_idx_d} != scan_idx_checked) && scan_idx > 0) begin
                 scan_idx_checked <= {1'b0,scan_idx_d};
                 fifo[tail].col <= rd_data[17:8];
@@ -83,7 +83,7 @@ module sprite_frontend #(
                 tail <= (tail + 1'b1) & MASK;
             end
 
-            // drawer 空闲 且 队列非空 → 出队
+            // drawer 空闲 且 队列非空 → Dequeue
             if (!drawing && cnt != 0) begin
                 col_base <= fifo[head].col;
                 flip     <= fifo[head].flip;
@@ -99,7 +99,10 @@ module sprite_frontend #(
 
             if(drawing) begin
                 draw_req <= 0;
-                if (draw_done)
+                // Warning!!: should be very careful, because "after" draw_req 1 clk pulse, draw_done set to 0. 
+                // So we can not quickly check draw_done, since it is "1" when draw_req = 1
+                // After draw_req drop to 0(lasting 1 clk), draw_done set to 0. Then we can check draw_done to detect "drawing" state.
+                if (draw_done && !draw_req)
                     drawing <= 0;
             end
 
