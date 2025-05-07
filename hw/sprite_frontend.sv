@@ -113,7 +113,7 @@ module sprite_frontend #(
             end
 
             // 行完成
-            if (scan_idx_d == NUM_SPRITE-1 && cnt==0 && draw_done)
+            if (scan_idx_d == NUM_SPRITE-1 && cnt==0 && !drawing)
                 fe_done <= 1;
         end
     end

@@ -92,10 +92,10 @@ module vga_top(input logic        clk,
             sprite_wr_idx    <= address[4:0];
             sprite_writedata <= writedata;
         end else begin
-            sprite_write_reg <= 0;
+                sprite_write_reg <= 0;
+            end
         end
     end
-end
     sprite_engine u_sprite_engine(
         .clk         	(clk          ),
         .reset       	(reset        ),
