@@ -1,0 +1,17 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    fragment@0 {
+        target-path = "/soc";
+        __overlay__ {
+            /* FPGA精灵引擎驱动的设备节点 */
+            fpga_sprite: fpga-sprite@0x3F000000 {
+                compatible = "csee4840,fpga-sprite-1.0";
+                /* 设备物理基地址和大小 */
+                reg = <0x3F000000 0x1000>;
+                status = "okay";
+            };
+        };
+    };
+}; 

@@ -1,45 +1,70 @@
-# Makefile for Forest Fire and Ice Game (Software)
+# Makefile for FPGA Sprite Engine Driver and User Applications
 
-# Compiler
+# Cross-compiler for ARM
 CC = arm-linux-gnueabihf-gcc
 
 # Directories
 SRC_DIR = src
 INC_DIR = include
 BUILD_DIR = build
+KERNEL_DIR ?= /lib/modules/$(shell uname -r)/build
 
 # Compiler flags
 CFLAGS = -Wall -Wextra -g -I$(INC_DIR) -O2
 LDFLAGS = -lm # Link math library if needed
 
-# Source files
-SRCS = $(wildcard $(SRC_DIR)/*.c)
+# Kernel module source
+MODULE_NAME = fpga_sprite
+MODULE_SRC = $(SRC_DIR)/$(MODULE_NAME).c
+MODULE_OBJ = $(MODULE_NAME).o
 
-# Object files
-OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
-
-# Executable name
-TARGET = $(BUILD_DIR)/game_sw
+# User application test source
+TEST_SRC = $(SRC_DIR)/fpga_sprite_test.c
+TEST_OBJ = $(BUILD_DIR)/fpga_sprite_test.o
+TEST_TARGET = $(BUILD_DIR)/fpga_sprite_test
 
 # Default target
-all: $(TARGET)
+all: kernel_module user_app
 
-# Link object files to create executable
-$(TARGET): $(OBJS)
-	@mkdir -p $(@D)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
-	@echo "Linking complete: $@"
+# Kernel module targets
+obj-m := $(MODULE_OBJ)
 
-# Compile source files into object files
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
-	@echo "Compiled: $< -> $@"
+# Build kernel module
+kernel_module:
+	@echo "Building kernel module: $(MODULE_NAME)"
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules
 
-# Clean build directory
+# Build user space test application
+$(TEST_TARGET): $(TEST_SRC)
+	@mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
+	@echo "Built user test application: $@"
+
+user_app: $(TEST_TARGET)
+
+# Clean build files
 clean:
-	@rm -rf $(BUILD_DIR)
-	@echo "Cleaned build directory."
+	@echo "Cleaning build files..."
+	rm -rf $(BUILD_DIR)
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) clean
+	@echo "Clean complete."
 
-.PHONY: all clean
+# Install the kernel module
+install:
+	@echo "Installing kernel module..."
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules_install
+	depmod -a
+	@echo "Installation complete."
+
+# Load the kernel module
+load:
+	@echo "Loading kernel module..."
+	insmod $(MODULE_NAME).ko
+
+# Unload the kernel module
+unload:
+	@echo "Unloading kernel module..."
+	rmmod $(MODULE_NAME)
+
+.PHONY: all kernel_module user_app clean install load unload
 
