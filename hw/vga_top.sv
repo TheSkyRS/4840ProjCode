@@ -75,17 +75,35 @@ module vga_top(input logic        clk,
 	// sprite engine
     logic sprite_start;
     logic sprite_done;
-    logic sprite_write;
-    assign sprite_write = (chipselect && write && address[5]);
 
+    logic sprite_write_reg;
+    logic [4:0] sprite_wr_idx;
+    logic [31:0] sprite_writedata;
+
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            sprite_write_reg <= 0;
+            sprite_wr_idx    <= 0;
+            sprite_writedata <= 0;
+        end else begin
+        // latch data to keep stable
+        if (chipselect && write && address[5]) begin
+            sprite_write_reg <= 1;
+            sprite_wr_idx    <= address[4:0];
+            sprite_writedata <= writedata;
+        end else begin
+            sprite_write_reg <= 0;
+        end
+    end
+end
     sprite_engine u_sprite_engine(
         .clk         	(clk          ),
         .reset       	(reset        ),
         .sprite_start  	(sprite_start   ),
         .vcount      	(vcount       ),
-        .spr_wr_en    	(sprite_write     ),
-        .spr_wr_idx   	(address[4:0]    ),
-        .spr_wr_data   	(writedata    ),
+        .spr_wr_en    	(sprite_write_reg     ),
+        .spr_wr_idx   	(sprite_wr_idx    ),
+        .spr_wr_data   	(sprite_writedata    ),
         .sprite_pixel_col (addr_pixel_draw),
         .sprite_pixel_data (data_pixel_draw),
         .wren_pixel_draw (wren_pixel_draw),

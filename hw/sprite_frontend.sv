@@ -25,9 +25,10 @@ module sprite_frontend #(
     localparam int QPW   = $clog2(MAX_SLOT);
     localparam int MASK  = MAX_SLOT - 1;
 
-    // 扫描索引 0‥NUM_SPRITE
-    logic [IDXW:0] scan_idx;
-    assign ra = scan_idx[IDXW-1:0];
+    logic [IDXW-1:0] scan_idx;
+    logic [IDXW-1:0] scan_idx_d;
+    logic [IDXW:0] scan_idx_checked; // NUM_SPRITE
+    assign ra = scan_idx;
 
     logic hit;
     assign hit = rd_data[31] && (next_vcount >= {1'b0,rd_data[26:18]}) && (next_vcount < rd_data[26:18]+16);
@@ -35,49 +36,51 @@ module sprite_frontend #(
     typedef struct packed { logic [9:0] col; logic flip; logic [7:0] frame; logic [3:0] rowoff; } ent_t;
     ent_t           fifo [MAX_SLOT];
     logic [QPW-1:0] head, tail;
-    logic [QPW:0]   cnt;                 // 0‥MAX_SLOT
+    logic [QPW-1:0]   cnt;
+    assign cnt = (tail-head) & MASK;
 
     logic drawing;
 
     always_ff @(posedge clk) begin
         //------------------------------------------------ reset / blank
         if (reset) begin
-            scan_idx <= NUM_SPRITE;
+            scan_idx <= 0;
+            scan_idx_d <= 0;
+            scan_idx_checked <= NUM_SPRITE;
             head<=0;
             tail<=0;
-            cnt<=0;
             draw_req<=0;
             drawing <= 0;
             fe_done<=1;
         end
         else if (start_row) begin
+            scan_idx <= 0;
+            scan_idx_d <= 0;
+            scan_idx_checked <= NUM_SPRITE;
             head<=0;
             tail<=0;
-            cnt<=0;
             draw_req<=0;
             drawing <= 0;
             if (next_vcount < 10'd480) begin
-                scan_idx <= 0;
                 fe_done <= 0;      // 可见行
             end else begin
-                scan_idx <= NUM_SPRITE;
                 fe_done <= 1; // blank
             end
         end
         //----------------------------- normal run
         else if (!fe_done) begin
-            if(scan_idx < NUM_SPRITE)
+            scan_idx_d <= scan_idx;
+            if(scan_idx < NUM_SPRITE - 1 && cnt < MAX_SLOT - 1) begin
                 scan_idx <= scan_idx + 1'b1;
+            end
             // 扫描属性
-            if (scan_idx > 0 && scan_idx <= NUM_SPRITE) begin
-                if (hit && cnt < MAX_SLOT) begin   // 入队（队列满则丢弃）
-                    fifo[tail].col <= rd_data[17:8];
-                    fifo[tail].flip <= rd_data[30];
-                    fifo[tail].frame <=rd_data[7:0];
-                    fifo[tail].rowoff <= (next_vcount-rd_data[26:18]) & 4'hf;
-                    tail <= (tail + 1'b1) & MASK;
-                    cnt  <= cnt + 1'b1;
-                end
+            if (hit && cnt < MAX_SLOT - 1 && ({1'b0,scan_idx_d} != scan_idx_checked) && scan_idx > 0) begin
+                scan_idx_checked <= {1'b0,scan_idx_d};
+                fifo[tail].col <= rd_data[17:8];
+                fifo[tail].flip <= rd_data[30];
+                fifo[tail].frame <=rd_data[7:0];
+                fifo[tail].rowoff <= (next_vcount-rd_data[26:18]) & 4'hf;
+                tail <= (tail + 1'b1) & MASK;
             end
 
             // drawer 空闲 且 队列非空 → 出队
@@ -92,7 +95,6 @@ module sprite_frontend #(
                 // drawing state long period
                 drawing <= 1;
                 head <= (head + 1'b1) & MASK;
-                cnt  <= cnt - 1'b1;
             end
 
             if(drawing) begin
@@ -102,7 +104,7 @@ module sprite_frontend #(
             end
 
             // 行完成
-            if (scan_idx >= NUM_SPRITE && cnt==0 && draw_done)
+            if (scan_idx_d == NUM_SPRITE-1 && cnt==0 && draw_done)
                 fe_done <= 1;
         end
     end

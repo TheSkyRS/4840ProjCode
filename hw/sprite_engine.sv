@@ -27,6 +27,9 @@ module sprite_engine #(
     output logic [9:0]  sprite_pixel_col,
     output logic [15:0] sprite_pixel_data,
     output logic        wren_pixel_draw,
+    // debug
+    // input logic [4:0] debug_addr,
+    // output logic [31:0] debug_data,
 
     output logic        done
 );
@@ -53,11 +56,15 @@ module sprite_engine #(
         .wren (spr_wr_en),
         .q(attr_rd) );
 
+    // debug signal
+    // assign attr_ra = debug_addr;
+    // assign debug_data = attr_rd;
+    
     // logic [31:0] sprite_attr_ram [NUM_SPRITE];
     // always_ff @(posedge clk) begin
-        // if (spr_wr_en) begin
-        //     sprite_attr_ram[spr_wr_idx] <= spr_wr_data;
-        // end
+    //     if (spr_wr_en) begin
+    //         sprite_attr_ram[spr_wr_idx] <= spr_wr_data;
+    //     end
     //     attr_rd <= sprite_attr_ram[attr_ra];
     // end
 
@@ -139,6 +146,40 @@ module sprite_engine #(
     // assign sprite_attr_ram[29] = 32'h865A441D;
     // assign sprite_attr_ram[30] = 32'h8692581E;
     // assign sprite_attr_ram[31] = 32'h86CA6C1F;
+
+    // Test Example: Sprites in a Single Row (Row 200)
+    // assign sprite_attr_ram[0]  = 32'h83200000;
+    // assign sprite_attr_ram[1]  = 32'h83201401;
+    // assign sprite_attr_ram[2]  = 32'h83202802;
+    // assign sprite_attr_ram[3]  = 32'h83203C03;
+    // assign sprite_attr_ram[4]  = 32'h83205004;
+    // assign sprite_attr_ram[5]  = 32'h83206405;
+    // assign sprite_attr_ram[6]  = 32'h83207806;
+    // assign sprite_attr_ram[7]  = 32'h83208C07;
+    // assign sprite_attr_ram[8]  = 32'h8320A008;
+    // assign sprite_attr_ram[9]  = 32'h8320B409;
+    // assign sprite_attr_ram[10] = 32'h8320C80A;
+    // assign sprite_attr_ram[11] = 32'h8320DC0B;
+    // assign sprite_attr_ram[12] = 32'h8320F00C;
+    // assign sprite_attr_ram[13] = 32'h8321040D;
+    // assign sprite_attr_ram[14] = 32'h8321180E;
+    // assign sprite_attr_ram[15] = 32'h83212C0F;
+    // assign sprite_attr_ram[16] = 32'h83214010;
+    // assign sprite_attr_ram[17] = 32'h83215411;
+    // assign sprite_attr_ram[18] = 32'h83216812;
+    // assign sprite_attr_ram[19] = 32'h83217C13;
+    // assign sprite_attr_ram[20] = 32'h83219014;
+    // assign sprite_attr_ram[21] = 32'h8321A415;
+    // assign sprite_attr_ram[22] = 32'h8321B816;
+    // assign sprite_attr_ram[23] = 32'h8321CC17;
+    // assign sprite_attr_ram[24] = 32'h8321E018;
+    // assign sprite_attr_ram[25] = 32'h8321F419;
+    // assign sprite_attr_ram[26] = 32'h8322081A;
+    // assign sprite_attr_ram[27] = 32'h83221C1B;
+    // assign sprite_attr_ram[28] = 32'h8322301C;
+    // assign sprite_attr_ram[29] = 32'h8322441D;
+    // assign sprite_attr_ram[30] = 32'h8322581E;
+    // assign sprite_attr_ram[31] = 32'h83226C1F;
 
     // ------------------- 前端 -----------------------------------------
     logic fe_draw_req, fe_flip, fe_done;
