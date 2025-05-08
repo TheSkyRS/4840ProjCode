@@ -18,12 +18,15 @@ typedef enum
 // 游戏中用于绘制的物体结构体（非角色）
 typedef struct
 {
-    float x, y;         // 物体位置
-    int width, height;  // 显示尺寸
-    int frame_id;       // 使用的动画帧编号
-    bool active;        // 是否激活（如拉杆已触发）
-    bool collected;     // 是否已被收集（仅用于钻石）
-    object_type_t type; // 类型标识
+    float x, y;           // 位置
+    int width, height;    // 大小
+    int frame_id;         // 当前帧编号
+    int frame_count;      // 动画帧总数
+    float anim_timer;     // 当前帧计时器
+    float frame_interval; // 每帧时间
+    bool active;          // 是否激活
+    bool collected;       // 是否收集
+    object_type_t type;   // 类型
 } object_t;
 
 // 将所有地图物体同步渲染到硬件 Sprite 表中

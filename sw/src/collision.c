@@ -16,13 +16,13 @@ bool check_aabb_collision(float x1, float y1, float w1, float h1,
 void handle_character_tile_collision(character_t *ch, float dt)
 {
     float new_x = ch->x + ch->vx * dt;
-    if (is_tile_blocked(new_x, ch->y, ch->width, ch->height))
+    if (is_tile_blocked_precise(new_x, ch->y, ch->width, ch->height))
         ch->vx = 0;
     else
         ch->x = new_x;
 
     float new_y = ch->y + ch->vy * dt;
-    if (is_tile_blocked(ch->x, new_y, ch->width, ch->height))
+    if (is_tile_blocked_precise(ch->x, new_y, ch->width, ch->height))
         ch->vy = 0;
     else
         ch->y = new_y;

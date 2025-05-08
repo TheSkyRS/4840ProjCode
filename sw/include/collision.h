@@ -14,6 +14,8 @@
 bool check_aabb_collision(float x1, float y1, float w1, float h1,
                           float x2, float y2, float w2, float h2);
 
+bool is_tile_blocked_precise(float x, float y, float width, float height);
+
 /**
  * 地形碰撞处理：角色在尝试移动前检测是否撞墙/地板
  * 若检测到地形阻挡，则取消本帧速度；否则更新坐标

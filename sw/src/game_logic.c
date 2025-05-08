@@ -38,7 +38,16 @@ void update_game_state(character_t *characters, int num_characters,
         handle_character_vs_character(&characters[0], &characters[1]);
     }
 
-    // === 步骤 3：渲染同步 ===
+    // === 步骤 3：更新物体动画 ===
+    for (int i = 0; i < num_objects; ++i)
+    {
+        if (!objects[i].collected)
+        {
+            update_object_animation(&objects[i], delta_time);
+        }
+    }
+
+    // === 步骤 4：渲染同步 ===
     sync_characters_to_hardware(characters, num_characters);
     sync_objects_to_hardware(objects, num_objects, 20); // 从槽位20开始绘制物体
 }

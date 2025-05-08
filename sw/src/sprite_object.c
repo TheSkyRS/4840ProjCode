@@ -1,8 +1,24 @@
 // sprite_object.c
-// 实现地图物体（如钻石、拉杆、电梯等）的绘制同步逻辑
+// 实现地图物体（如钻石、拉杆、电梯等）的绘制与动画更新逻辑
 
 #include "sprite_object.h" // 物体结构体与接口声明
 #include "hw_interface.h"  // 精灵构造与写入硬件接口
+
+/**
+ * 更新单个物体的动画帧（如果有多帧）
+ */
+void update_object_animation(object_t *obj, float dt)
+{
+    if (obj->frame_count <= 1)
+        return; // 静态物体无需动画更新
+
+    obj->anim_timer += dt;
+    if (obj->anim_timer >= obj->frame_interval)
+    {
+        obj->frame_id = (obj->frame_id + 1) % obj->frame_count;
+        obj->anim_timer = 0.0f;
+    }
+}
 
 /**
  * 将所有地图物体写入 Sprite 表中。

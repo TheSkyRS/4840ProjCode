@@ -46,3 +46,33 @@ bool is_tile_blocked(float x, float y, float width, float height)
     }
     return false; // 未发现碰撞
 }
+
+bool is_tile_blocked_precise(float x, float y, float width, float height)
+{
+    // 每条边检测3个点（左中右 / 上中下）
+    float x_left = x;
+    float x_center = x + width / 2.0f;
+    float x_right = x + width - 1;
+
+    float y_top = y;
+    float y_center = y + height / 2.0f;
+    float y_bottom = y + height - 1;
+
+    float sample_points[4][2] = {
+        {x_left, y_top}, {x_right, y_top}, {x_left, y_bottom}, {x_right, y_bottom}};
+
+    for (int i = 0; i < 4; ++i)
+    {
+        int tx = (int)(sample_points[i][0] / TILE_SIZE);
+        int ty = (int)(sample_points[i][1] / TILE_SIZE);
+
+        if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
+            return true; // 越界算阻挡
+
+        int tile = tilemap[ty][tx];
+        if (tile == TILE_WALL) // 后续可拓展类型
+            return true;
+    }
+
+    return false; // 没有任意采样点撞墙
+}
