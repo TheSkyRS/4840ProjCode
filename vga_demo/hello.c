@@ -81,56 +81,62 @@ int main()
 		return -1;
 	}
 
-	write_ctrl(0x00000000);
+	write_ctrl(0x00000002);
 	
-	/* 初始位置/速度/方向 */
-	int  x  = 100, y  = 100;
-	int  dx =  7,  dy =  4;
-	uint8_t flip = 0;
-	const uint8_t SPRITE_ID = 0;
-	const uint8_t FRAME_ID  = 0;
-
-	/* === 初始状态 === */
-    int  x = 100, y = 100;
-    int  dx = 7,  dy = 4;
-    uint8_t flip = 0;
-
-    const uint8_t SPRITE_ID = 0;
-    const uint8_t FRAME_ID  = 0;
-
-    /* 第一次写入 */
-    write_sprite(SPRITE_ID, 1, flip, x, y, FRAME_ID);
-
-    int  have_pending = 0;
-
     unsigned col, row;
 
-    printf("sprite_demo: running – Ctrl-C to exit\n");
+    printf("sprite_demo: running - Ctrl-C to exit\n");
+
+    int sprite_count;
+    printf("Enter number of sprites to show (0-32): ");
+    scanf("%d", &sprite_count);
+    if (sprite_count < 0 || sprite_count > 32) {
+        fprintf(stderr, "Invalid sprite count. Must be 0-32.\n");
+        return 1;
+    }
+    int x[32], y[32], dx[32], dy[32];
+    uint8_t flip[32], have_pending[32];
+    for (int i = 0; i < 32; i++) {
+        write_sprite(i, 0, 0, 0, 0, 0); // 清空
+    }
+    for (int i = 0; i < sprite_count; i++) {
+        x[i] = 20 * i;
+        y[i] = 10 * i;
+        dx[i] = 2 + (i % 3);
+        dy[i] = 1 + (i % 2);
+        flip[i] = 0;
+        have_pending[i] = 0;
+
+        write_sprite(i, 1, flip[i], x[i], y[i], i); // 初始帧ID = i
+    }
     while (1) {
         read_status(&col, &row);
 
         /* -------- 1) 可见区：只计算，不写硬件 -------- */
         if (row < VACTIVE) {
-            if (!have_pending) {          /* 每帧只算一次 */
-                /* 计算下一步位置 */
-                x += dx;  y += dy;
-
-                if (x <= 0 || x >= HACTIVE - SPRITE_W) {
-                    dx = -dx;  x += dx;
-                    flip ^= 1;        /* 左右反弹时翻转 */
+            for (int i = 0; i < sprite_count; i++) {
+                if (!have_pending[i]) {
+                    x[i] += dx[i];
+                    y[i] += dy[i];
+    
+                    if (x[i] <= 0 || x[i] >= HACTIVE - SPRITE_W) {
+                        dx[i] = -dx[i]; x[i] += dx[i];
+                        flip[i] ^= 1;
+                    }
+                    if (y[i] <= 0 || y[i] >= VACTIVE - SPRITE_H) {
+                        dy[i] = -dy[i]; y[i] += dy[i];
+                    }
+                    have_pending[i] = 1;
                 }
-                if (y <= 0 || y >= VACTIVE - SPRITE_H) {
-                    dy = -dy;  y += dy;
-                }
-                have_pending = 1;         /* 标记本帧已算 */
             }
         }
         /* -------- 2) 消隐区：把计算好的值写回硬件 ---- */
-        else { /* row >= 480 */
-            if (have_pending) {
-                write_sprite(SPRITE_ID, 1,
-                             flip, x, y, FRAME_ID);
-                have_pending = 0;
+        else {
+            for (int i = 0; i < sprite_count; i++) {
+                if (have_pending[i]) {
+                    write_sprite(i, 1, flip[i], x[i], y[i], i);
+                    have_pending[i] = 0;
+                }
             }
         }
     }
