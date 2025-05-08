@@ -37,9 +37,13 @@ module sprite_frontend #(
     ent_t           fifo [MAX_SLOT];
     logic [QPW-1:0] head, tail;
     logic [QPW-1:0]   cnt;
-    assign cnt = (tail-head) & MASK;
 
     logic drawing;
+    logic enqueue;
+    assign enqueue = hit && cnt < MAX_SLOT - 1 && ({1'b0,scan_idx_d} != scan_idx_checked) && scan_idx > 0;
+    
+    logic dequeue;
+    assign dequeue = !drawing && cnt != 0;
 
     always_ff @(posedge clk) begin
         //------------------------------------------------ reset / blank
@@ -49,6 +53,7 @@ module sprite_frontend #(
             scan_idx_checked <= NUM_SPRITE;
             head<=0;
             tail<=0;
+            cnt <= 0;
             draw_req<=0;
             drawing <= 0;
             fe_done<=1;
@@ -59,6 +64,7 @@ module sprite_frontend #(
             scan_idx_checked <= NUM_SPRITE;
             head<=0;
             tail<=0;
+            cnt <= 0;
             draw_req<=0;
             drawing <= 0;
             if (next_vcount < 10'd480) begin
@@ -70,7 +76,8 @@ module sprite_frontend #(
         //----------------------------- normal run
         else if (!fe_done) begin
             draw_req <= 0;
-
+            cnt <= cnt + enqueue - dequeue;
+            
             scan_idx_d <= scan_idx;
             /*
             Why we need "-2": Important, because if we just -1, scan_idx will become 9 and keep this value, scan_idx_d become 8 for 1 clk,
@@ -80,7 +87,7 @@ module sprite_frontend #(
                 scan_idx <= scan_idx + 1'b1;
             end
             // Enqueue
-            if (hit && cnt < MAX_SLOT - 1 && ({1'b0,scan_idx_d} != scan_idx_checked) && scan_idx > 0) begin
+            if (enqueue) begin
                 scan_idx_checked <= {1'b0,scan_idx_d};
                 fifo[tail].col <= rd_data[17:8];
                 fifo[tail].flip <= rd_data[30];
@@ -90,7 +97,7 @@ module sprite_frontend #(
             end
 
             // drawer 空闲 且 队列非空 → Dequeue
-            if (!drawing && cnt != 0) begin
+            if (dequeue) begin
                 col_base <= fifo[head].col;
                 flip     <= fifo[head].flip;
                 frame_id <= fifo[head].frame;
@@ -112,8 +119,15 @@ module sprite_frontend #(
                     drawing <= 0;
             end
 
-            // 行完成
-            if (scan_idx_d == NUM_SPRITE-1 && cnt==0 && !drawing)
+            // This line is done.
+            // Why we need "!drawing" instead of "draw_done", because after the last one send to drawer, 
+            // it will fe_done <=1 next cycle due to draw_done still 1(but it will drop to 0 next cycle)
+
+            // If only one sprite need to send to drawer
+            // And it is scan_idx_d = NUM_SPRITE-1, because drawing need 1 clk to pull up,
+            // So when this sprite enqueue, at the same cycle, cnt is still 0, then it will trigger fe_done <=1
+            // So we will miss this sprite.
+            if (scan_idx_d == NUM_SPRITE-1 && cnt==0 && !drawing && !enqueue)
                 fe_done <= 1;
         end
     end
