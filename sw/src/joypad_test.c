@@ -331,13 +331,70 @@ void raw_signal_monitor() {
                        event.type, event.code, event.value,
                        event.time.tv_sec, event.time.tv_usec);
                 
+                // 详细解释event字段含义
+                printf("\n事件详细信息解释:\n");
+                
+                // 解释事件类型(type)
+                printf("事件类型(type=%d): ", event.type);
+                switch(event.type) {
+                    case EV_SYN: printf("同步事件(EV_SYN)\n"); break;
+                    case EV_KEY: printf("按键事件(EV_KEY)\n"); break;
+                    case EV_REL: printf("相对坐标事件(EV_REL)\n"); break;
+                    case EV_ABS: printf("绝对坐标事件(EV_ABS)\n"); break;
+                    case EV_MSC: printf("杂项事件(EV_MSC)\n"); break;
+                    case EV_SW: printf("开关事件(EV_SW)\n"); break;
+                    default: printf("其他事件类型\n"); break;
+                }
+                
+                // 根据事件类型解释事件代码(code)
+                printf("事件代码(code=%d): ", event.code);
+                if (event.type == EV_KEY) {
+                    // 按键代码
+                    printf("按键代码 - ");
+                    switch(event.code) {
+                        case KEY_A: printf("A键\n"); break;
+                        case KEY_B: printf("B键\n"); break;
+                        case KEY_X: printf("X键\n"); break;
+                        case KEY_Y: printf("Y键\n"); break;
+                        case KEY_UP: printf("上方向键\n"); break;
+                        case KEY_DOWN: printf("下方向键\n"); break;
+                        case KEY_LEFT: printf("左方向键\n"); break;
+                        case KEY_RIGHT: printf("右方向键\n"); break;
+                        default: printf("其他按键\n"); break;
+                    }
+                } else if (event.type == EV_ABS) {
+                    // 绝对坐标
+                    printf("轴代码 - ");
+                    switch(event.code) {
+                        case ABS_X: printf("X轴\n"); break;
+                        case ABS_Y: printf("Y轴\n"); break;
+                        case ABS_Z: printf("Z轴\n"); break;
+                        case ABS_RX: printf("RX轴\n"); break;
+                        case ABS_RY: printf("RY轴\n"); break;
+                        case ABS_RZ: printf("RZ轴\n"); break;
+                        default: printf("其他轴\n"); break;
+                    }
+                } else {
+                    printf("值 %d\n", event.code);
+                }
+                
+                // 解释事件值(value)
+                printf("事件值(value=%d): ", event.value);
+                if (event.type == EV_KEY) {
+                    printf("%s\n", event.value ? "按下" : "释放");
+                } else if (event.type == EV_ABS || event.type == EV_REL) {
+                    printf("位置/变化量: %d\n", event.value);
+                } else {
+                    printf("值: %d\n", event.value);
+                }
+                
                 // 打印整个event结构体的二进制内容
                 unsigned char *data = (unsigned char *)&event;
                 printf("十六进制: ");
                 for (size_t i = 0; i < sizeof(event); i++) {
                     printf("%02x ", data[i]);
                 }
-                printf("================");
+                printf("\n================");
                 printf("\n\n");
 
                 
