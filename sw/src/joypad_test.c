@@ -214,12 +214,14 @@ void scan_input_devices() {
     
     // 检查常见的输入设备路径
     const char *paths[] = {
-        "/dev/input/js0", 
-        "/dev/input/js1",
         "/dev/input/event0",
         "/dev/input/event1",
         "/dev/input/event2",
         "/dev/input/event3",
+        "/dev/input/event4",
+        "/dev/input/event5",
+        "/dev/input/js0", 
+        "/dev/input/js1",
         NULL
     };
     
@@ -229,12 +231,34 @@ void scan_input_devices() {
         if (fd != -1) {
             printf("Found device: %s\n", paths[i]);
             
-            // 尝试获取设备信息
-            char name[128];
-            if (ioctl(fd, JSIOCGNAME(sizeof(name)), name) != -1) {
-                printf("  Device name: %s\n", name);
-            } else {
-                printf("  Unable to get device name: %s\n", strerror(errno));
+            // 根据设备路径类型尝试获取设备信息
+            if (strstr(paths[i], "js") != NULL) {
+                // JS设备信息获取
+                char name[128];
+                if (ioctl(fd, JSIOCGNAME(sizeof(name)), name) != -1) {
+                    printf("  Device name: %s\n", name);
+                } else {
+                    printf("  Unable to get device name: %s\n", strerror(errno));
+                }
+            } else if (strstr(paths[i], "event") != NULL) {
+                // EVENT设备信息获取
+                char name[256] = "Unknown";
+                if (ioctl(fd, EVIOCGNAME(sizeof(name)), name) >= 0) {
+                    printf("  Device name: %s\n", name);
+                } else {
+                    printf("  Unable to get device name: %s\n", strerror(errno));
+                }
+                
+                // 获取设备支持的事件类型
+                unsigned long evbit[EV_MAX/8 + 1];
+                memset(evbit, 0, sizeof(evbit));
+                if (ioctl(fd, EVIOCGBIT(0, sizeof(evbit)), evbit) >= 0) {
+                    printf("  Supported event types: ");
+                    if (evbit[EV_KEY/8] & (1 << (EV_KEY % 8))) printf("EV_KEY ");
+                    if (evbit[EV_ABS/8] & (1 << (EV_ABS % 8))) printf("EV_ABS ");
+                    if (evbit[EV_REL/8] & (1 << (EV_REL % 8))) printf("EV_REL ");
+                    printf("\n");
+                }
             }
             
             close(fd);
@@ -262,7 +286,7 @@ void raw_signal_monitor() {
     char device_path[128];
     
     printf("\n--- Raw Signal Monitor ---\n");
-    printf("Enter device path to monitor (e.g. /dev/input/js0): ");
+    printf("Enter device path to monitor (e.g. /dev/input/js0 or /dev/input/event0): ");
     
     if (fgets(device_path, sizeof(device_path), stdin) == NULL) {
         return;
@@ -270,7 +294,7 @@ void raw_signal_monitor() {
     device_path[strcspn(device_path, "\n")] = 0; // Remove newline
     
     if (strlen(device_path) == 0) {
-        strcpy(device_path, "/dev/input/js0"); // Default
+        strcpy(device_path, "/dev/input/event0"); // Default to event0
     }
     
     printf("Monitoring device: %s (Press Ctrl+C to exit)\n", device_path);
@@ -289,30 +313,76 @@ void raw_signal_monitor() {
     int flags = fcntl(fd, F_GETFL, 0);
     fcntl(fd, F_SETFL, flags & ~O_NONBLOCK);
     
-    struct js_event event;
-    while (running) {
-        int bytes = read(fd, &event, sizeof(event));
+    // 检查是event设备还是js设备
+    bool is_event_device = (strstr(device_path, "event") != NULL);
+    
+    if (is_event_device) {
+        // 读取event设备
+        struct input_event event;
         
-        if (bytes == sizeof(event)) {
-            printf("Event: type=%d, value=%d, number=%d, time=%u\n",
-                   event.type, event.value, event.number, event.time);
-                   
-            // 解释事件类型
-            if (event.type & JS_EVENT_BUTTON) {
-                printf("  Button %d %s\n", 
-                       event.number, 
-                       event.value ? "PRESSED" : "RELEASED");
+        while (running) {
+            int bytes = read(fd, &event, sizeof(event));
+            
+            if (bytes == sizeof(event)) {
+                printf("Event: type=%d, code=%d, value=%d, time=%ld.%06ld\n",
+                       event.type, event.code, event.value,
+                       event.time.tv_sec, event.time.tv_usec);
+                
+                // 解释事件类型
+                switch(event.type) {
+                    case EV_SYN:
+                        printf("  EV_SYN: Synchronization event\n");
+                        break;
+                    case EV_KEY:
+                        printf("  EV_KEY: Button/Key %d %s\n", 
+                               event.code, 
+                               event.value ? "PRESSED" : "RELEASED");
+                        break;
+                    case EV_REL:
+                        printf("  EV_REL: Relative axis %d change: %d\n", 
+                               event.code, event.value);
+                        break;
+                    case EV_ABS:
+                        printf("  EV_ABS: Absolute axis %d position: %d\n", 
+                               event.code, event.value);
+                        break;
+                    default:
+                        printf("  Event type: %d\n", event.type);
+                        break;
+                }
+            } else if (bytes == -1 && errno != EAGAIN) {
+                printf("Error reading from device: %s\n", strerror(errno));
+                break;
             }
-            if (event.type & JS_EVENT_AXIS) {
-                printf("  Axis %d position: %d\n", 
-                       event.number, event.value);
+        }
+    } else {
+        // 读取js设备
+        struct js_event event;
+        
+        while (running) {
+            int bytes = read(fd, &event, sizeof(event));
+            
+            if (bytes == sizeof(event)) {
+                printf("Event: type=%d, value=%d, number=%d, time=%u\n",
+                       event.type, event.value, event.number, event.time);
+                       
+                // 解释事件类型
+                if (event.type & JS_EVENT_BUTTON) {
+                    printf("  Button %d %s\n", 
+                           event.number, 
+                           event.value ? "PRESSED" : "RELEASED");
+                }
+                if (event.type & JS_EVENT_AXIS) {
+                    printf("  Axis %d position: %d\n", 
+                           event.number, event.value);
+                }
+                if (event.type & JS_EVENT_INIT) {
+                    printf("  (Initialization event)\n");
+                }
+            } else if (bytes == -1 && errno != EAGAIN) {
+                printf("Error reading from device: %s\n", strerror(errno));
+                break;
             }
-            if (event.type & JS_EVENT_INIT) {
-                printf("  (Initialization event)\n");
-            }
-        } else if (bytes == -1 && errno != EAGAIN) {
-            printf("Error reading from device: %s\n", strerror(errno));
-            break;
         }
     }
     
@@ -358,13 +428,13 @@ int main() {
                 break;
                 
             case 1:
-                printf("Enter Player 1 joypad device path (default: %s): ", get_default_joypad_path(0));
+                printf("Enter Player 1 joypad device path (default: /dev/input/event0): ");
                 if (fgets(input, sizeof(input), stdin) != NULL) {
                     input[strcspn(input, "\n")] = 0; // Remove newline
                     
                     // Use default value if input is empty
                     if (strlen(input) == 0) {
-                        strcpy(device_path, get_default_joypad_path(0));
+                        strcpy(device_path, "/dev/input/event0");
                     } else {
                         strcpy(device_path, input);
                     }
@@ -378,13 +448,13 @@ int main() {
                 break;
                 
             case 2:
-                printf("Enter Player 2 joypad device path (default: %s): ", get_default_joypad_path(1));
+                printf("Enter Player 2 joypad device path (default: /dev/input/event1): ");
                 if (fgets(input, sizeof(input), stdin) != NULL) {
                     input[strcspn(input, "\n")] = 0; // Remove newline
                     
                     // Use default value if input is empty
                     if (strlen(input) == 0) {
-                        strcpy(device_path, get_default_joypad_path(1));
+                        strcpy(device_path, "/dev/input/event1");
                     } else {
                         strcpy(device_path, input);
                     }
