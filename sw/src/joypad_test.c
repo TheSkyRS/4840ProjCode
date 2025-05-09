@@ -337,7 +337,7 @@ void raw_signal_monitor() {
                 for (size_t i = 0; i < sizeof(event); i++) {
                     printf("%02x ", data[i]);
                 }
-                print("================")
+                print("================");
                 printf("\n\n");
 
                 
