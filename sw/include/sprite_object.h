@@ -4,6 +4,7 @@
 #ifndef SPRITE_OBJECT_H
 #define SPRITE_OBJECT_H
 #include <stdbool.h>
+#include <stdint.h> // ✅ 提供 uint32_t 类型定义
 
 // 游戏对象类型枚举
 typedef enum
