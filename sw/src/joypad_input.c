@@ -145,10 +145,10 @@ static void update_joypad_state(int player_index) {
                 case 289: // A键
                     joypads[player_index].btn_a = (event.value != 0);
                     break;
-                case 291: // B键
+                case 290: // B键
                     joypads[player_index].btn_b = (event.value != 0);
                     break;
-                case 292: // Y键
+                case 291: // Y键
                     joypads[player_index].btn_y = (event.value != 0);
                     break;
                 case 296: // Select键
