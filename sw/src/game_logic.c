@@ -58,14 +58,39 @@ void run_game_loop()
             sprite_count = 0; // 清空精灵缓冲区
 
             // 角色状态更新：输入→速度→碰撞→动作
+            // for (int i = 0; i < num_characters; ++i)
+            // {
+            //     character_t *ch = &characters[i];
+            //     game_action_t input = get_player_action(i);
+            //     printf("[DEBUG] player %d input: %x\n", i, input);
+
+            //     update_character_state(ch, input, delta_time);
+            //     handle_character_tile_collision(ch, delta_time);
+            //     handle_character_object_collision(ch, objects, num_objects);
+            // }
             for (int i = 0; i < num_characters; ++i)
             {
                 character_t *ch = &characters[i];
-                game_action_t input = get_player_action(i);
 
+                // 1. 输入映射为动作指令
+                game_action_t input = get_player_action(i);
+                printf("[DEBUG] player %d input: %x\n", i, input);
+
+                // 2. 输入状态 → 更新速度 & 动作状态
                 update_character_state(ch, input, delta_time);
+
+                // 3. 根据速度更新位置（简单积分）
+                update_character_position(ch, delta_time);
+
+                // 4. 碰撞检测（tile 和 object）
                 handle_character_tile_collision(ch, delta_time);
                 handle_character_object_collision(ch, objects, num_objects);
+
+                // 5. 调试输出位置
+                printf("[DEBUG] ch[%d] x=%.2f y=%.2f vx=%.2f vy=%.2f\n", i, ch->x, ch->y, ch->vx, ch->vy);
+
+                // 6. 写入 sprite
+                character_push_sprites(ch, sprite_words, &sprite_count, MAX_SPRITES);
             }
 
             // 角色之间的显示层级调整（谁覆盖谁）
@@ -110,7 +135,8 @@ void run_game_loop()
 
             // 写入控制寄存器（地图编号、碰撞开关等）
             uint32_t ctrl_value = (TILEMAP_ID & 0x3) | ((COLLISION_ENABLE & 0x1) << 2);
-            write_ctrl(ctrl_value);
+            // write_ctrl(ctrl_value);
+            write_ctrl(0x00000002); // 显示 sprite
 
             // 写入精灵属性到硬件
             for (int i = 0; i < sprite_count; ++i)
