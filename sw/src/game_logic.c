@@ -10,6 +10,7 @@
 #include "sprite_object.h" // object_t, 地图物体动画
 #include "collision.h"     // 碰撞检测
 #include "joypad_input.h"  // 玩家输入（get_player_action）
+#include <stdio.h>
 
 // 精灵缓冲区大小（VGA 支持最多 32 个 sprite）
 #define MAX_SPRITES 32

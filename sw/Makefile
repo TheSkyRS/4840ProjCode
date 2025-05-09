@@ -10,7 +10,7 @@ BUILD_DIR = build
 PACKAGE_DIR = package
 
 # === 编译参数 ===
-CFLAGS = -Wall -Wextra -g -I$(INC_DIR) -O2
+CFLAGS = -Wall -Wextra -g -I$(INC_DIR) -Ivga_demo -O2
 LDFLAGS = -lm
 
 # === 源文件（排除 joypad_test.c）===
