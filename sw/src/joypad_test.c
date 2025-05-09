@@ -8,6 +8,7 @@
  * Supports the classic 8-button joypad layout with continuous press tracking.
  */
 
+#include "../include/input_handler.h"
 #include "../include/joypad_input.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,6 +18,15 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <linux/joystick.h>
+#include <stdbool.h>  // 添加对bool类型的支持
+
+/* 游戏动作常量定义 */
+typedef enum {
+    ACTION_NONE = 0,      // 无动作
+    ACTION_MOVE_LEFT = 1, // 向左移动
+    ACTION_MOVE_RIGHT = 2,// 向右移动
+    ACTION_JUMP = 3       // 跳跃动作
+} game_action_t;
 
 /* Classic joypad button definitions if not already defined */
 #ifndef JOYPAD_BTN_UP
@@ -34,6 +44,11 @@
 #define JOYPAD_BUTTON_COUNT 8
 
 extern int insert_joypad(const char *device_path, int player_index);
+extern int input_handler_init(void);
+extern void input_handler_cleanup(void);
+extern game_action_t get_player_action(int player_index);
+extern int is_joypad_connected(int player_index);
+extern int get_joypad_button_state(int player_index, int button_id);
 
 /* Global variables */
 static volatile int running = 1;
@@ -477,7 +492,7 @@ void raw_signal_monitor()
                 }
                 else
                 {
-                    printf("值 %d\n", event.code);
+                    printf("值 %d\n", event.value);
                 }
 
                 // 解释事件值(value)
