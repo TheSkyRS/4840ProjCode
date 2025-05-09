@@ -8,7 +8,7 @@
  * Supports the classic 8-button joypad layout with continuous press tracking.
  */
 
-#include "../include/input_handler.h"
+
 #include "../include/joypad_input.h"
 #include <stdio.h>
 #include <stdlib.h>
