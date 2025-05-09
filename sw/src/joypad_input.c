@@ -20,8 +20,8 @@
 #include <sys/time.h>
 
 /* Constants */
-#define JOYPAD_1_DEVICE "/dev/input/js0"  // First joypad device
-#define JOYPAD_2_DEVICE "/dev/input/js1"  // Second joypad device
+#define JOYPAD_1_DEVICE "/dev/input/event0"  // First joypad device
+#define JOYPAD_2_DEVICE "/dev/input/event1"  // Second joypad device
 
 /* Classic joypad button mapping - Direction buttons on the left side (D-pad) */
 #define JOYPAD_BTN_UP     0  // Up direction button

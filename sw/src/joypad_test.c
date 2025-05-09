@@ -15,6 +15,9 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <linux/joystick.h>
 
 /* Classic joypad button definitions if not already defined */
 #ifndef JOYPAD_BTN_UP
@@ -150,6 +153,8 @@ void show_menu() {
     printf("3. Test Joypad Input\n");
     printf("4. Test Button Press\n");
     printf("5. Show Joypad Status\n");
+    printf("6. Scan Input Devices\n");
+    printf("7. Raw Signal Monitor\n");
     printf("0. Exit Program\n");
     printf("Select: ");
 }
@@ -199,6 +204,119 @@ void test_continuous_press() {
         // Small delay to avoid too fast output
         usleep(50000); // 50ms
     }
+}
+
+/**
+ * @brief Scan for available input devices
+ */
+void scan_input_devices() {
+    printf("\n--- Scanning Available Input Devices ---\n");
+    
+    // 检查常见的输入设备路径
+    const char *paths[] = {
+        "/dev/input/js0", 
+        "/dev/input/js1",
+        "/dev/input/event0",
+        "/dev/input/event1",
+        "/dev/input/event2",
+        "/dev/input/event3",
+        NULL
+    };
+    
+    int found = 0;
+    for (int i = 0; paths[i] != NULL; i++) {
+        int fd = open(paths[i], O_RDONLY | O_NONBLOCK);
+        if (fd != -1) {
+            printf("Found device: %s\n", paths[i]);
+            
+            // 尝试获取设备信息
+            char name[128];
+            if (ioctl(fd, JSIOCGNAME(sizeof(name)), name) != -1) {
+                printf("  Device name: %s\n", name);
+            } else {
+                printf("  Unable to get device name: %s\n", strerror(errno));
+            }
+            
+            close(fd);
+            found++;
+        } else {
+            printf("Device not found: %s (%s)\n", paths[i], strerror(errno));
+        }
+    }
+    
+    if (found == 0) {
+        printf("No input devices found!\n");
+        printf("Check connections and permissions.\n");
+    } else {
+        printf("Found %d device(s).\n", found);
+    }
+    
+    printf("\nPress Enter to continue...");
+    getchar();
+}
+
+/**
+ * @brief Monitor raw signals from a joystick device
+ */
+void raw_signal_monitor() {
+    char device_path[128];
+    
+    printf("\n--- Raw Signal Monitor ---\n");
+    printf("Enter device path to monitor (e.g. /dev/input/js0): ");
+    
+    if (fgets(device_path, sizeof(device_path), stdin) == NULL) {
+        return;
+    }
+    device_path[strcspn(device_path, "\n")] = 0; // Remove newline
+    
+    if (strlen(device_path) == 0) {
+        strcpy(device_path, "/dev/input/js0"); // Default
+    }
+    
+    printf("Monitoring device: %s (Press Ctrl+C to exit)\n", device_path);
+    
+    int fd = open(device_path, O_RDONLY);
+    if (fd == -1) {
+        printf("ERROR: Cannot open device %s: %s\n", device_path, strerror(errno));
+        printf("Press Enter to continue...");
+        getchar();
+        return;
+    }
+    
+    printf("Device opened successfully. Waiting for signals...\n");
+    
+    // 设置为阻塞模式以等待信号
+    int flags = fcntl(fd, F_GETFL, 0);
+    fcntl(fd, F_SETFL, flags & ~O_NONBLOCK);
+    
+    struct js_event event;
+    while (running) {
+        int bytes = read(fd, &event, sizeof(event));
+        
+        if (bytes == sizeof(event)) {
+            printf("Event: type=%d, value=%d, number=%d, time=%u\n",
+                   event.type, event.value, event.number, event.time);
+                   
+            // 解释事件类型
+            if (event.type & JS_EVENT_BUTTON) {
+                printf("  Button %d %s\n", 
+                       event.number, 
+                       event.value ? "PRESSED" : "RELEASED");
+            }
+            if (event.type & JS_EVENT_AXIS) {
+                printf("  Axis %d position: %d\n", 
+                       event.number, event.value);
+            }
+            if (event.type & JS_EVENT_INIT) {
+                printf("  (Initialization event)\n");
+            }
+        } else if (bytes == -1 && errno != EAGAIN) {
+            printf("Error reading from device: %s\n", strerror(errno));
+            break;
+        }
+    }
+    
+    close(fd);
 }
 
 /**
@@ -253,6 +371,8 @@ int main() {
                     
                     if (insert_joypad(device_path, 0) == 0) {
                         printf("Successfully connected Player 1 joypad\n");
+                    } else {
+                        printf("Failed to connect Player 1 joypad: %s\n", strerror(errno));
                     }
                 }
                 break;
@@ -271,6 +391,8 @@ int main() {
                     
                     if (insert_joypad(device_path, 1) == 0) {
                         printf("Successfully connected Player 2 joypad\n");
+                    } else {
+                        printf("Failed to connect Player 2 joypad: %s\n", strerror(errno));
                     }
                 }
                 break;
@@ -329,6 +451,14 @@ int main() {
                 
             case 5:
                 show_joypad_status();
+                break;
+                
+            case 6:
+                scan_input_devices();
+                break;
+                
+            case 7:
+                raw_signal_monitor();
                 break;
                 
             default:
