@@ -4,7 +4,6 @@
 #include <sys/time.h> // 提供 gettimeofday
 #include <unistd.h>   // 提供 usleep
 
-#include "vga_top.h"       // ioctl 指令码结构体
 #include "vgasys.h"        // VGA 系统接口封装（write_sprite 等）
 #include "character.h"     // character_t, 角色更新逻辑
 #include "sprite_object.h" // object_t, 地图物体动画

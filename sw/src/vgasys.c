@@ -1,5 +1,4 @@
 #include "vgasys.h"
-#include "vga_top.h" // 包含 ioctl 相关结构和命令码
 
 #include <stdio.h>
 #include <stdint.h>
