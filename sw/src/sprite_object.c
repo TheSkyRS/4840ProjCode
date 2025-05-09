@@ -3,6 +3,7 @@
 
 #include "sprite_object.h" // 物体结构体与接口声明
 #include "vgasys.h"
+#include <stdbool.h>
 
 /**
  * 更新单个物体的动画帧（如果有多帧）
