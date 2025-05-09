@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <linux/joystick.h>
+#include <sys/time.h>
 
 /* Constants */
 #define JOYPAD_1_DEVICE "/dev/input/js0"  // First joypad device
@@ -33,6 +34,8 @@
 #define JOYPAD_BTN_B      5  // B button
 #define JOYPAD_BTN_X      6  // X button
 #define JOYPAD_BTN_Y      7  // Y button
+
+
 
 /* Joypad state structure */
 typedef struct {

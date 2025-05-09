@@ -16,6 +16,21 @@
 #include <signal.h>
 #include <string.h>
 
+/* Classic joypad button definitions if not already defined */
+#ifndef JOYPAD_BTN_UP
+#define JOYPAD_BTN_UP     0  // Up direction button
+#define JOYPAD_BTN_DOWN   1  // Down direction button
+#define JOYPAD_BTN_LEFT   2  // Left direction button
+#define JOYPAD_BTN_RIGHT  3  // Right direction button
+#define JOYPAD_BTN_A      4  // A button
+#define JOYPAD_BTN_B      5  // B button
+#define JOYPAD_BTN_X      6  // X button
+#define JOYPAD_BTN_Y      7  // Y button
+#endif
+
+/* Total number of buttons supported */
+#define JOYPAD_BUTTON_COUNT 8
+
 extern int insert_joypad(const char *device_path, int player_index);
 
 /* Global variables */
@@ -58,14 +73,13 @@ void print_action(int player_index, game_action_t action) {
 }
 
 /**
- * @brief Display button state with duration
+ * @brief Display button state
  */
 void print_button_state(int player_index, int button_id, const char* button_name) {
     int state = get_joypad_button_state(player_index, button_id);
-    unsigned long duration = get_button_press_duration(player_index, button_id);
     
     if (state) {
-        printf("    %s: PRESSED (%.1f sec)", button_name, duration / 1000.0f);
+        printf("    %s: PRESSED", button_name);
     } else {
         printf("    %s: released", button_name);
     }
@@ -77,14 +91,9 @@ void print_button_state(int player_index, int button_id, const char* button_name
 const char* format_button_state(int player_index, int button_id) {
     static char buffer[20];
     int state = get_joypad_button_state(player_index, button_id);
-    unsigned long duration = get_button_press_duration(player_index, button_id);
     
     if (state) {
-        if (duration < 500) {
-            sprintf(buffer, "PRESSED");
-        } else {
-            sprintf(buffer, "HELD %.1fs", duration / 1000.0f);
-        }
+        sprintf(buffer, "PRESSED");
     } else {
         sprintf(buffer, "released");
     }
@@ -139,24 +148,24 @@ void show_menu() {
     printf("1. Connect Player 1 Joypad\n");
     printf("2. Connect Player 2 Joypad\n");
     printf("3. Test Joypad Input\n");
-    printf("4. Test Continuous Button Press\n");
+    printf("4. Test Button Press\n");
     printf("5. Show Joypad Status\n");
     printf("0. Exit Program\n");
     printf("Select: ");
 }
 
 /**
- * @brief Test continuous button press functionality
+ * @brief Test button press functionality
  */
 void test_continuous_press() {
-    printf("Starting continuous press test, press Ctrl+C to exit test mode\n");
-    printf("Press and hold buttons to see duration tracking\n\n");
+    printf("Starting button press test, press Ctrl+C to exit test mode\n");
+    printf("Press buttons to see state\n\n");
     
     while (running) {
         // Clear screen
         printf("\033[2J\033[H");
-        printf("=== Continuous Press Test ===\n");
-        printf("Press and hold buttons to see duration tracking\n");
+        printf("=== Button Press Test ===\n");
+        printf("Press buttons to see their state\n");
         printf("Press Ctrl+C to exit test mode\n\n");
         
         // Display joypad connection status
@@ -166,29 +175,9 @@ void test_continuous_press() {
                    is_joypad_connected(i) ? "CONNECTED" : "NOT CONNECTED");
             
             if (is_joypad_connected(i)) {
-                printf("  Button Press Durations:\n");
+                printf("  Button States:\n");
                 
-                for (int btn = 0; btn < JOYPAD_BUTTON_COUNT; btn++) {
-                    const char* btn_name;
-                    switch (btn) {
-                        case JOYPAD_BTN_UP: btn_name = "UP"; break;
-                        case JOYPAD_BTN_DOWN: btn_name = "DOWN"; break;
-                        case JOYPAD_BTN_LEFT: btn_name = "LEFT"; break;
-                        case JOYPAD_BTN_RIGHT: btn_name = "RIGHT"; break;
-                        case JOYPAD_BTN_A: btn_name = "A"; break;
-                        case JOYPAD_BTN_B: btn_name = "B"; break;
-                        case JOYPAD_BTN_X: btn_name = "X"; break;
-                        case JOYPAD_BTN_Y: btn_name = "Y"; break;
-                        default: btn_name = "?"; break;
-                    }
-                    
-                    unsigned long duration = get_button_press_duration(i, btn);
-                    if (duration > 0) {
-                        printf("    %s: Pressed for %.2f seconds\n", 
-                               btn_name, duration / 1000.0f);
-                    }
-                }
-                
+                // 使用基本的按钮状态显示
                 printf("\n  Direction Pad:     Function Buttons:\n");
                 printf("       [%s]           [%s] [%s]\n", 
                        format_button_state(i, JOYPAD_BTN_UP),
@@ -231,7 +220,6 @@ int main() {
     
     printf("=== Joypad Input Test Program ===\n");
     printf("This program demonstrates how to use joypads to control game characters\n");
-    printf("Supports continuous button press tracking\n");
     
     // Display initial joypad status
     show_joypad_status();
