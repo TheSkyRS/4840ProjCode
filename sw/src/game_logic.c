@@ -17,12 +17,8 @@
 // 帧率控制参数（单位：微秒）
 #define TARGET_FPS 60
 #define FRAME_TIME_US (1000000 / TARGET_FPS)
-
-character_t characters[2];
-int num_characters = 2;
-
-object_t objects[4];
-int num_objects = 4;
+extern int num_objects;
+extern int num_characters;
 
 // 精灵写入缓冲数组（每帧构造后在消隐期写入）
 uint32_t sprite_words[MAX_SPRITES];

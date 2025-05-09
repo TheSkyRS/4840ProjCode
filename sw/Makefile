@@ -13,11 +13,12 @@ PACKAGE_DIR = package
 CFLAGS = -Wall -Wextra -g -I$(INC_DIR) -O2
 LDFLAGS = -lm
 
-# === 源文件与目标文件（排除内核模块 vga_top.c）===
+# 源文件（排除内核模块 + 测试文件）
 SRCS = $(wildcard $(SRC_DIR)/*.c)
-SRCS := $(filter-out $(SRC_DIR)/vga_top.c, $(SRCS))
+SRCS := $(filter-out $(SRC_DIR)/vga_top.c $(SRC_DIR)/joypad_test.c, $(SRCS))
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 TARGET = $(BUILD_DIR)/game_sw
+
 
 # === Joypad 相关 ===
 JOYPAD_SRCS = $(SRC_DIR)/joypad_input.c
