@@ -8,7 +8,6 @@
  * Supports the classic 8-button joypad layout with continuous press tracking.
  */
 
-
 #include "../include/joypad_input.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,15 +17,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <linux/joystick.h>
-#include <stdbool.h>  // 添加对bool类型的支持
-
-/* 游戏动作常量定义 */
-typedef enum {
-    ACTION_NONE = 0,      // 无动作
-    ACTION_MOVE_LEFT = 1, // 向左移动
-    ACTION_MOVE_RIGHT = 2,// 向右移动
-    ACTION_JUMP = 3       // 跳跃动作
-} game_action_t;
+#include <stdbool.h> // 添加对bool类型的支持
 
 /* Classic joypad button definitions if not already defined */
 #ifndef JOYPAD_BTN_UP
