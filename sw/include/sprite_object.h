@@ -31,4 +31,16 @@ typedef struct
 // 将所有地图物体同步渲染到硬件 Sprite 表中
 void object_push_sprite(object_t *obj, uint32_t *sprite_words, int *count, int max_count);
 void update_object_animation(object_t *obj, float dt);
+/**
+ * @brief 打包 sprite 属性为 32-bit 控制字
+ *
+ * @param enable 是否启用该 sprite
+ * @param flip 是否水平翻转
+ * @param x sprite 左上角 x 坐标（0~1023）
+ * @param y sprite 左上角 y 坐标（0~511）
+ * @param frame 使用的帧编号（0~255）
+ * @return uint32_t 精灵属性控制字（写入 VGA）
+ */
+uint32_t make_attr_word(int enable, int flip, uint16_t x, uint16_t y, uint8_t frame);
+
 #endif // SPRITE_OBJECT_H

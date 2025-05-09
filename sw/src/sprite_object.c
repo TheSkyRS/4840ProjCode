@@ -43,3 +43,17 @@ void object_push_sprite(object_t *obj, uint32_t *sprite_words, int *count, int m
 
     sprite_words[(*count)++] = word;
 }
+
+/**
+ * 构造一个 32 位精灵属性控制字，打包 enable, flip, x, y, frame
+ */
+uint32_t make_attr_word(int enable, int flip, uint16_t x, uint16_t y, uint8_t frame)
+{
+    uint32_t word = 0;
+    word |= (enable & 0x1) << 31; // bit 31: enable
+    word |= (flip & 0x1) << 30;   // bit 30: flip_horizontal
+    word |= (x & 0x3FF) << 20;    // bits 29-20: x (10 bits)
+    word |= (y & 0x1FF) << 11;    // bits 19-11: y (9 bits)
+    word |= (frame & 0xFF) << 3;  // bits 10-3: frame id (8 bits)
+    return word;
+}
