@@ -2,7 +2,6 @@
 // 角色控制逻辑模块实现：运动控制、动画播放、精灵同步
 
 #include "character.h" // 包含角色结构体与函数声明
-#include "vgasys.h"
 // === 动画控制参数 ===
 #define NUM_HEAD_FRAMES 8   // 头部动画帧总数
 #define NUM_BODY_FRAMES 8   // 身体动画帧总数
