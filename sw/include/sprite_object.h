@@ -1,33 +1,33 @@
 // sprite_object.h
-// ÓÎÏ·ÄÚÎïÌå£¨»ú¹Ø¡¢µÀ¾ßµÈ£©Í³Ò»µÄ½á¹¹¶¨ÒåÓë½Ó¿Ú
+// æ¸¸æˆå†…ç‰©ä½“ï¼ˆæœºå…³ã€é“å…·ç­‰ï¼‰ç»Ÿä¸€çš„ç»“æ„å®šä¹‰ä¸æ¥å£
 
 #ifndef SPRITE_OBJECT_H
 #define SPRITE_OBJECT_H
 #include <stdbool.h>
 
-// ÓÎÏ·¶ÔÏóÀàĞÍÃ¶¾Ù
+// æ¸¸æˆå¯¹è±¡ç±»å‹æšä¸¾
 typedef enum
 {
-    OBJ_DIAMOND, // ÊÕ¼¯Îï£º×êÊ¯
-    OBJ_LEVER,   // »ú¹Ø£ºÀ­¸Ë
-    OBJ_ELEVATOR // »ú¹Ø£ºÉı½µÆ½Ì¨
+    OBJ_DIAMOND, // æ”¶é›†ç‰©ï¼šé’»çŸ³
+    OBJ_LEVER,   // æœºå…³ï¼šæ‹‰æ†
+    OBJ_ELEVATOR // æœºå…³ï¼šå‡é™å¹³å°
 } object_type_t;
 
-// ÓÎÏ·ÖĞÓÃÓÚ»æÖÆµÄÎïÌå½á¹¹Ìå£¨·Ç½ÇÉ«£©
+// æ¸¸æˆä¸­ç”¨äºç»˜åˆ¶çš„ç‰©ä½“ç»“æ„ä½“ï¼ˆéè§’è‰²ï¼‰
 typedef struct
 {
-    float x, y;           // Î»ÖÃ
-    int width, height;    // ´óĞ¡
-    int frame_id;         // µ±Ç°Ö¡±àºÅ
-    int frame_count;      // ¶¯»­Ö¡×ÜÊı
-    float anim_timer;     // µ±Ç°Ö¡¼ÆÊ±Æ÷
-    float frame_interval; // Ã¿Ö¡Ê±¼ä
-    bool active;          // ÊÇ·ñ¼¤»î
-    bool collected;       // ÊÇ·ñÊÕ¼¯
-    object_type_t type;   // ÀàĞÍ
+    float x, y;           // ä½ç½®
+    int width, height;    // å¤§å°
+    int frame_id;         // å½“å‰å¸§ç¼–å·
+    int frame_count;      // åŠ¨ç”»å¸§æ€»æ•°
+    float anim_timer;     // å½“å‰å¸§è®¡æ—¶å™¨
+    float frame_interval; // æ¯å¸§æ—¶é—´
+    bool active;          // æ˜¯å¦æ¿€æ´»
+    bool collected;       // æ˜¯å¦æ”¶é›†
+    object_type_t type;   // ç±»å‹
 } object_t;
 
-// ½«ËùÓĞµØÍ¼ÎïÌåÍ¬²½äÖÈ¾µ½Ó²¼ş Sprite ±íÖĞ
+// å°†æ‰€æœ‰åœ°å›¾ç‰©ä½“åŒæ­¥æ¸²æŸ“åˆ°ç¡¬ä»¶ Sprite è¡¨ä¸­
 void object_push_sprite(object_t *obj, uint32_t *sprite_words, int *count, int max_count);
 
 #endif // SPRITE_OBJECT_H

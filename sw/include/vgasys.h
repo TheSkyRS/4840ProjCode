@@ -4,73 +4,73 @@
 #include <stdint.h>
 
 // ================================
-// ³õÊ¼»¯ÓëÇåÀí
+// åˆå§‹åŒ–ä¸æ¸…ç†
 // ================================
 
 /**
- * @brief ³õÊ¼»¯ VGA ÏµÍ³½Ó¿Ú£¨´ò¿ª /dev/vga_top£©
+ * @brief åˆå§‹åŒ– VGA ç³»ç»Ÿæ¥å£ï¼ˆæ‰“å¼€ /dev/vga_topï¼‰
  *
- * @param dev_name Éè±¸½ÚµãÂ·¾¶£¬Ò»°ãÎª "/dev/vga_top"
- * @return 0 = ³É¹¦£¬-1 = Ê§°Ü
+ * @param dev_name è®¾å¤‡èŠ‚ç‚¹è·¯å¾„ï¼Œä¸€èˆ¬ä¸º "/dev/vga_top"
+ * @return 0 = æˆåŠŸï¼Œ-1 = å¤±è´¥
  */
 int vgasys_init(const char *dev_name);
 
 /**
- * @brief ÇåÀí VGA ÏµÍ³½Ó¿Ú£¬¹Ø±ÕÉè±¸ÎÄ¼ş
+ * @brief æ¸…ç† VGA ç³»ç»Ÿæ¥å£ï¼Œå…³é—­è®¾å¤‡æ–‡ä»¶
  */
 void vgasys_cleanup();
 
 // ================================
-// ¾«ÁéÊôĞÔ¹¹ÔìÓëĞ´Èë
+// ç²¾çµå±æ€§æ„é€ ä¸å†™å…¥
 // ================================
 
 /**
- * @brief ¹¹ÔìÒ»¸ö¾«ÁéÊôĞÔ×Ö£¨32Î»´ò°ü¸ñÊ½£©
+ * @brief æ„é€ ä¸€ä¸ªç²¾çµå±æ€§å­—ï¼ˆ32ä½æ‰“åŒ…æ ¼å¼ï¼‰
  *
- * @param enable ÊÇ·ñÏÔÊ¾¸Ã sprite£¨1=ÏÔÊ¾£©
- * @param flip ÊÇ·ñË®Æ½·­×ª£¨1=·­×ª£©
- * @param x ¾«Áéºá×ø±ê£¨0~639£©
- * @param y ¾«Áé×İ×ø±ê£¨0~479£©
- * @param frame Ö¡±àºÅ£¨0~255£©
- * @return uint32_t ´ò°üºóµÄ attr_word
+ * @param enable æ˜¯å¦æ˜¾ç¤ºè¯¥ spriteï¼ˆ1=æ˜¾ç¤ºï¼‰
+ * @param flip æ˜¯å¦æ°´å¹³ç¿»è½¬ï¼ˆ1=ç¿»è½¬ï¼‰
+ * @param x ç²¾çµæ¨ªåæ ‡ï¼ˆ0~639ï¼‰
+ * @param y ç²¾çµçºµåæ ‡ï¼ˆ0~479ï¼‰
+ * @param frame å¸§ç¼–å·ï¼ˆ0~255ï¼‰
+ * @return uint32_t æ‰“åŒ…åçš„ attr_word
  */
 uint32_t make_attr_word(uint8_t enable, uint8_t flip,
                         uint16_t x, uint16_t y,
                         uint8_t frame);
 
 /**
- * @brief ÏòÓ²¼şĞ´ÈëÄ³¸ö¾«ÁéµÄÊôĞÔ£¨µ÷ÓÃ ioctl£©
+ * @brief å‘ç¡¬ä»¶å†™å…¥æŸä¸ªç²¾çµçš„å±æ€§ï¼ˆè°ƒç”¨ ioctlï¼‰
  *
- * @param index ¾«Áé±àºÅ£¨0~31£©
- * @param enable ÊÇ·ñÏÔÊ¾
- * @param flip ÊÇ·ñË®Æ½·­×ª
- * @param x ¾«Áéºá×ø±ê
- * @param y ¾«Áé×İ×ø±ê
- * @param frame Ö¡±àºÅ
+ * @param index ç²¾çµç¼–å·ï¼ˆ0~31ï¼‰
+ * @param enable æ˜¯å¦æ˜¾ç¤º
+ * @param flip æ˜¯å¦æ°´å¹³ç¿»è½¬
+ * @param x ç²¾çµæ¨ªåæ ‡
+ * @param y ç²¾çµçºµåæ ‡
+ * @param frame å¸§ç¼–å·
  */
 void write_sprite(uint8_t index, uint8_t enable, uint8_t flip,
                   uint16_t x, uint16_t y, uint8_t frame);
 
 // ================================
-// ¿ØÖÆ¼Ä´æÆ÷
+// æ§åˆ¶å¯„å­˜å™¨
 // ================================
 
 /**
- * @brief Ğ´Èë¿ØÖÆ¼Ä´æÆ÷µÄÖµ£¨Í¨³£ÔÚÏûÒşÆÚÖ´ĞĞ£©
+ * @brief å†™å…¥æ§åˆ¶å¯„å­˜å™¨çš„å€¼ï¼ˆé€šå¸¸åœ¨æ¶ˆéšæœŸæ‰§è¡Œï¼‰
  *
- * @param value ¿ØÖÆÖµ£¨ÀıÈç tilemap ID¡¢ÒôÆµ ID¡¢Åö×²¿ª¹Ø£©
+ * @param value æ§åˆ¶å€¼ï¼ˆä¾‹å¦‚ tilemap IDã€éŸ³é¢‘ IDã€ç¢°æ’å¼€å…³ï¼‰
  */
 void write_ctrl(uint32_t value);
 
 // ================================
-// VGA ×´Ì¬¶ÁÈ¡
+// VGA çŠ¶æ€è¯»å–
 // ================================
 
 /**
- * @brief ¶ÁÈ¡ VGA µ±Ç°É¨ÃèÎ»ÖÃ£¨×´Ì¬¼Ä´æÆ÷£©
+ * @brief è¯»å– VGA å½“å‰æ‰«æä½ç½®ï¼ˆçŠ¶æ€å¯„å­˜å™¨ï¼‰
  *
- * @param col ·µ»Øµ±Ç° hcount£¨0~639£©
- * @param row ·µ»Øµ±Ç° vcount£¨0~479£©
+ * @param col è¿”å›å½“å‰ hcountï¼ˆ0~639ï¼‰
+ * @param row è¿”å›å½“å‰ vcountï¼ˆ0~479ï¼‰
  */
 void read_status(unsigned *col, unsigned *row);
 

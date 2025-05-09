@@ -1,51 +1,51 @@
 // character.c
-// ½ÇÉ«¿ØÖÆÂß¼­Ä£¿éÊµÏÖ£ºÔË¶¯¿ØÖÆ¡¢¶¯»­²¥·Å¡¢¾«ÁéÍ¬²½
+// è§’è‰²æ§åˆ¶é€»è¾‘æ¨¡å—å®ç°ï¼šè¿åŠ¨æ§åˆ¶ã€åŠ¨ç”»æ’­æ”¾ã€ç²¾çµåŒæ­¥
 
-#include "character.h" // °üº¬½ÇÉ«½á¹¹ÌåÓëº¯ÊıÉùÃ÷
+#include "character.h" // åŒ…å«è§’è‰²ç»“æ„ä½“ä¸å‡½æ•°å£°æ˜
 #include "vgasys.h"
-// === ¶¯»­¿ØÖÆ²ÎÊı ===
-#define NUM_HEAD_FRAMES 8   // Í·²¿¶¯»­Ö¡×ÜÊı
-#define NUM_BODY_FRAMES 8   // ÉíÌå¶¯»­Ö¡×ÜÊı
-#define FRAME_INTERVAL 0.1f // Ã¿Ö¡¶¯»­³ÖĞøÊ±¼ä£¨Ãë£©
-#define HEAD_OFFSET_Y 0     // Í·²¿Ïà¶Ô½ÇÉ«Î»ÖÃµÄ Y Æ«ÒÆ
-#define BODY_OFFSET_Y 12    // ÉíÌåÏà¶Ô½ÇÉ«Î»ÖÃµÄ Y Æ«ÒÆ
+// === åŠ¨ç”»æ§åˆ¶å‚æ•° ===
+#define NUM_HEAD_FRAMES 8   // å¤´éƒ¨åŠ¨ç”»å¸§æ€»æ•°
+#define NUM_BODY_FRAMES 8   // èº«ä½“åŠ¨ç”»å¸§æ€»æ•°
+#define FRAME_INTERVAL 0.1f // æ¯å¸§åŠ¨ç”»æŒç»­æ—¶é—´ï¼ˆç§’ï¼‰
+#define HEAD_OFFSET_Y 0     // å¤´éƒ¨ç›¸å¯¹è§’è‰²ä½ç½®çš„ Y åç§»
+#define BODY_OFFSET_Y 12    // èº«ä½“ç›¸å¯¹è§’è‰²ä½ç½®çš„ Y åç§»
 
-// ¸üĞÂ½ÇÉ«¶¯»­Ö¡£¨ÒÀ¾İµ±Ç°×´Ì¬¾ö¶¨Ö¡Çø¼ä£©
+// æ›´æ–°è§’è‰²åŠ¨ç”»å¸§ï¼ˆä¾æ®å½“å‰çŠ¶æ€å†³å®šå¸§åŒºé—´ï¼‰
 void update_character_animation(character_t *ch, float delta_time)
 {
-    int start_frame_head = 0, end_frame_head = 0; // Í·²¿¶¯»­Ö¡·¶Î§
-    int start_frame_body = 0, end_frame_body = 0; // ÉíÌå¶¯»­Ö¡·¶Î§
+    int start_frame_head = 0, end_frame_head = 0; // å¤´éƒ¨åŠ¨ç”»å¸§èŒƒå›´
+    int start_frame_body = 0, end_frame_body = 0; // èº«ä½“åŠ¨ç”»å¸§èŒƒå›´
 
-    // ¸ù¾İ½ÇÉ«×´Ì¬Ñ¡Ôñ¶ÔÓ¦µÄ¶¯»­Ö¡·¶Î§
+    // æ ¹æ®è§’è‰²çŠ¶æ€é€‰æ‹©å¯¹åº”çš„åŠ¨ç”»å¸§èŒƒå›´
     switch (ch->state)
     {
-    case STATE_IDLE: // Õ¾Á¢×´Ì¬Ê¹ÓÃÇ°Á½Ö¡
+    case STATE_IDLE: // ç«™ç«‹çŠ¶æ€ä½¿ç”¨å‰ä¸¤å¸§
         start_frame_head = 0;
         end_frame_head = 1;
         start_frame_body = 0;
         end_frame_body = 1;
         break;
     case STATE_MOVING_LEFT:
-    case STATE_MOVING_RIGHT: // ĞĞ×ß×´Ì¬Ê¹ÓÃÖ¡2~5
+    case STATE_MOVING_RIGHT: // è¡Œèµ°çŠ¶æ€ä½¿ç”¨å¸§2~5
         start_frame_head = 2;
         end_frame_head = 3;
         start_frame_body = 2;
         end_frame_body = 5;
         break;
     case STATE_JUMPING:
-    case STATE_FALLING: // ÌøÔ¾/ÏÂÂä×´Ì¬¹Ì¶¨Ö¡6
+    case STATE_FALLING: // è·³è·ƒ/ä¸‹è½çŠ¶æ€å›ºå®šå¸§6
         start_frame_head = 6;
         end_frame_head = 6;
         start_frame_body = 6;
         end_frame_body = 6;
         break;
-    case STATE_DEAD: // ËÀÍö×´Ì¬Ê¹ÓÃÖ¡7
+    case STATE_DEAD: // æ­»äº¡çŠ¶æ€ä½¿ç”¨å¸§7
         start_frame_head = 7;
         end_frame_head = 7;
         start_frame_body = 7;
         end_frame_body = 7;
         break;
-    default: // Ä¬ÈÏÇé¿ö±£³ÖµÚÒ»Ö¡
+    default: // é»˜è®¤æƒ…å†µä¿æŒç¬¬ä¸€å¸§
         start_frame_head = 0;
         end_frame_head = 0;
         start_frame_body = 0;
@@ -53,17 +53,17 @@ void update_character_animation(character_t *ch, float delta_time)
         break;
     }
 
-    // === Í·²¿¶¯»­¸üĞÂ ===
-    ch->anim_timer_head += delta_time;         // ÀÛ¼ÓÍ·²¿¶¯»­Ê±¼ä
-    if (ch->anim_timer_head >= FRAME_INTERVAL) // µ½´ïÇĞ»»Ê±¼ä
+    // === å¤´éƒ¨åŠ¨ç”»æ›´æ–° ===
+    ch->anim_timer_head += delta_time;         // ç´¯åŠ å¤´éƒ¨åŠ¨ç”»æ—¶é—´
+    if (ch->anim_timer_head >= FRAME_INTERVAL) // åˆ°è¾¾åˆ‡æ¢æ—¶é—´
     {
-        ch->frame_head++; // ÇĞ»»µ½ÏÂÒ»Ö¡
+        ch->frame_head++; // åˆ‡æ¢åˆ°ä¸‹ä¸€å¸§
         if (ch->frame_head > end_frame_head || ch->frame_head < start_frame_head)
-            ch->frame_head = start_frame_head; // ³¬³ö·¶Î§Ôò»Øµ½ÆğÊ¼Ö¡
-        ch->anim_timer_head = 0.0f;            // ÖØÖÃ¼ÆÊ±Æ÷
+            ch->frame_head = start_frame_head; // è¶…å‡ºèŒƒå›´åˆ™å›åˆ°èµ·å§‹å¸§
+        ch->anim_timer_head = 0.0f;            // é‡ç½®è®¡æ—¶å™¨
     }
 
-    // === ÉíÌå¶¯»­¸üĞÂ ===
+    // === èº«ä½“åŠ¨ç”»æ›´æ–° ===
     ch->anim_timer_body += delta_time;
     if (ch->anim_timer_body >= FRAME_INTERVAL)
     {
@@ -74,69 +74,69 @@ void update_character_animation(character_t *ch, float delta_time)
     }
 }
 
-// ¸ù¾İÊäÈë¸üĞÂ½ÇÉ«×´Ì¬ºÍËÙ¶È
+// æ ¹æ®è¾“å…¥æ›´æ–°è§’è‰²çŠ¶æ€å’Œé€Ÿåº¦
 void update_character_state(character_t *ch, game_action_t input, float dt)
 {
-    if (!ch->alive) // ËÀÍö½ÇÉ«²»´¦Àí
+    if (!ch->alive) // æ­»äº¡è§’è‰²ä¸å¤„ç†
         return;
 
-    // === Ë®Æ½ÔË¶¯¿ØÖÆ ===
+    // === æ°´å¹³è¿åŠ¨æ§åˆ¶ ===
     if (input == ACTION_MOVE_LEFT)
     {
-        ch->vx = -MOVE_SPEED;     // Ïò×óÒÆ¶¯
-        ch->facing_right = false; // ³¯×ó
+        ch->vx = -MOVE_SPEED;     // å‘å·¦ç§»åŠ¨
+        ch->facing_right = false; // æœå·¦
         ch->state = STATE_MOVING_LEFT;
     }
     else if (input == ACTION_MOVE_RIGHT)
     {
-        ch->vx = MOVE_SPEED;     // ÏòÓÒÒÆ¶¯
-        ch->facing_right = true; // ³¯ÓÒ
+        ch->vx = MOVE_SPEED;     // å‘å³ç§»åŠ¨
+        ch->facing_right = true; // æœå³
         ch->state = STATE_MOVING_RIGHT;
     }
-    else // ÎŞ·½ÏòÊäÈë
+    else // æ— æ–¹å‘è¾“å…¥
     {
         ch->vx = 0;
         ch->state = STATE_IDLE;
     }
 
-    // === ´¹Ö±ÔË¶¯¿ØÖÆ ===
+    // === å‚ç›´è¿åŠ¨æ§åˆ¶ ===
     if (input == ACTION_JUMP)
     {
-        ch->vy = JUMP_VELOCITY; // ÆğÌøËÙ¶È
+        ch->vy = JUMP_VELOCITY; // èµ·è·³é€Ÿåº¦
         ch->state = STATE_JUMPING;
     }
     else
     {
-        ch->vy += GRAVITY * dt; // Ê¼ÖÕÊ©¼ÓÖØÁ¦
+        ch->vy += GRAVITY * dt; // å§‹ç»ˆæ–½åŠ é‡åŠ›
         if (ch->vy > 0.1f && ch->state != STATE_JUMPING)
-            ch->state = STATE_FALLING; // ÏÂÂä×´Ì¬Ê¶±ğ
+            ch->state = STATE_FALLING; // ä¸‹è½çŠ¶æ€è¯†åˆ«
     }
 
-    update_character_animation(ch, dt); // ×îºó¸üĞÂ¶¯»­Ö¡
+    update_character_animation(ch, dt); // æœ€åæ›´æ–°åŠ¨ç”»å¸§
 }
 
-// ¸ù¾İËÙ¶È¸üĞÂ½ÇÉ«Î»ÖÃ£¨¼òµ¥»ı·Ö£©
+// æ ¹æ®é€Ÿåº¦æ›´æ–°è§’è‰²ä½ç½®ï¼ˆç®€å•ç§¯åˆ†ï¼‰
 void update_character_position(character_t *ch, float dt)
 {
     if (!ch->alive)
         return;
-    ch->x += ch->vx * dt; // ¸üĞÂË®Æ½Î»ÖÃ
-    ch->y += ch->vy * dt; // ¸üĞÂ´¹Ö±Î»ÖÃ
+    ch->x += ch->vx * dt; // æ›´æ–°æ°´å¹³ä½ç½®
+    ch->y += ch->vy * dt; // æ›´æ–°å‚ç›´ä½ç½®
 }
 /**
- * @brief ½«½ÇÉ«µÄÁ½¸ö¾«ÁéÖ¡£¨Í·²¿ºÍÉíÌå£©Ğ´Èë sprite »º´æÊı×é
+ * @brief å°†è§’è‰²çš„ä¸¤ä¸ªç²¾çµå¸§ï¼ˆå¤´éƒ¨å’Œèº«ä½“ï¼‰å†™å…¥ sprite ç¼“å­˜æ•°ç»„
  *
- * @param ch           Ö¸Ïò½ÇÉ«½á¹¹ÌåµÄÖ¸Õë
- * @param sprite_words »º´æÊı×é£¬´æ·Å½«ÒªĞ´ÈëÓ²¼şµÄ attr_word
- * @param count        Ö¸Ïòµ±Ç°Ğ´Èë¸öÊıµÄÖ¸Õë£¬»á±»¸üĞÂ
- * @param max_count    Êı×éÈİÁ¿£¨ÓÃÓÚ·ÀÖ¹Ô½½ç£©
+ * @param ch           æŒ‡å‘è§’è‰²ç»“æ„ä½“çš„æŒ‡é’ˆ
+ * @param sprite_words ç¼“å­˜æ•°ç»„ï¼Œå­˜æ”¾å°†è¦å†™å…¥ç¡¬ä»¶çš„ attr_word
+ * @param count        æŒ‡å‘å½“å‰å†™å…¥ä¸ªæ•°çš„æŒ‡é’ˆï¼Œä¼šè¢«æ›´æ–°
+ * @param max_count    æ•°ç»„å®¹é‡ï¼ˆç”¨äºé˜²æ­¢è¶Šç•Œï¼‰
  */
 void character_push_sprites(character_t *ch, uint32_t *sprite_words, int *count, int max_count)
 {
     if (!ch || !ch->alive || *count >= max_count)
         return;
 
-    // === Ğ´ÈëÍ·²¿ sprite attr_word ===
+    // === å†™å…¥å¤´éƒ¨ sprite attr_word ===
     if (*count < max_count)
     {
         uint32_t head = make_attr_word(1, !ch->facing_right,
@@ -146,7 +146,7 @@ void character_push_sprites(character_t *ch, uint32_t *sprite_words, int *count,
         sprite_words[(*count)++] = head;
     }
 
-    // === Ğ´ÈëÉíÌå sprite attr_word ===
+    // === å†™å…¥èº«ä½“ sprite attr_word ===
     if (*count < max_count)
     {
         uint32_t body = make_attr_word(1, !ch->facing_right,
@@ -157,15 +157,15 @@ void character_push_sprites(character_t *ch, uint32_t *sprite_words, int *count,
     }
 }
 
-// ³õÊ¼»¯Ò»¸ö½ÇÉ«ÊµÀı£¨Î»ÖÃ¡¢ÀàĞÍ¡¢Ä¬ÈÏ×´Ì¬£©
+// åˆå§‹åŒ–ä¸€ä¸ªè§’è‰²å®ä¾‹ï¼ˆä½ç½®ã€ç±»å‹ã€é»˜è®¤çŠ¶æ€ï¼‰
 void init_character(character_t *ch, float x, float y, character_type_t type)
 {
     ch->x = x;
     ch->y = y;
     ch->vx = 0;
     ch->vy = 0;
-    ch->width = 16;  // Ä¬ÈÏ¿í¶È£¨¿É¸ù¾İÊµ¼Ê¾«Áéµ÷Õû£©
-    ch->height = 32; // Ä¬ÈÏ¸ß¶È
+    ch->width = 16;  // é»˜è®¤å®½åº¦ï¼ˆå¯æ ¹æ®å®é™…ç²¾çµè°ƒæ•´ï¼‰
+    ch->height = 32; // é»˜è®¤é«˜åº¦
     ch->frame_head = 0;
     ch->frame_body = 0;
     ch->anim_timer_head = 0.0f;
@@ -175,6 +175,6 @@ void init_character(character_t *ch, float x, float y, character_type_t type)
     ch->state = STATE_IDLE;
     ch->type = type;
 
-    // ÉèÖÃ»æÖÆÓÅÏÈ¼¶£¨ÈÃË®Å®º¢ÔÚ»ğÄĞº¢ÉÏ²ã£©
+    // è®¾ç½®ç»˜åˆ¶ä¼˜å…ˆçº§ï¼ˆè®©æ°´å¥³å­©åœ¨ç«ç”·å­©ä¸Šå±‚ï¼‰
     ch->priority_offset = (type == TYPE_WATERGIRL) ? 1 : 0;
 }

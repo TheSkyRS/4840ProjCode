@@ -1,75 +1,75 @@
 // character.h
-// ¿ØÖÆ½ÇÉ«ĞĞÎªÓë¶¯»­µÄÄ£¿éÍ·ÎÄ¼ş£¨Fireboy & Watergirl£©
+// æ§åˆ¶è§’è‰²è¡Œä¸ºä¸åŠ¨ç”»çš„æ¨¡å—å¤´æ–‡ä»¶ï¼ˆFireboy & Watergirlï¼‰
 
 #ifndef CHARACTER_H
 #define CHARACTER_H
-#include "keyboard_input.h"
+#include "joypad_input.h"
 #include <stdbool.h>
 #include <stdint.h>
 
-// === ½ÇÉ«ĞĞÎª²ÎÊı ===
-#define MOVE_SPEED 60.0f      // Ë®Æ½ÒÆ¶¯ËÙ¶È£¨ÏñËØ/Ãë£©
-#define JUMP_VELOCITY -140.0f // ÆğÌøËÙ¶È£¨¸ºÖµÏòÉÏ£©
-#define GRAVITY 400.0f        // ÖØÁ¦¼ÓËÙ¶È
+// === è§’è‰²è¡Œä¸ºå‚æ•° ===
+#define MOVE_SPEED 60.0f      // æ°´å¹³ç§»åŠ¨é€Ÿåº¦ï¼ˆåƒç´ /ç§’ï¼‰
+#define JUMP_VELOCITY -140.0f // èµ·è·³é€Ÿåº¦ï¼ˆè´Ÿå€¼å‘ä¸Šï¼‰
+#define GRAVITY 400.0f        // é‡åŠ›åŠ é€Ÿåº¦
 
-// === ¶¯»­¿ØÖÆ²ÎÊı ===
-#define NUM_HEAD_FRAMES 8   // Í·²¿Ö¡×ÜÊı
-#define NUM_BODY_FRAMES 8   // ÉíÌåÖ¡×ÜÊı
-#define FRAME_INTERVAL 0.1f // Ã¿Ö¡¶¯»­³ÖĞøÊ±¼ä£¨Ãë£©
+// === åŠ¨ç”»æ§åˆ¶å‚æ•° ===
+#define NUM_HEAD_FRAMES 8   // å¤´éƒ¨å¸§æ€»æ•°
+#define NUM_BODY_FRAMES 8   // èº«ä½“å¸§æ€»æ•°
+#define FRAME_INTERVAL 0.1f // æ¯å¸§åŠ¨ç”»æŒç»­æ—¶é—´ï¼ˆç§’ï¼‰
 
-// Ã¶¾Ù£º½ÇÉ«µ±Ç°Ëù´¦×´Ì¬£¨ÓÃÓÚ¶¯»­Ñ¡ÔñÓëĞĞÎª¿ØÖÆ£©
+// æšä¸¾ï¼šè§’è‰²å½“å‰æ‰€å¤„çŠ¶æ€ï¼ˆç”¨äºåŠ¨ç”»é€‰æ‹©ä¸è¡Œä¸ºæ§åˆ¶ï¼‰
 typedef enum
 {
-    STATE_IDLE,         // ¾²Ö¹Õ¾Á¢
-    STATE_MOVING_LEFT,  // Ïò×óÒÆ¶¯
-    STATE_MOVING_RIGHT, // ÏòÓÒÒÆ¶¯
-    STATE_JUMPING,      // ÌøÔ¾ÖĞ
-    STATE_FALLING,      // ÏÂÂäÖĞ
-    STATE_DEAD          // ËÀÍö£¨²»¿É¿ØÖÆ£©
+    STATE_IDLE,         // é™æ­¢ç«™ç«‹
+    STATE_MOVING_LEFT,  // å‘å·¦ç§»åŠ¨
+    STATE_MOVING_RIGHT, // å‘å³ç§»åŠ¨
+    STATE_JUMPING,      // è·³è·ƒä¸­
+    STATE_FALLING,      // ä¸‹è½ä¸­
+    STATE_DEAD          // æ­»äº¡ï¼ˆä¸å¯æ§åˆ¶ï¼‰
 } character_state_t;
 
-// Ã¶¾Ù£º½ÇÉ«Éí·İ
+// æšä¸¾ï¼šè§’è‰²èº«ä»½
 typedef enum
 {
-    TYPE_FIREBOY,  // »ğÄĞº¢
-    TYPE_WATERGIRL // Ë®Å®º¢
+    TYPE_FIREBOY,  // ç«ç”·å­©
+    TYPE_WATERGIRL // æ°´å¥³å­©
 } character_type_t;
 
-// Ö÷½á¹¹Ìå£º½ÇÉ«µÄĞĞÎª¿ØÖÆÓë¶¯»­×´Ì¬
+// ä¸»ç»“æ„ä½“ï¼šè§’è‰²çš„è¡Œä¸ºæ§åˆ¶ä¸åŠ¨ç”»çŠ¶æ€
 typedef struct
 {
-    float x, y;              // µ±Ç°×ø±ê£¨×óÉÏ½Ç£©
-    float vx, vy;            // µ±Ç°ËÙ¶È£¨ÏñËØ/Ãë£©
-    int width, height;       // ³ß´çĞÅÏ¢£¨ÓÃÓÚäÖÈ¾/Åö×²£©
-    int frame_head;          // µ±Ç°Í·²¿¶¯»­Ö¡±àºÅ
-    int frame_body;          // µ±Ç°ÉíÌå¶¯»­Ö¡±àºÅ
-    float anim_timer_head;   // Í·²¿¶¯»­Ö¡¼ÆÊ±Æ÷
-    float anim_timer_body;   // ÉíÌå¶¯»­Ö¡¼ÆÊ±Æ÷
-    bool facing_right;       // ÊÇ·ñ³¯ÏòÓÒ²à
-    bool alive;              // ÊÇ·ñÈÔÔÚÓÎÏ·ÖĞ£¨Î´ËÀÍö£©
-    int priority_offset;     // ¾«ÁéäÖÈ¾ÓÅÏÈ¼¶Æ«ÒÆ£¨ÓÃÓÚÅö×²Ê±µÄÍ¼²ã¿ØÖÆ£©
-    character_state_t state; // µ±Ç°¶¯×÷×´Ì¬£¨Õ¾Á¢¡¢ÒÆ¶¯¡¢ÌøÔ¾µÈ£©
+    float x, y;              // å½“å‰åæ ‡ï¼ˆå·¦ä¸Šè§’ï¼‰
+    float vx, vy;            // å½“å‰é€Ÿåº¦ï¼ˆåƒç´ /ç§’ï¼‰
+    int width, height;       // å°ºå¯¸ä¿¡æ¯ï¼ˆç”¨äºæ¸²æŸ“/ç¢°æ’ï¼‰
+    int frame_head;          // å½“å‰å¤´éƒ¨åŠ¨ç”»å¸§ç¼–å·
+    int frame_body;          // å½“å‰èº«ä½“åŠ¨ç”»å¸§ç¼–å·
+    float anim_timer_head;   // å¤´éƒ¨åŠ¨ç”»å¸§è®¡æ—¶å™¨
+    float anim_timer_body;   // èº«ä½“åŠ¨ç”»å¸§è®¡æ—¶å™¨
+    bool facing_right;       // æ˜¯å¦æœå‘å³ä¾§
+    bool alive;              // æ˜¯å¦ä»åœ¨æ¸¸æˆä¸­ï¼ˆæœªæ­»äº¡ï¼‰
+    int priority_offset;     // ç²¾çµæ¸²æŸ“ä¼˜å…ˆçº§åç§»ï¼ˆç”¨äºç¢°æ’æ—¶çš„å›¾å±‚æ§åˆ¶ï¼‰
+    character_state_t state; // å½“å‰åŠ¨ä½œçŠ¶æ€ï¼ˆç«™ç«‹ã€ç§»åŠ¨ã€è·³è·ƒç­‰ï¼‰
     character_type_t type;   // Fireboy or Watergirl
 } character_t;
-// ³õÊ¼»¯½ÇÉ«ÊôĞÔ
+// åˆå§‹åŒ–è§’è‰²å±æ€§
 void init_character(character_t *ch, float x, float y, character_type_t type);
 
-// Ã¿Ö¡µ÷ÓÃ£º½ÇÉ«ÊäÈë¡¢×´Ì¬¡¢¶¯»­¡¢ÖØÁ¦µÄ×ÛºÏ¸üĞÂÂß¼­
+// æ¯å¸§è°ƒç”¨ï¼šè§’è‰²è¾“å…¥ã€çŠ¶æ€ã€åŠ¨ç”»ã€é‡åŠ›çš„ç»¼åˆæ›´æ–°é€»è¾‘
 void update_character_state(character_t *ch, game_action_t input, float dt);
 
-// Ã¿Ö¡µ÷ÓÃ£º»ùÓÚËÙ¶È¸üĞÂÎ»ÖÃ£¨¼òµ¥»ı·Ö£©
+// æ¯å¸§è°ƒç”¨ï¼šåŸºäºé€Ÿåº¦æ›´æ–°ä½ç½®ï¼ˆç®€å•ç§¯åˆ†ï¼‰
 void update_character_position(character_t *ch, float dt);
 
-// Ã¿Ö¡µ÷ÓÃ£º¸ù¾İ½ÇÉ«×´Ì¬¸üĞÂ¶¯»­Ö¡£¨Í·²¿ºÍÉíÌå·Ö¿ª£©
+// æ¯å¸§è°ƒç”¨ï¼šæ ¹æ®è§’è‰²çŠ¶æ€æ›´æ–°åŠ¨ç”»å¸§ï¼ˆå¤´éƒ¨å’Œèº«ä½“åˆ†å¼€ï¼‰
 void update_character_animation(character_t *ch, float delta_time);
 
 /**
- * ½«½ÇÉ«µÄÁ½¸ö¾«ÁéÖ¡£¨Í·²¿ºÍÉíÌå£©Ğ´Èë sprite »º´æÊı×é
+ * å°†è§’è‰²çš„ä¸¤ä¸ªç²¾çµå¸§ï¼ˆå¤´éƒ¨å’Œèº«ä½“ï¼‰å†™å…¥ sprite ç¼“å­˜æ•°ç»„
  *
- * @param ch           Ö¸Ïò½ÇÉ«½á¹¹ÌåµÄÖ¸Õë
- * @param sprite_words Êä³öÊı×é
- * @param count        µ±Ç°Ğ´ÈëÊı£¨»á±»ĞŞ¸Ä£©
- * @param max_count    ×î´óÈİÁ¿
+ * @param ch           æŒ‡å‘è§’è‰²ç»“æ„ä½“çš„æŒ‡é’ˆ
+ * @param sprite_words è¾“å‡ºæ•°ç»„
+ * @param count        å½“å‰å†™å…¥æ•°ï¼ˆä¼šè¢«ä¿®æ”¹ï¼‰
+ * @param max_count    æœ€å¤§å®¹é‡
  */
 void character_push_sprites(character_t *ch, uint32_t *sprite_words, int *count, int max_count);
 

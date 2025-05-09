@@ -1,14 +1,14 @@
 // game_logic.h
-// ÓÎÏ·Âß¼­Ö÷½Ó¿Ú£¬¸ºÔğÖ÷Ñ­»·µ÷¶ÈÓëÈ«¾Ö×´Ì¬¿ØÖÆ
+// æ¸¸æˆé€»è¾‘ä¸»æ¥å£ï¼Œè´Ÿè´£ä¸»å¾ªç¯è°ƒåº¦ä¸å…¨å±€çŠ¶æ€æ§åˆ¶
 
 #ifndef GAME_LOGIC_H
 #define GAME_LOGIC_H
 
-#include "character.h"     // ÒıÈë½ÇÉ«Ä£¿é¶¨Òå
-#include "sprite_object.h" // ÒıÈëÓÎÏ·ÎïÌåÄ£¿é¶¨Òå
+#include "character.h"     // å¼•å…¥è§’è‰²æ¨¡å—å®šä¹‰
+#include "sprite_object.h" // å¼•å…¥æ¸¸æˆç‰©ä½“æ¨¡å—å®šä¹‰
 #include <stdbool.h>
 
-// ÓÎÏ·ÕûÌå×´Ì¬£¨¿ÉÀ©Õ¹ÓÃÓÚÔİÍ£¡¢Ê¤Àû¡¢Ê§°ÜµÈ£©
+// æ¸¸æˆæ•´ä½“çŠ¶æ€ï¼ˆå¯æ‰©å±•ç”¨äºæš‚åœã€èƒœåˆ©ã€å¤±è´¥ç­‰ï¼‰
 typedef enum
 {
     GAME_RUNNING,
@@ -17,7 +17,7 @@ typedef enum
     GAME_WIN
 } game_state_t;
 
-// ¸üĞÂÒ»Ö¡µÄÍêÕûÓÎÏ·×´Ì¬£¨½ÇÉ«¡¢ÎïÌå¡¢»·¾³£©
+// æ›´æ–°ä¸€å¸§çš„å®Œæ•´æ¸¸æˆçŠ¶æ€ï¼ˆè§’è‰²ã€ç‰©ä½“ã€ç¯å¢ƒï¼‰
 void update_game_state(character_t *characters, int num_characters,
                        object_t *objects, int num_objects,
                        float delta_time);

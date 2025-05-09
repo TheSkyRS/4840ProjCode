@@ -24,6 +24,15 @@
 #define JOYPAD_BTN_X 6 // X button
 #define JOYPAD_BTN_Y 7 // Y button
 
+/* 游戏动作常量定义 */
+typedef enum
+{
+    ACTION_NONE = 0,       // 无动作
+    ACTION_MOVE_LEFT = 1,  // 向左移动
+    ACTION_MOVE_RIGHT = 2, // 向右移动
+    ACTION_JUMP = 3        // 跳跃动作
+} game_action_t;
+
 /**
  * @brief Connect a new player joypad device
  * Attempts to open and connect a joypad device at the specified path

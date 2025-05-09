@@ -1,10 +1,10 @@
 // collision.c
-// ÈıÀàÅö×²¼ì²âÓëÏìÓ¦º¯ÊıÊµÏÖ
+// ä¸‰ç±»ç¢°æ’æ£€æµ‹ä¸å“åº”å‡½æ•°å®ç°
 
 #include "collision.h"
 #include <stdio.h>
 
-// AABB£¨Öá¶ÔÆë°üÎ§ºĞ£©Í¨ÓÃÅö×²¼ì²âº¯Êı
+// AABBï¼ˆè½´å¯¹é½åŒ…å›´ç›’ï¼‰é€šç”¨ç¢°æ’æ£€æµ‹å‡½æ•°
 bool check_aabb_collision(float x1, float y1, float w1, float h1,
                           float x2, float y2, float w2, float h2)
 {
@@ -12,7 +12,7 @@ bool check_aabb_collision(float x1, float y1, float w1, float h1,
              y1 + h1 < y2 || y1 > y2 + h2);
 }
 
-// µØĞÎÅö×²´¦Àí£º»ùÓÚ³¢ÊÔÎ»ÖÃÅĞ¶ÏÊÇ·ñ×²Ç½/µØ°å
+// åœ°å½¢ç¢°æ’å¤„ç†ï¼šåŸºäºå°è¯•ä½ç½®åˆ¤æ–­æ˜¯å¦æ’å¢™/åœ°æ¿
 void handle_character_tile_collision(character_t *ch, float dt)
 {
     float new_x = ch->x + ch->vx * dt;
@@ -28,14 +28,14 @@ void handle_character_tile_collision(character_t *ch, float dt)
         ch->y = new_y;
 }
 
-// ½ÇÉ«ÓëµØÍ¼ÎïÌåµÄÅö×²£¨Èç£º×êÊ¯¡¢À­¸ËµÈ£©
+// è§’è‰²ä¸åœ°å›¾ç‰©ä½“çš„ç¢°æ’ï¼ˆå¦‚ï¼šé’»çŸ³ã€æ‹‰æ†ç­‰ï¼‰
 void handle_character_object_collision(character_t *ch, object_t *objects, int num_objects)
 {
     for (int i = 0; i < num_objects; ++i)
     {
         object_t *obj = &objects[i];
         if (!obj->active || obj->collected)
-            continue; // ºöÂÔÒÑ´¦ÀíµÄ¶ÔÏó
+            continue; // å¿½ç•¥å·²å¤„ç†çš„å¯¹è±¡
 
         bool collided = check_aabb_collision(
             ch->x, ch->y, ch->width, ch->height,
@@ -57,7 +57,7 @@ void handle_character_object_collision(character_t *ch, object_t *objects, int n
     }
 }
 
-// ½ÇÉ«Óë½ÇÉ«Åö×²£¨½öÓÃÓÚ¿ØÖÆÏÔÊ¾²ã¼¶£¬²»Ó°ÏìÎ»ÖÃ£©
+// è§’è‰²ä¸è§’è‰²ç¢°æ’ï¼ˆä»…ç”¨äºæ§åˆ¶æ˜¾ç¤ºå±‚çº§ï¼Œä¸å½±å“ä½ç½®ï¼‰
 void handle_character_vs_character(character_t *a, character_t *b)
 {
     if (!a->alive || !b->alive)
@@ -69,7 +69,7 @@ void handle_character_vs_character(character_t *a, character_t *b)
 
     if (collided)
     {
-        // Ë®Å®º¢ÏÔÊ¾ÔÚ»ğÄĞº¢Ö®ÉÏ
+        // æ°´å¥³å­©æ˜¾ç¤ºåœ¨ç«ç”·å­©ä¹‹ä¸Š
         if (a->type == TYPE_WATERGIRL && b->type == TYPE_FIREBOY)
         {
             a->priority_offset = 1;

@@ -1,11 +1,11 @@
 // tilemap.c
-// µØÐÎÍ¼Êý¾ÝÓë tile Åö×²¼ì²âÊµÏÖ
+// ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ tile ï¿½ï¿½×²ï¿½ï¿½ï¿½Êµï¿½ï¿½
 
 #include "tilemap.h"
-#include <math.h> // ÓÃÓÚ floor()
+#include <math.h> // ï¿½ï¿½ï¿½ï¿½ floor()
 
-// === Ê¾ÀýµØÍ¼Êý¾Ý ===
-// 0: ¿ÕµØ  1: Ç½±Ú  2: »ð³Ø  3: Ë®³Ø  4: ÖÕµã
+// === Ê¾ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ ===
+// 0: ï¿½Õµï¿½  1: Ç½ï¿½ï¿½  2: ï¿½ï¿½ï¿½  3: Ë®ï¿½ï¿½  4: ï¿½Õµï¿½
 const int tilemap[30][40] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -36,7 +36,7 @@ const int tilemap[30][40] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-// === Tile Åö×²¼ì²âº¯Êý ===
+// === Tile ï¿½ï¿½×²ï¿½ï¿½âº¯ï¿½ï¿½ ===
 bool is_tile_blocked(float x, float y, float width, float height)
 {
     int left = (int)floor(x / TILE_SIZE);
@@ -48,30 +48,30 @@ bool is_tile_blocked(float x, float y, float width, float height)
     {
         for (int tx = left; tx <= right; ++tx)
         {
-            // Ô½½çÊÓÎª×èµ²
+            // Ô½ï¿½ï¿½ï¿½ï¿½Îªï¿½èµ²
             if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
                 return true;
 
             int tile = tilemap[ty][tx];
             if (tile == TILE_WALL)
-                return true; // ÓëÇ½Ìå·¢ÉúÅö×²
+                return true; // ï¿½ï¿½Ç½ï¿½å·¢ï¿½ï¿½ï¿½ï¿½×²
         }
     }
-    return false; // Î´·¢ÏÖÅö×²
+    return false; // Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²
 }
 
 bool is_tile_blocked_precise(float x, float y, float width, float height)
 {
-    // ×óÓÒ±ß½ç
+    // ï¿½ï¿½ï¿½Ò±ß½ï¿½
     float x_left = x;
     float x_right = x + width - 1;
 
-    // ÉÏÖÐÏÂ 3 ¸ö´¹Ö±¸ß¶È
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3 ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß¶ï¿½
     float y_top = y;
     float y_mid = y + height / 2.0f;
     float y_bottom = y + height - 1;
 
-    // 6 ¸ö¹Ø¼ü²ÉÑùµã£º×óÉÏ¡¢ÓÒÉÏ¡¢×óÖÐ¡¢ÓÒÖÐ¡¢×óÏÂ¡¢ÓÒÏÂ
+    // 6 ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£ºï¿½ï¿½ï¿½Ï¡ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Â¡ï¿½ï¿½ï¿½ï¿½ï¿½
     float sample_points[6][2] = {
         {x_left, y_top},
         {x_right, y_top},
@@ -86,12 +86,12 @@ bool is_tile_blocked_precise(float x, float y, float width, float height)
         int ty = (int)(sample_points[i][1] / TILE_SIZE);
 
         if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
-            return true; // Ô½½çÖ±½ÓÊÓÎªÅö×²
+            return true; // Ô½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½×²
 
         int tile = tilemap[ty][tx];
         if (tile == TILE_WALL)
-            return true; // Åö×²ÅÐ¶¨
+            return true; // ï¿½ï¿½×²ï¿½Ð¶ï¿½
     }
 
-    return false; // ËùÓÐµã¶¼Ã»×²Ç½
+    return false; // ï¿½ï¿½ï¿½Ðµã¶¼Ã»×²Ç½
 }

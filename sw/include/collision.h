@@ -1,5 +1,5 @@
 // collision.h
-// Åö×²¼ì²âÄ£¿éÍ·ÎÄ¼ş
+// ç¢°æ’æ£€æµ‹æ¨¡å—å¤´æ–‡ä»¶
 
 #ifndef COLLISION_H
 #define COLLISION_H
@@ -9,7 +9,7 @@
 #include "sprite_object.h"
 
 /**
- * Í¨ÓÃ AABB Åö×²¼ì²â£ºÓÃÓÚÈÎÒâÁ½¸ö¾ØĞÎµÄ½»²æÅĞ¶Ï
+ * é€šç”¨ AABB ç¢°æ’æ£€æµ‹ï¼šç”¨äºä»»æ„ä¸¤ä¸ªçŸ©å½¢çš„äº¤å‰åˆ¤æ–­
  */
 bool check_aabb_collision(float x1, float y1, float w1, float h1,
                           float x2, float y2, float w2, float h2);
@@ -17,20 +17,20 @@ bool check_aabb_collision(float x1, float y1, float w1, float h1,
 bool is_tile_blocked_precise(float x, float y, float width, float height);
 
 /**
- * µØĞÎÅö×²´¦Àí£º½ÇÉ«ÔÚ³¢ÊÔÒÆ¶¯Ç°¼ì²âÊÇ·ñ×²Ç½/µØ°å
- * Èô¼ì²âµ½µØĞÎ×èµ²£¬ÔòÈ¡Ïû±¾Ö¡ËÙ¶È£»·ñÔò¸üĞÂ×ø±ê
+ * åœ°å½¢ç¢°æ’å¤„ç†ï¼šè§’è‰²åœ¨å°è¯•ç§»åŠ¨å‰æ£€æµ‹æ˜¯å¦æ’å¢™/åœ°æ¿
+ * è‹¥æ£€æµ‹åˆ°åœ°å½¢é˜»æŒ¡ï¼Œåˆ™å–æ¶ˆæœ¬å¸§é€Ÿåº¦ï¼›å¦åˆ™æ›´æ–°åæ ‡
  */
 void handle_character_tile_collision(character_t *ch, float dt);
 
 /**
- * ½ÇÉ«ÓëµØÍ¼ÎïÌå£¨×êÊ¯¡¢À­¸Ë¡¢µçÌİµÈ£©Åö×²´¦Àí
- * ¼ì²âËùÓĞ object£¬ÈôÓë½ÇÉ«Åö×²ÔòÉèÖÃÏàÓ¦×´Ì¬±êÖ¾Î»
+ * è§’è‰²ä¸åœ°å›¾ç‰©ä½“ï¼ˆé’»çŸ³ã€æ‹‰æ†ã€ç”µæ¢¯ç­‰ï¼‰ç¢°æ’å¤„ç†
+ * æ£€æµ‹æ‰€æœ‰ objectï¼Œè‹¥ä¸è§’è‰²ç¢°æ’åˆ™è®¾ç½®ç›¸åº”çŠ¶æ€æ ‡å¿—ä½
  */
 void handle_character_object_collision(character_t *ch, object_t *objects, int num_objects);
 
 /**
- * ½ÇÉ«Ö®¼äµÄÅö×²¼ì²âÓëÏìÓ¦£¨ÀıÈçÍÆ¼·¡¢ÖØµşÏŞÖÆµÈ£©
- * Ä¬ÈÏÒÔ±àºÅ¿¿ºóµÄ½ÇÉ«ÓÅÏÈÉúĞ§£¨ÀıÈçË®Å®º¢¸²¸Ç»ğÄĞº¢£©
+ * è§’è‰²ä¹‹é—´çš„ç¢°æ’æ£€æµ‹ä¸å“åº”ï¼ˆä¾‹å¦‚æ¨æŒ¤ã€é‡å é™åˆ¶ç­‰ï¼‰
+ * é»˜è®¤ä»¥ç¼–å·é åçš„è§’è‰²ä¼˜å…ˆç”Ÿæ•ˆï¼ˆä¾‹å¦‚æ°´å¥³å­©è¦†ç›–ç«ç”·å­©ï¼‰
  */
 void handle_character_vs_character(character_t *a, character_t *b);
 

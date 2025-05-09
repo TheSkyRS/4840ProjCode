@@ -19,14 +19,6 @@
 #include <linux/input.h>
 #include <sys/time.h>
 
-/* 游戏动作常量定义 */
-typedef enum {
-    ACTION_NONE = 0,      // 无动作
-    ACTION_MOVE_LEFT = 1, // 向左移动
-    ACTION_MOVE_RIGHT = 2,// 向右移动
-    ACTION_JUMP = 3       // 跳跃动作
-} game_action_t;
-
 /* Constants */
 #define JOYPAD_1_DEVICE "/dev/input/event0" // First joypad device
 #define JOYPAD_2_DEVICE "/dev/input/event1" // Second joypad device

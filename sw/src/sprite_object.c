@@ -1,16 +1,16 @@
 // sprite_object.c
-// ÊµÏÖµØÍ¼ÎïÌå£¨Èç×êÊ¯¡¢À­¸Ë¡¢µçÌİµÈ£©µÄ»æÖÆÓë¶¯»­¸üĞÂÂß¼­
+// å®ç°åœ°å›¾ç‰©ä½“ï¼ˆå¦‚é’»çŸ³ã€æ‹‰æ†ã€ç”µæ¢¯ç­‰ï¼‰çš„ç»˜åˆ¶ä¸åŠ¨ç”»æ›´æ–°é€»è¾‘
 
-#include "sprite_object.h" // ÎïÌå½á¹¹ÌåÓë½Ó¿ÚÉùÃ÷
+#include "sprite_object.h" // ç‰©ä½“ç»“æ„ä½“ä¸æ¥å£å£°æ˜
 #include "vgasys.h"
 
 /**
- * ¸üĞÂµ¥¸öÎïÌåµÄ¶¯»­Ö¡£¨Èç¹ûÓĞ¶àÖ¡£©
+ * æ›´æ–°å•ä¸ªç‰©ä½“çš„åŠ¨ç”»å¸§ï¼ˆå¦‚æœæœ‰å¤šå¸§ï¼‰
  */
 void update_object_animation(object_t *obj, float dt)
 {
     if (obj->frame_count <= 1)
-        return; // ¾²Ì¬ÎïÌåÎŞĞè¶¯»­¸üĞÂ
+        return; // é™æ€ç‰©ä½“æ— éœ€åŠ¨ç”»æ›´æ–°
 
     obj->anim_timer += dt;
     if (obj->anim_timer >= obj->frame_interval)
@@ -21,12 +21,12 @@ void update_object_animation(object_t *obj, float dt)
 }
 
 /**
- * @brief ½«ÎïÌåµÄ¾«ÁéĞÅÏ¢Ğ´Èë sprite »º´æÊı×é
+ * @brief å°†ç‰©ä½“çš„ç²¾çµä¿¡æ¯å†™å…¥ sprite ç¼“å­˜æ•°ç»„
  *
- * @param obj           Ö¸ÏòÎïÌå½á¹¹ÌåµÄÖ¸Õë
- * @param sprite_words  ¾«Áé»º´æÊı×é
- * @param count         µ±Ç°Ğ´ÈëÊıÁ¿Ö¸Õë
- * @param max_count     »º³åÇø×î´óÈİÁ¿
+ * @param obj           æŒ‡å‘ç‰©ä½“ç»“æ„ä½“çš„æŒ‡é’ˆ
+ * @param sprite_words  ç²¾çµç¼“å­˜æ•°ç»„
+ * @param count         å½“å‰å†™å…¥æ•°é‡æŒ‡é’ˆ
+ * @param max_count     ç¼“å†²åŒºæœ€å¤§å®¹é‡
  */
 void object_push_sprite(object_t *obj, uint32_t *sprite_words, int *count, int max_count)
 {

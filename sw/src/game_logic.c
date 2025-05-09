@@ -1,20 +1,20 @@
 #define _DEFAULT_SOURCE
 #include <stdint.h>
 #include <stdbool.h>
-#include <sys/time.h> // Ìá¹© gettimeofday
-#include <unistd.h>   // Ìá¹© usleep
+#include <sys/time.h> // æä¾› gettimeofday
+#include <unistd.h>   // æä¾› usleep
 
-#include "vga_top.h"        // ioctl Ö¸ÁîÂë½á¹¹Ìå
-#include "vgasys.h"         // VGA ÏµÍ³½Ó¿Ú·â×°£¨write_sprite µÈ£©
-#include "character.h"      // character_t, ½ÇÉ«¸üĞÂÂß¼­
-#include "sprite_object.h"  // object_t, µØÍ¼ÎïÌå¶¯»­
-#include "collision.h"      // Åö×²¼ì²â
-#include "keyboard_input.h" // Íæ¼ÒÊäÈë£¨get_player_action£©
+#include "vga_top.h"       // ioctl æŒ‡ä»¤ç ç»“æ„ä½“
+#include "vgasys.h"        // VGA ç³»ç»Ÿæ¥å£å°è£…ï¼ˆwrite_sprite ç­‰ï¼‰
+#include "character.h"     // character_t, è§’è‰²æ›´æ–°é€»è¾‘
+#include "sprite_object.h" // object_t, åœ°å›¾ç‰©ä½“åŠ¨ç”»
+#include "collision.h"     // ç¢°æ’æ£€æµ‹
+#include "joypad_input.h"  // ç©å®¶è¾“å…¥ï¼ˆget_player_actionï¼‰
 
-// ¾«Áé»º³åÇø´óĞ¡£¨VGA Ö§³Ö×î¶à 32 ¸ö sprite£©
+// ç²¾çµç¼“å†²åŒºå¤§å°ï¼ˆVGA æ”¯æŒæœ€å¤š 32 ä¸ª spriteï¼‰
 #define MAX_SPRITES 32
 
-// Ö¡ÂÊ¿ØÖÆ²ÎÊı£¨µ¥Î»£ºÎ¢Ãë£©
+// å¸§ç‡æ§åˆ¶å‚æ•°ï¼ˆå•ä½ï¼šå¾®ç§’ï¼‰
 #define TARGET_FPS 60
 #define FRAME_TIME_US (1000000 / TARGET_FPS)
 
@@ -24,40 +24,40 @@ int num_characters = 2;
 object_t objects[4];
 int num_objects = 4;
 
-// ¾«ÁéĞ´Èë»º³åÊı×é£¨Ã¿Ö¡¹¹ÔìºóÔÚÏûÒşÆÚĞ´Èë£©
+// ç²¾çµå†™å…¥ç¼“å†²æ•°ç»„ï¼ˆæ¯å¸§æ„é€ ååœ¨æ¶ˆéšæœŸå†™å…¥ï¼‰
 uint32_t sprite_words[MAX_SPRITES];
 int sprite_count = 0;
 
-// ¿ØÖÆ¼Ä´æÆ÷²ÎÊı
-#define TILEMAP_ID 0       // µ±Ç°µØÍ¼±àºÅ£¨¿ÉÓÃÓÚÇĞ»»¹Ø¿¨£©
-#define COLLISION_ENABLE 0 // Ó²¼şÅö×²¿ª¹Ø£¨¿ÉÑ¡£©
+// æ§åˆ¶å¯„å­˜å™¨å‚æ•°
+#define TILEMAP_ID 0       // å½“å‰åœ°å›¾ç¼–å·ï¼ˆå¯ç”¨äºåˆ‡æ¢å…³å¡ï¼‰
+#define COLLISION_ENABLE 0 // ç¡¬ä»¶ç¢°æ’å¼€å…³ï¼ˆå¯é€‰ï¼‰
 
 /**
- * ÓÎÏ·Ö÷Ñ­»·£º°´Ö¡ÔËĞĞ£¬·ÖÎª¿É¼ûÆÚ£¨´¦ÀíÂß¼­£©ÓëÏûÒşÆÚ£¨Ğ´ÈëÓ²¼ş£©
+ * æ¸¸æˆä¸»å¾ªç¯ï¼šæŒ‰å¸§è¿è¡Œï¼Œåˆ†ä¸ºå¯è§æœŸï¼ˆå¤„ç†é€»è¾‘ï¼‰ä¸æ¶ˆéšæœŸï¼ˆå†™å…¥ç¡¬ä»¶ï¼‰
  */
 void run_game_loop()
 {
     struct timeval frame_start, frame_end;
-    float delta_time = 1.0f / TARGET_FPS; // Ã¿Ö¡Ê±¼ä£¬Ãë
+    float delta_time = 1.0f / TARGET_FPS; // æ¯å¸§æ—¶é—´ï¼Œç§’
     bool running = true;
 
-    unsigned col = 0, row = 0; // VGA µ±Ç°É¨ÃèÎ»ÖÃ
+    unsigned col = 0, row = 0; // VGA å½“å‰æ‰«æä½ç½®
 
     while (running)
     {
-        // ¼ÇÂ¼±¾Ö¡ÆğÊ¼Ê±¼ä
+        // è®°å½•æœ¬å¸§èµ·å§‹æ—¶é—´
         gettimeofday(&frame_start, NULL);
 
-        // ²éÑ¯ VGA ×´Ì¬¼Ä´æÆ÷£¬»ñµÃÉ¨ÃèÎ»ÖÃ£¨vcount£©
+        // æŸ¥è¯¢ VGA çŠ¶æ€å¯„å­˜å™¨ï¼Œè·å¾—æ‰«æä½ç½®ï¼ˆvcountï¼‰
         read_status(&col, &row);
 
         if (row < 480)
         {
-            // ================== ¿É¼ûÇø£º¼ÆËã½ÇÉ«ºÍÎïÌåÂß¼­ ==================
+            // ================== å¯è§åŒºï¼šè®¡ç®—è§’è‰²å’Œç‰©ä½“é€»è¾‘ ==================
 
-            sprite_count = 0; // Çå¿Õ¾«Áé»º³åÇø
+            sprite_count = 0; // æ¸…ç©ºç²¾çµç¼“å†²åŒº
 
-            // ½ÇÉ«×´Ì¬¸üĞÂ£ºÊäÈë¡úËÙ¶È¡úÅö×²¡ú¶¯×÷
+            // è§’è‰²çŠ¶æ€æ›´æ–°ï¼šè¾“å…¥â†’é€Ÿåº¦â†’ç¢°æ’â†’åŠ¨ä½œ
             for (int i = 0; i < num_characters; ++i)
             {
                 character_t *ch = &characters[i];
@@ -68,13 +68,13 @@ void run_game_loop()
                 handle_character_object_collision(ch, objects, num_objects);
             }
 
-            // ½ÇÉ«Ö®¼äµÄÏÔÊ¾²ã¼¶µ÷Õû£¨Ë­¸²¸ÇË­£©
+            // è§’è‰²ä¹‹é—´çš„æ˜¾ç¤ºå±‚çº§è°ƒæ•´ï¼ˆè°è¦†ç›–è°ï¼‰
             if (num_characters >= 2)
             {
                 handle_character_vs_character(&characters[0], &characters[1]);
             }
 
-            // === ¹¹ÔìÃ¿¸ö½ÇÉ«µÄÁ½¸ö¾«Áé£¨Í·²¿ + ÉíÌå£© ===
+            // === æ„é€ æ¯ä¸ªè§’è‰²çš„ä¸¤ä¸ªç²¾çµï¼ˆå¤´éƒ¨ + èº«ä½“ï¼‰ ===
             for (int i = 0; i < num_characters; ++i)
             {
                 character_t *ch = &characters[i];
@@ -90,7 +90,7 @@ void run_game_loop()
                                                                   (uint16_t)ch->x, (uint16_t)(ch->y + 12), ch->frame_body);
             }
 
-            // === ¸üĞÂÎïÌå¶¯»­£¬²¢Ğ´Èë»º³å¾«Áé ===
+            // === æ›´æ–°ç‰©ä½“åŠ¨ç”»ï¼Œå¹¶å†™å…¥ç¼“å†²ç²¾çµ ===
             for (int i = 0; i < num_objects; ++i)
             {
                 object_t *obj = &objects[i];
@@ -106,13 +106,13 @@ void run_game_loop()
         }
         else
         {
-            // ================== ÏûÒşÇø£¨vcount ¡İ 480£©£ºĞ´ÈëÓ²¼ş¼Ä´æÆ÷ ==================
+            // ================== æ¶ˆéšåŒºï¼ˆvcount â‰¥ 480ï¼‰ï¼šå†™å…¥ç¡¬ä»¶å¯„å­˜å™¨ ==================
 
-            // Ğ´Èë¿ØÖÆ¼Ä´æÆ÷£¨µØÍ¼±àºÅ¡¢Åö×²¿ª¹ØµÈ£©
+            // å†™å…¥æ§åˆ¶å¯„å­˜å™¨ï¼ˆåœ°å›¾ç¼–å·ã€ç¢°æ’å¼€å…³ç­‰ï¼‰
             uint32_t ctrl_value = (TILEMAP_ID & 0x3) | ((COLLISION_ENABLE & 0x1) << 2);
             write_ctrl(ctrl_value);
 
-            // Ğ´Èë¾«ÁéÊôĞÔµ½Ó²¼ş
+            // å†™å…¥ç²¾çµå±æ€§åˆ°ç¡¬ä»¶
             for (int i = 0; i < sprite_count; ++i)
             {
                 write_sprite(i, 1,
@@ -122,14 +122,14 @@ void run_game_loop()
                              sprite_words[i] & 0xFF);         // frame
             }
 
-            // Çå³ı¶àÓà¾«Áé²Û£¬±ÜÃâ²ĞÓ°
+            // æ¸…é™¤å¤šä½™ç²¾çµæ§½ï¼Œé¿å…æ®‹å½±
             for (int i = sprite_count; i < MAX_SPRITES; ++i)
             {
                 write_sprite(i, 0, 0, 0, 0, 0);
             }
         }
 
-        // ================== Ö¡ÂÊ¿ØÖÆ£¨ÏŞËÙ£© ==================
+        // ================== å¸§ç‡æ§åˆ¶ï¼ˆé™é€Ÿï¼‰ ==================
 
         gettimeofday(&frame_end, NULL);
 
@@ -138,11 +138,11 @@ void run_game_loop()
 
         delta_time = duration_us / 1000000.0f;
         if (delta_time > 0.1f)
-            delta_time = 0.1f; // ·ÀÖ¹ÌøÖ¡Ê± delta_time ±¬Õ¨
+            delta_time = 0.1f; // é˜²æ­¢è·³å¸§æ—¶ delta_time çˆ†ç‚¸
         if (delta_time <= 0)
             delta_time = 1.0f / TARGET_FPS;
 
-        // ÈôÖ¡Ê±¼äÌ«¶ÌÔòÖ÷¶¯ sleep ²¹ÆëÊ±¼ä
+        // è‹¥å¸§æ—¶é—´å¤ªçŸ­åˆ™ä¸»åŠ¨ sleep è¡¥é½æ—¶é—´
         if (duration_us < FRAME_TIME_US)
         {
             usleep(FRAME_TIME_US - duration_us);

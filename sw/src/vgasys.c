@@ -1,5 +1,5 @@
 #include "vgasys.h"
-#include "vga_top.h" // °üº¬ ioctl Ïà¹Ø½á¹¹ºÍÃüÁîÂë
+#include "vga_top.h" // åŒ…å« ioctl ç›¸å…³ç»“æ„å’Œå‘½ä»¤ç 
 
 #include <stdio.h>
 #include <stdint.h>
@@ -7,11 +7,11 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-// ÄÚ²¿ÎÄ¼şÃèÊö·û£¬Ö¸Ïò /dev/vga_top
+// å†…éƒ¨æ–‡ä»¶æè¿°ç¬¦ï¼ŒæŒ‡å‘ /dev/vga_top
 static int vgasys_fd = -1;
 
 // ================================
-// ³õÊ¼»¯ÓëÇåÀí
+// åˆå§‹åŒ–ä¸æ¸…ç†
 // ================================
 
 int vgasys_init(const char *dev_name)
@@ -35,7 +35,7 @@ void vgasys_cleanup()
 }
 
 // ================================
-// ¹¹Ôì Sprite ÊôĞÔ×Ö
+// æ„é€  Sprite å±æ€§å­—
 // ================================
 
 uint32_t make_attr_word(uint8_t enable, uint8_t flip,
@@ -51,7 +51,7 @@ uint32_t make_attr_word(uint8_t enable, uint8_t flip,
 }
 
 // ================================
-// Ğ´Èë Sprite ÊôĞÔ
+// å†™å…¥ Sprite å±æ€§
 // ================================
 
 void write_sprite(uint8_t index, uint8_t enable, uint8_t flip,
@@ -74,7 +74,7 @@ void write_sprite(uint8_t index, uint8_t enable, uint8_t flip,
 }
 
 // ================================
-// ¿ØÖÆ¼Ä´æÆ÷Ğ´Èë
+// æ§åˆ¶å¯„å­˜å™¨å†™å…¥
 // ================================
 
 void write_ctrl(uint32_t value)
@@ -93,7 +93,7 @@ void write_ctrl(uint32_t value)
 }
 
 // ================================
-// VGA ×´Ì¬¶ÁÈ¡
+// VGA çŠ¶æ€è¯»å–
 // ================================
 
 void read_status(unsigned *col, unsigned *row)
