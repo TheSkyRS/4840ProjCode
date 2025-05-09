@@ -30,7 +30,7 @@ JOYPAD_TEST_TARGET = $(BUILD_DIR)/joypad_test
 JOYPAD_PACKAGE = $(PACKAGE_DIR)/joypad_module.tar.gz
 
 # === 默认构建用户程序 ===
-all: $(TARGET)
+all: $(TARGET) vga_top.ko
 
 # === 链接主程序 ===
 $(TARGET): $(OBJS)
@@ -60,17 +60,16 @@ joypad_package: joypad_test
 	@echo "Packaged joypad module: $(JOYPAD_PACKAGE)"
 
 # === 构建 vga_top.ko 内核模块 ===
-VGA_TOP_KO := $(SRC_DIR)/vga_top.ko
+VGA_TOP_KO := vga_top.ko
 KERNEL_BUILD := /lib/modules/$(shell uname -r)/build
 
 vga_top.ko:
-	$(MAKE) -C $(KERNEL_BUILD) M=$(abspath $(SRC_DIR)) modules
+	$(MAKE) -C $(KERNEL_BUILD) M=$(CURDIR) modules
 	@echo "Built kernel module: $(VGA_TOP_KO)"
 
 vga_top_clean:
-	$(MAKE) -C $(KERNEL_BUILD) M=$(abspath $(SRC_DIR)) clean
+	$(MAKE) -C $(KERNEL_BUILD) M=$(CURDIR) clean
 	@rm -f $(VGA_TOP_KO)
-	@echo "Cleaned vga_top kernel module."
 
 # === 清理指令 ===
 clean:
