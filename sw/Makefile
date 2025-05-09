@@ -8,27 +8,28 @@ SRC_DIR = src
 INC_DIR = include
 BUILD_DIR = build
 PACKAGE_DIR = package
+VGA_DEMO_DIR = vga_demo
 
 # === 编译参数 ===
-CFLAGS = -Wall -Wextra -g -I$(INC_DIR) -Ivga_demo -O2
+CFLAGS = -Wall -Wextra -g -I$(INC_DIR) -I$(VGA_DEMO_DIR) -O2
 LDFLAGS = -lm
 
 # === 主程序源文件（排除 joypad_test.c）===
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 SRCS := $(filter-out $(SRC_DIR)/joypad_test.c, $(SRCS))
-OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
+OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 TARGET = $(BUILD_DIR)/game_sw
 
-# === Joypad 相关 ===
+# === Joypad 模块 ===
 JOYPAD_SRCS = $(SRC_DIR)/joypad_input.c
 JOYPAD_TEST_SRCS = $(SRC_DIR)/joypad_test.c
 JOYPAD_HEADERS = $(INC_DIR)/joypad_input.h $(INC_DIR)/input_handler.h
-JOYPAD_OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(JOYPAD_SRCS))
-JOYPAD_TEST_OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(JOYPAD_TEST_SRCS))
+JOYPAD_OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(JOYPAD_SRCS))
+JOYPAD_TEST_OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(JOYPAD_TEST_SRCS))
 JOYPAD_TEST_TARGET = $(BUILD_DIR)/joypad_test
 JOYPAD_PACKAGE = $(PACKAGE_DIR)/joypad_module.tar.gz
 
-# === 默认目标：构建主程序 ===
+# === 默认目标 ===
 all: $(TARGET)
 
 # === 主程序链接 ===
@@ -37,7 +38,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 	@echo "Linking complete: $@"
 
-# === 通用编译规则 ===
+# === 编译规则 ===
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -58,7 +59,7 @@ joypad_package: joypad_test
 	@tar -czf $(JOYPAD_PACKAGE) -C $(PACKAGE_DIR) .
 	@echo "Packaged joypad module: $(JOYPAD_PACKAGE)"
 
-# === 清理 ===
+# === 清理命令 ===
 clean:
 	@rm -rf $(BUILD_DIR)
 	@echo "Cleaned build directory."

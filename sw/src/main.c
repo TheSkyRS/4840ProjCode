@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
-#include "vgasys.h"
+#include "vga_top.h" // ✅ 必须：用于结构体与 ioctl 宏
 #include "game_logic.h"
 #include "character.h"
 #include "sprite_object.h"
-#include "joypad_input.h" // ✅ 新增：引入 Joypad 模块
+#include "joypad_input.h" // ✅ Joypad 输入控制
 
 // 全局角色和物体
 extern character_t characters[];
@@ -14,6 +17,28 @@ extern int num_characters;
 
 extern object_t objects[];
 extern int num_objects;
+
+// VGA 设备文件描述符
+int vga_fd = -1;
+
+// 初始化 VGA 设备（替代 vgasys_init）
+int init_vga(const char *dev_path)
+{
+    vga_fd = open(dev_path, O_RDWR);
+    if (vga_fd < 0)
+    {
+        perror("[main] 无法打开 VGA 设备");
+        return -1;
+    }
+    return 0;
+}
+
+// 清理 VGA（替代 vgasys_cleanup）
+void close_vga()
+{
+    if (vga_fd >= 0)
+        close(vga_fd);
+}
 
 int main()
 {
@@ -30,7 +55,7 @@ int main()
     }
 
     // === 初始化 VGA 硬件 ===
-    if (vgasys_init("/dev/vga_top") < 0)
+    if (init_vga("/dev/vga_top") < 0)
     {
         fprintf(stderr, "[main] 无法打开 VGA 设备，退出程序。\n");
         return 1;
@@ -56,12 +81,10 @@ int main()
     objects[3].frame_id = 5;
 
     // === 启动游戏主循环 ===
-    run_game_loop();
+    run_game_loop(); // 你必须确保 run_game_loop() 内部使用了 vga_fd
 
     // === 退出前清理资源 ===
-    vgasys_cleanup();
-    // // 可选：调用 hander 清理
-    // input_handler_cleanup(); // 若你有此函数实现
+    close_vga();
 
     return 0;
 }
