@@ -266,13 +266,7 @@ module soc_system_top(
      .hps_hps_io_gpio_inst_GPIO48  ( HPS_I2C_CONTROL ),
      .hps_hps_io_gpio_inst_GPIO53  ( HPS_LED ),
      .hps_hps_io_gpio_inst_GPIO54  ( HPS_KEY ),
-     .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT ),
-
-     .audio_sclk (AUDIO_SCLK),
-     .audio_lrclk (AUDIO_LRCLK),
-     .audio_dacdat (AUDIO_DACDAT),
-     .audio_i2c_sclk (AUDIO_I2C_SCLK),
-     .audio_i2c_sdat (AUDIO_I2C_SDAT)
+     .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT )
   );
 
    // The following quiet the "no driver" warnings for output
