@@ -2,7 +2,6 @@
 // 实现地图物体（如钻石、拉杆、电梯等）的绘制与动画更新逻辑
 
 #include "sprite_object.h" // 物体结构体与接口声明
-#include "vgasys.h"
 #include <stdbool.h>
 
 /**
