@@ -22,7 +22,4 @@ void update_game_state(character_t *characters, int num_characters,
                        object_t *objects, int num_objects,
                        float delta_time);
 
-// 可选函数：用于切换关卡状态、同步全局参数到硬件（如灯光、计分等）
-void sync_game_state_to_hardware(game_state_t state);
-
 #endif // GAME_LOGIC_H

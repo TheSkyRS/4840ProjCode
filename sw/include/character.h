@@ -3,10 +3,9 @@
 
 #ifndef CHARACTER_H
 #define CHARACTER_H
-
-#include "hw_interface.h"
-#include "input_handler.h"
+#include "keyboard_input.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 // === 角色行为参数 ===
 #define MOVE_SPEED 60.0f      // 水平移动速度（像素/秒）
@@ -64,7 +63,14 @@ void update_character_position(character_t *ch, float dt);
 // 每帧调用：根据角色状态更新动画帧（头部和身体分开）
 void update_character_animation(character_t *ch, float delta_time);
 
-// 渲染所有角色的头部+身体精灵到 Sprite 表
-void sync_characters_to_hardware(character_t *characters, int num_characters);
+/**
+ * 将角色的两个精灵帧（头部和身体）写入 sprite 缓存数组
+ *
+ * @param ch           指向角色结构体的指针
+ * @param sprite_words 输出数组
+ * @param count        当前写入数（会被修改）
+ * @param max_count    最大容量
+ */
+void character_push_sprites(character_t *ch, uint32_t *sprite_words, int *count, int max_count);
 
 #endif // CHARACTER_H

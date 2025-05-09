@@ -7,8 +7,8 @@
 #include <stdbool.h>
 
 // === 地图常量定义 ===
-#define MAP_WIDTH 30  // 地图宽度（单位：tile）
-#define MAP_HEIGHT 20 // 地图高度（单位：tile）
+#define MAP_WIDTH 40  // 地图宽度（单位：tile）
+#define MAP_HEIGHT 30 // 地图高度（单位：tile）
 #define TILE_SIZE 16  // 每格 tile 的像素尺寸
 
 // Tile 编码约定（根据地图设计者定义）

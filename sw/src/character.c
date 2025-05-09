@@ -1,10 +1,8 @@
 // character.c
 // 角色控制逻辑模块实现：运动控制、动画播放、精灵同步
 
-#include "character.h"     // 包含角色结构体与函数声明
-#include "hw_interface.h"  // 包含精灵绘制函数与硬件接口定义
-#include "input_handler.h" // 包含输入控制的定义与函数
-
+#include "character.h" // 包含角色结构体与函数声明
+#include "vgasys.h"
 // === 动画控制参数 ===
 #define NUM_HEAD_FRAMES 8   // 头部动画帧总数
 #define NUM_BODY_FRAMES 8   // 身体动画帧总数
@@ -125,45 +123,38 @@ void update_character_position(character_t *ch, float dt)
     ch->x += ch->vx * dt; // 更新水平位置
     ch->y += ch->vy * dt; // 更新垂直位置
 }
-
-// 将所有角色的头部和身体 sprite 数据写入硬件 BRAM 表
-void sync_characters_to_hardware(character_t *characters, int num_characters)
+/**
+ * @brief 将角色的两个精灵帧（头部和身体）写入 sprite 缓存数组
+ *
+ * @param ch           指向角色结构体的指针
+ * @param sprite_words 缓存数组，存放将要写入硬件的 attr_word
+ * @param count        指向当前写入个数的指针，会被更新
+ * @param max_count    数组容量（用于防止越界）
+ */
+void character_push_sprites(character_t *ch, uint32_t *sprite_words, int *count, int max_count)
 {
-    sprite_attr_t sprites[MAX_SPRITES]; // 精灵表临时数组
-    int count = 0;                      // 已写入 sprite 数量
+    if (!ch || !ch->alive || *count >= max_count)
+        return;
 
-    for (int i = 0; i < num_characters; ++i)
+    // === 写入头部 sprite attr_word ===
+    if (*count < max_count)
     {
-        character_t *ch = &characters[i];
-        if (!ch->alive)
-            continue; // 跳过死亡角色
-
-        // === 写入头部 sprite ===
-        if (count < MAX_SPRITES)
-        {
-            sprite_attr_t head = make_sprite(
-                ch->x, ch->y + HEAD_OFFSET_Y,
-                ch->frame_head, ch->width, ch->height / 2,
-                i * 2 + 1, true, ch->facing_right);
-            sprites[count++] = head;
-        }
-
-        // === 写入身体 sprite ===
-        if (count < MAX_SPRITES)
-        {
-            sprite_attr_t body = make_sprite(
-                ch->x, ch->y + BODY_OFFSET_Y,
-                ch->frame_body, ch->width, ch->height / 2,
-                i * 2, true, ch->facing_right);
-            sprites[count++] = body;
-        }
+        uint32_t head = make_attr_word(1, !ch->facing_right,
+                                       (uint16_t)ch->x,
+                                       (uint16_t)(ch->y + HEAD_OFFSET_Y),
+                                       ch->frame_head);
+        sprite_words[(*count)++] = head;
     }
 
-    // 清除未使用的 sprite 槽位，防止残影
-    for (int i = count; i < MAX_SPRITES; ++i)
-        sprites[i].flags.value = 0;
-
-    update_sprite_table(sprites, MAX_SPRITES); // 写入 sprite 表到硬件
+    // === 写入身体 sprite attr_word ===
+    if (*count < max_count)
+    {
+        uint32_t body = make_attr_word(1, !ch->facing_right,
+                                       (uint16_t)ch->x,
+                                       (uint16_t)(ch->y + BODY_OFFSET_Y),
+                                       ch->frame_body);
+        sprite_words[(*count)++] = body;
+    }
 }
 
 // 初始化一个角色实例（位置、类型、默认状态）

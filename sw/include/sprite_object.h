@@ -3,8 +3,6 @@
 
 #ifndef SPRITE_OBJECT_H
 #define SPRITE_OBJECT_H
-
-#include "hw_interface.h" // 依赖 sprite_attr_t 与 make_sprite()
 #include <stdbool.h>
 
 // 游戏对象类型枚举
@@ -30,6 +28,6 @@ typedef struct
 } object_t;
 
 // 将所有地图物体同步渲染到硬件 Sprite 表中
-void sync_objects_to_hardware(object_t *objects, int num_objects, int sprite_offset);
+void object_push_sprite(object_t *obj, uint32_t *sprite_words, int *count, int max_count);
 
 #endif // SPRITE_OBJECT_H

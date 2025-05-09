@@ -2,7 +2,7 @@
 // 实现地图物体（如钻石、拉杆、电梯等）的绘制与动画更新逻辑
 
 #include "sprite_object.h" // 物体结构体与接口声明
-#include "hw_interface.h"  // 精灵构造与写入硬件接口
+#include "vgasys.h"
 
 /**
  * 更新单个物体的动画帧（如果有多帧）
@@ -21,37 +21,24 @@ void update_object_animation(object_t *obj, float dt)
 }
 
 /**
- * 将所有地图物体写入 Sprite 表中。
- * - 跳过已收集的物体（例如钻石）
- * - 每个物体根据传入的 sprite_offset 写入不同槽位
+ * @brief 将物体的精灵信息写入 sprite 缓存数组
  *
- * 参数说明：
- * - objects：物体数组（object_t）
- * - num_objects：物体总数量
- * - sprite_offset：起始写入槽位编号（避免与角色冲突）
+ * @param obj           指向物体结构体的指针
+ * @param sprite_words  精灵缓存数组
+ * @param count         当前写入数量指针
+ * @param max_count     缓冲区最大容量
  */
-void sync_objects_to_hardware(object_t *objects, int num_objects, int sprite_offset)
+void object_push_sprite(object_t *obj, uint32_t *sprite_words, int *count, int max_count)
 {
-    for (int i = 0; i < num_objects; ++i)
-    {
-        object_t *obj = &objects[i];
+    if (!obj || obj->collected || *count >= max_count)
+        return;
 
-        if (obj->collected) // 如果物体已被收集，则不再显示
-            continue;
+    uint32_t word = make_attr_word(
+        1, // enable
+        0, // flip_horizontal = false
+        (uint16_t)obj->x,
+        (uint16_t)obj->y,
+        obj->frame_id);
 
-        // 构造该物体对应的 sprite 属性（默认不翻转）
-        sprite_attr_t s = make_sprite(
-            obj->x,            // 坐标 X
-            obj->y,            // 坐标 Y
-            obj->frame_id,     // 使用的图块帧编号
-            obj->width,        // 精灵宽度
-            obj->height,       // 精灵高度
-            sprite_offset + i, // 写入槽位（偏移避免与角色冲突）
-            true,              // alive 标志：显示该 sprite
-            false              // 默认不翻转（flip_horizontal）
-        );
-
-        // 写入该 sprite 到对应槽位
-        write_sprite(sprite_offset + i, &s);
-    }
+    sprite_words[(*count)++] = word;
 }
