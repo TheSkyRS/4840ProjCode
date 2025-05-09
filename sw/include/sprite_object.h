@@ -30,5 +30,5 @@ typedef struct
 
 // 将所有地图物体同步渲染到硬件 Sprite 表中
 void object_push_sprite(object_t *obj, uint32_t *sprite_words, int *count, int max_count);
-
+void update_object_animation(object_t *obj, float dt);
 #endif // SPRITE_OBJECT_H

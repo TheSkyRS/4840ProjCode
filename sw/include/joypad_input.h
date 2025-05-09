@@ -68,4 +68,6 @@ int is_joypad_connected(int player_index);
  */
 int get_joypad_button_state(int player_index, int button_id);
 
+game_action_t get_player_action(int player_index);
+
 #endif /* JOYPAD_INPUT_H */

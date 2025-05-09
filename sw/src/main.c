@@ -9,11 +9,11 @@
 #include "joypad_input.h" // ✅ 新增：引入 Joypad 模块
 
 // 全局角色和物体
-character_t characters[2];
-int num_characters = 2;
+extern character_t characters[];
+extern int num_characters;
 
-object_t objects[4];
-int num_objects = 4;
+extern object_t objects[];
+extern int num_objects;
 
 int main()
 {
