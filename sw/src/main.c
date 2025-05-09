@@ -41,7 +41,7 @@ int main()
     init_character(&characters[1], 200, 300, TYPE_WATERGIRL);
 
     // === 初始化地图物体 ===
-    memset(objects, 0, sizeof(objects));
+    memset(objects, 0, sizeof(object_t) * num_objects);
     objects[0].x = 240;
     objects[0].y = 280;
     objects[0].frame_id = 2;
@@ -60,8 +60,8 @@ int main()
 
     // === 退出前清理资源 ===
     vgasys_cleanup();
-    // 可选：调用 hander 清理
-    input_handler_cleanup(); // 若你有此函数实现
+    // // 可选：调用 hander 清理
+    // input_handler_cleanup(); // 若你有此函数实现
 
     return 0;
 }

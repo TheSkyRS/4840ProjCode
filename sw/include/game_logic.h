@@ -22,4 +22,6 @@ void update_game_state(character_t *characters, int num_characters,
                        object_t *objects, int num_objects,
                        float delta_time);
 
+void run_game_loop();
+
 #endif // GAME_LOGIC_H
