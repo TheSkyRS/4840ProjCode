@@ -66,19 +66,19 @@ int main()
     init_character(&characters[1], 200, 300, TYPE_WATERGIRL);
 
     // === 初始化地图物体 ===
-    memset(objects, 0, sizeof(object_t) * num_objects);
-    objects[0].x = 240;
-    objects[0].y = 280;
-    objects[0].frame_id = 2;
-    objects[1].x = 360;
-    objects[1].y = 280;
-    objects[1].frame_id = 3;
-    objects[2].x = 100;
-    objects[2].y = 200;
-    objects[2].frame_id = 4;
-    objects[3].x = 300;
-    objects[3].y = 180;
-    objects[3].frame_id = 5;
+    // memset(objects, 0, sizeof(object_t) * num_objects);
+    // objects[0].x = 240;
+    // objects[0].y = 280;
+    // objects[0].frame_id = 2;
+    // objects[1].x = 360;
+    // objects[1].y = 280;
+    // objects[1].frame_id = 3;
+    // objects[2].x = 100;
+    // objects[2].y = 200;
+    // objects[2].frame_id = 4;
+    // objects[3].x = 300;
+    // objects[3].y = 180;
+    // objects[3].frame_id = 5;
 
     // === 启动游戏主循环 ===
     run_game_loop(); // 你必须确保 run_game_loop() 内部使用了 vga_fd

@@ -90,19 +90,19 @@ void run_game_loop()
             if (num_characters >= 2)
                 handle_character_vs_character(&characters[0], &characters[1]);
 
-            for (int i = 0; i < num_characters; ++i)
-            {
-                character_t *ch = &characters[i];
-                if (!ch->alive)
-                    continue;
+            // for (int i = 0; i < num_characters; ++i)
+            // {
+            //     character_t *ch = &characters[i];
+            //     if (!ch->alive)
+            //         continue;
 
-                if (sprite_count < MAX_SPRITES)
-                    sprite_words[sprite_count++] = make_attr_word(1, !ch->facing_right,
-                                                                  (uint16_t)ch->x, (uint16_t)ch->y, ch->frame_head);
-                if (sprite_count < MAX_SPRITES)
-                    sprite_words[sprite_count++] = make_attr_word(1, !ch->facing_right,
-                                                                  (uint16_t)ch->x, (uint16_t)(ch->y + 12), ch->frame_body);
-            }
+            //     if (sprite_count < MAX_SPRITES)
+            //         sprite_words[sprite_count++] = make_attr_word(1, !ch->facing_right,
+            //                                                       (uint16_t)ch->x, (uint16_t)ch->y, ch->frame_head);
+            //     if (sprite_count < MAX_SPRITES)
+            //         sprite_words[sprite_count++] = make_attr_word(1, !ch->facing_right,
+            //                                                       (uint16_t)ch->x, (uint16_t)(ch->y + 12), ch->frame_body);
+            // }
 
             for (int i = 0; i < num_objects; ++i)
             {
