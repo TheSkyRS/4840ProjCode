@@ -324,32 +324,23 @@ void raw_signal_monitor() {
             int bytes = read(fd, &event, sizeof(event));
             
             if (bytes == sizeof(event)) {
+                // printf("Event: type=%d, code=%d, value=%d, time=%ld.%06ld\n",
+                //        event.type, event.code, event.value,
+                //        event.time.tv_sec, event.time.tv_usec);
                 printf("Event: type=%d, code=%d, value=%d, time=%ld.%06ld\n",
                        event.type, event.code, event.value,
                        event.time.tv_sec, event.time.tv_usec);
                 
-                // 解释事件类型
-                switch(event.type) {
-                    case EV_SYN:
-                        printf("  EV_SYN: Synchronization event\n");
-                        break;
-                    case EV_KEY:
-                        printf("  EV_KEY: Button/Key %d %s\n", 
-                               event.code, 
-                               event.value ? "PRESSED" : "RELEASED");
-                        break;
-                    case EV_REL:
-                        printf("  EV_REL: Relative axis %d change: %d\n", 
-                               event.code, event.value);
-                        break;
-                    case EV_ABS:
-                        printf("  EV_ABS: Absolute axis %d position: %d\n", 
-                               event.code, event.value);
-                        break;
-                    default:
-                        printf("  Event type: %d\n", event.type);
-                        break;
+                // 打印整个event结构体的二进制内容
+                unsigned char *data = (unsigned char *)&event;
+                printf("十六进制: ");
+                for (size_t i = 0; i < sizeof(event); i++) {
+                    printf("%02x ", data[i]);
                 }
+                print("================")
+                printf("\n\n");
+
+                
             } else if (bytes == -1 && errno != EAGAIN) {
                 printf("Error reading from device: %s\n", strerror(errno));
                 break;
