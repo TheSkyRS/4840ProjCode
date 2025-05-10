@@ -70,4 +70,7 @@ int get_joypad_button_state(int player_index, int button_id);
 
 game_action_t get_player_action(int player_index);
 
+void input_handler_cleanup();
+int input_handler_init();
+
 #endif /* JOYPAD_INPUT_H */

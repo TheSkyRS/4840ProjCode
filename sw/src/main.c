@@ -6,6 +6,7 @@
 #include "joypad_input.h"
 
 #define NUM_PLAYERS 2
+#define VACTIVE 480
 
 int main()
 {
