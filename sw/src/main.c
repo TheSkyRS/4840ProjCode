@@ -24,39 +24,38 @@ int main()
     player_init(&players[1], 200, 400, 2, 3, PLAYER_WATERGIRL);
 
     unsigned col = 0, row = 0;
-    for (uint8_t i = 0; i < 32; i++)
+    for (uint8_t i = 0; i < 44; i++)
     {
-        uint8_t frame = 65 - i; // 倒序输出：65, 64, ..., 34
-        write_sprite(i, 1, 0, (i % 8) * 32, (i / 8) * 32, frame);
+        write_sprite(i, 1, 0, (i % 11) * 32, (i / 11) * 32, i);
     }
 
-    // while (1)
-    // {
-    //     // === 帧同步：只在每帧顶部 row==0 时执行一次 ===
-    //     do
-    //     {
-    //         read_status(&col, &row);
-    //     } while (row != 0);
+    while (1)
+    {
+        // === 帧同步：只在每帧顶部 row==0 时执行一次 ===
+        do
+        {
+            read_status(&col, &row);
+        } while (row != 0);
 
-    //     // === 1. 逻辑更新阶段 ===
-    //     for (int i = 0; i < NUM_PLAYERS; i++)
-    //     {
-    //         player_handle_input(&players[i], i);
-    //         player_update_physics(&players[i]);
-    //     }
+        // === 1. 逻辑更新阶段 ===
+        for (int i = 0; i < NUM_PLAYERS; i++)
+        {
+            player_handle_input(&players[i], i);
+            player_update_physics(&players[i]);
+        }
 
-    //     // === 2. 等待消隐区 ===
-    //     do
-    //     {
-    //         read_status(&col, &row);
-    //     } while (row < VACTIVE);
+        // === 2. 等待消隐区 ===
+        do
+        {
+            read_status(&col, &row);
+        } while (row < VACTIVE);
 
-    //     // === 3. 写入 sprite 到 VGA ===
-    //     for (int i = 0; i < NUM_PLAYERS; i++)
-    //     {
-    //         player_update_sprite(&players[i]);
-    //     }
-    // }
+        // === 3. 写入 sprite 到 VGA ===
+        for (int i = 0; i < NUM_PLAYERS; i++)
+        {
+            player_update_sprite(&players[i]);
+        }
+    }
 
     // 不会到达，若后续有退出条件，可释放资源：
     input_handler_cleanup();
