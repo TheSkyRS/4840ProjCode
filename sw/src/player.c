@@ -105,44 +105,26 @@ void player_update_physics(player_t *p)
         p->state = STATE_IDLE;
     }
 }
-// // 帧段定义
-// #define FB_HEAD_IDLE 0x00        // 站立时头部
-// #define FB_HEAD_WALK 0x02        // 行走头部
-// #define FB_HEAD_UPDOWN 0x07      // 上跳头部
-// #define FB_HEAD_DOWNWALK 0x0C    // 下落头部
-// #define FB_LEG_IDLE 0x11         // 站立腿部
-// #define FB_LEG_WALK 0x12         // 行走腿部
-// #define FB_LEG_UPorDOWNWALK 0x15 // 上跳or下落腿部
-
-// // 水妹头部
-// #define WG_HEAD_IDLE 0x16
-// #define WG_HEAD_WALK 0x18
-// #define WG_HEAD_UPWALK 0x1D
-// #define WG_HEAD_DOWNWALK 0x22
-
-// #define WG_LEG_IDLE 0x27
-// #define WG_LEG_WALK 0x28
-// #define WG_LEG_UPorDOWNWALK 0x2B
 
 // 火男孩
-#define FB_HEAD_IDLE 0x0000     // 0x00
-#define FB_HEAD_WALK 0x0200     // 0x20
-#define FB_HEAD_UPDOWN 0x0700   // 0x70
-#define FB_HEAD_DOWNWALK 0x0C00 // 0xC0
+#define FB_HEAD_IDLE ((uint8_t)(0x0000 >> 8))     // 0x00
+#define FB_HEAD_WALK ((uint8_t)(0x0200 >> 8))     // 0x02
+#define FB_HEAD_UPDOWN ((uint8_t)(0x0700 >> 8))   // 0x07
+#define FB_HEAD_DOWNWALK ((uint8_t)(0x0C00 >> 8)) // 0x0C
 
-#define FB_LEG_IDLE 0x1100         // 0x110
-#define FB_LEG_WALK 0x1200         // 0x120
-#define FB_LEG_UPorDOWNWALK 0x1500 // 0x150
+#define FB_LEG_IDLE ((uint8_t)(0x1100 >> 8))         // 0x11
+#define FB_LEG_WALK ((uint8_t)(0x1200 >> 8))         // 0x12
+#define FB_LEG_UPorDOWNWALK ((uint8_t)(0x1500 >> 8)) // 0x15
 
 // 水女孩
-#define WG_HEAD_IDLE 0x1600     // 0x160
-#define WG_HEAD_WALK 0x1800     // 0x180
-#define WG_HEAD_UPWALK 0x2100   // 0x210
-#define WG_HEAD_DOWNWALK 0x2200 // 0x220
+#define WG_HEAD_IDLE ((uint8_t)(0x1600 >> 8))     // 0x16
+#define WG_HEAD_WALK ((uint8_t)(0x1800 >> 8))     // 0x18
+#define WG_HEAD_UPWALK ((uint8_t)(0x2100 >> 8))   // 0x21
+#define WG_HEAD_DOWNWALK ((uint8_t)(0x2200 >> 8)) // 0x22
 
-#define WG_LEG_IDLE 0x2700         // 0x270
-#define WG_LEG_WALK 0x2800         // 0x280
-#define WG_LEG_UPorDOWNWALK 0x2B00 // 0x2B0
+#define WG_LEG_IDLE ((uint8_t)(0x2700 >> 8))         // 0x27
+#define WG_LEG_WALK ((uint8_t)(0x2800 >> 8))         // 0x28
+#define WG_LEG_UPorDOWNWALK ((uint8_t)(0x2B00 >> 8)) // 0x2B
 
 // 每帧调用：自动在行走帧之间循环
 static int get_frame_id(player_t *p, bool is_upper)
