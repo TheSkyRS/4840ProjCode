@@ -41,6 +41,8 @@ void player_init(player_t *p, int x, int y,
                  uint8_t upper_index, uint8_t lower_index,
                  player_type_t type);
 
+int get_frame_count(player_t *p, bool is_upper);
+
 // 每帧调用流程
 void player_handle_input(player_t *p, int player_index);
 void player_update_physics(player_t *p);

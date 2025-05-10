@@ -156,7 +156,7 @@ static int get_frame_id(player_t *p, bool is_upper)
     return base + (p->frame_index % frame_count);
 }
 
-static int get_frame_count(player_t *p, bool is_upper)
+int get_frame_count(player_t *p, bool is_upper)
 {
     if (p->state == STATE_RUNNING)
         return 5;
