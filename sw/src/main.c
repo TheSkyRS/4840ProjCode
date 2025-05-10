@@ -24,8 +24,8 @@ int main()
     input_handler_init();
 
     player_t players[NUM_PLAYERS];
-    player_init(&players[0], 100, 400, 0, 1, PLAYER_FIREBOY);
-    player_init(&players[1], 200, 400, 2, 3, PLAYER_WATERGIRL);
+    player_init(&players[0], 64, 352, 0, 1, PLAYER_FIREBOY);
+    player_init(&players[1], 64, 400, 2, 3, PLAYER_WATERGIRL);
 
     unsigned col = 0, row = 0;
 
