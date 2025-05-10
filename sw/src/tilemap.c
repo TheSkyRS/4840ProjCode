@@ -1,11 +1,11 @@
 // tilemap.c
-// µØĞÎÍ¼Êı¾İÓë tile Åö×²¼ì²âÊµÏÖ
+// åœ°å½¢å›¾æ•°æ®ä¸ tile ç¢°æ’æ£€æµ‹å®ç°
 
 #include "tilemap.h"
-#include <math.h> // ÓÃÓÚ floor()
+#include <math.h> // ç”¨äº floor()
 
-// === Ê¾ÀıµØÍ¼Êı¾İ ===
-// 0: ¿ÕµØ  1: Ç½±Ú  2: »ğ³Ø  3: Ë®³Ø  4: ÖÕµã
+// === ç¤ºä¾‹åœ°å›¾æ•°æ® ===
+// 0: ç©ºåœ°  1: å¢™å£  2: ç«æ±   3: æ°´æ±   4: ç»ˆç‚¹
 const int tilemap[30][40] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -36,18 +36,17 @@ const int tilemap[30][40] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
+#define COLLISION_MARGIN 1.0f
+
 bool is_tile_blocked(float x, float y, float width, float height)
 {
-    // ×óÓÒ±ß½ç
-    float x_left = x;
-    float x_right = x + width - 1;
+    float x_left = x + COLLISION_MARGIN;
+    float x_right = x + width - 1 - COLLISION_MARGIN;
 
-    // ÉÏÖĞÏÂ 3 ¸ö´¹Ö±¸ß¶È
-    float y_top = y;
+    float y_top = y + COLLISION_MARGIN;
     float y_mid = y + height / 2.0f;
-    float y_bottom = y + height - 1;
+    float y_bottom = y + height - 1 - COLLISION_MARGIN;
 
-    // 6 ¸ö¹Ø¼ü²ÉÑùµã£º×óÉÏ¡¢ÓÒÉÏ¡¢×óÖĞ¡¢ÓÒÖĞ¡¢×óÏÂ¡¢ÓÒÏÂ
     float sample_points[6][2] = {
         {x_left, y_top},
         {x_right, y_top},
@@ -62,12 +61,11 @@ bool is_tile_blocked(float x, float y, float width, float height)
         int ty = (int)(sample_points[i][1] / TILE_SIZE);
 
         if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
-            return true; // Ô½½çÖ±½ÓÊÓÎªÅö×²
+            return true;
 
-        int tile = tilemap[ty][tx];
-        if (tile == TILE_WALL)
-            return true; // Åö×²ÅĞ¶¨
+        if (tilemap[ty][tx] == TILE_WALL)
+            return true;
     }
 
-    return false; // ËùÓĞµã¶¼Ã»×²Ç½
+    return false;
 }
