@@ -151,6 +151,11 @@ module soc_system_top(
  input 	       HPS_USB_NXT,
  output        HPS_USB_STP,
 
+
+ ///////// I2C /////////
+ input I2C_SDAT;
+ output I2C_SCLK;
+
  ///////// IRDA /////////
  input 	       IRDA_RXD,
  output        IRDA_TXD,
@@ -266,8 +271,16 @@ module soc_system_top(
      .hps_hps_io_gpio_inst_GPIO48  ( HPS_I2C_CONTROL ),
      .hps_hps_io_gpio_inst_GPIO53  ( HPS_LED ),
      .hps_hps_io_gpio_inst_GPIO54  ( HPS_KEY ),
-     .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT )
-  );
+     .hps_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT ),
+     
+     .audio_external_ADCDAT  (AUD_ADCDAT),
+     .audio_external_ADCLRCK (AUD_ADCLRCK),
+     .audio_external_BCLK    (AUD_BCLK),
+     .audio_external_DACDAT  (AUD_DACDAT),
+     .audio_external_DACLRCK (AUD_DACLRCK),
+     .av_config_external_SDAT (I2C_SDAT),    
+     .av_config_external_SCLK (I2C_SCLK)     
+);
 
    // The following quiet the "no driver" warnings for output
    // pins and should be removed if you use any of these peripherals
@@ -314,9 +327,7 @@ module soc_system_top(
 
    assign TD_RESET_N = SW[0];
 
-   assign {VGA_R, VGA_G, VGA_B} = { 24{ SW[0] } };
-   assign {VGA_BLANK_N, VGA_CLK,
-	   VGA_HS, VGA_SYNC_N, VGA_VS} = { 5{ SW[0] } };
+
 
 							          
 endmodule
