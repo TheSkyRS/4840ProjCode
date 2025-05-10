@@ -3,7 +3,7 @@
 #include "tilemap.h"
 
 #define GRAVITY 0.4f
-#define JUMP_VELOCITY -5.0f
+#define JUMP_VELOCITY -10.0f
 #define MOVE_SPEED 1.5f
 #define MAX_FRAME_TIMER 6 // 控制动画切换速度
 
