@@ -1,90 +1,114 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <sys/ioctl.h>
+#include "hw_interact.h"
+#include "player.h"
+#include "joypad_input.h"
 
-#include "vga_top.h" // âœ… å¿…é¡»ï¼šç”¨äºç»“æ„ä½“ä¸ ioctl å®
-#include "game_logic.h"
-#include "character.h"
-#include "sprite_object.h"
-#include "joypad_input.h" // âœ… Joypad è¾“å…¥æ§åˆ¶
-
-// å…¨å±€è§’è‰²å’Œç‰©ä½“
-extern character_t characters[];
-extern int num_characters;
-
-extern object_t objects[];
-extern int num_objects;
-
-// VGA è®¾å¤‡æ–‡ä»¶æè¿°ç¬¦
-int vga_fd = -1;
-
-// åˆå§‹åŒ– VGA è®¾å¤‡ï¼ˆæ›¿ä»£ vgasys_initï¼‰
-int init_vga(const char *dev_path)
-{
-    vga_fd = open(dev_path, O_RDWR);
-    if (vga_fd < 0)
-    {
-        perror("[main] æ— æ³•æ‰“å¼€ VGA è®¾å¤‡");
-        return -1;
-    }
-    return 0;
-}
-
-// æ¸…ç† VGAï¼ˆæ›¿ä»£ vgasys_cleanupï¼‰
-void close_vga()
-{
-    if (vga_fd >= 0)
-        close(vga_fd);
-}
+#define NUM_PLAYERS 2
 
 int main()
 {
-    // === åˆå§‹åŒ– Joypad æ§åˆ¶å™¨ ===
-    if (insert_joypad(get_default_joypad_path(0), 0) < 0)
+    if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
     {
-        fprintf(stderr, "[main] ç©å®¶1çš„ Joypad åˆå§‹åŒ–å¤±è´¥ã€‚\n");
-        return 1;
-    }
-    if (insert_joypad(get_default_joypad_path(1), 1) < 0)
-    {
-        fprintf(stderr, "[main] ç©å®¶2çš„ Joypad åˆå§‹åŒ–å¤±è´¥ã€‚\n");
-        return 1;
+        fprintf(stderr, "Error: cannot open /dev/vga_top\n");
+        return -1;
     }
 
-    // === åˆå§‹åŒ– VGA ç¡¬ä»¶ ===
-    if (init_vga("/dev/vga_top") < 0)
+    write_ctrl(0x00000002); // Æô¶¯ VGA ¿ØÖÆÆ÷
+    input_handler_init();
+
+    player_t players[NUM_PLAYERS];
+    player_init(&players[0], 100, 400, 0, 1, PLAYER_FIREBOY);
+    player_init(&players[1], 200, 400, 2, 3, PLAYER_WATERGIRL);
+
+    unsigned col = 0, row = 0;
+
+    while (1)
     {
-        fprintf(stderr, "[main] æ— æ³•æ‰“å¼€ VGA è®¾å¤‡ï¼Œé€€å‡ºç¨‹åºã€‚\n");
-        return 1;
+        // === Ö¡Í¬²½£ºÖ»ÔÚÃ¿Ö¡¶¥²¿ row==0 Ê±Ö´ĞĞÒ»´Î ===
+        do
+        {
+            read_status(&col, &row);
+        } while (row != 0);
+
+        // === 1. Âß¼­¸üĞÂ½×¶Î ===
+        for (int i = 0; i < NUM_PLAYERS; i++)
+        {
+            player_handle_input(&players[i], i);
+            player_update_physics(&players[i]);
+        }
+
+        // === 2. µÈ´ıÏûÒşÇø ===
+        do
+        {
+            read_status(&col, &row);
+        } while (row < VACTIVE);
+
+        // === 3. Ğ´Èë sprite µ½ VGA ===
+        for (int i = 0; i < NUM_PLAYERS; i++)
+        {
+            player_update_sprite(&players[i]);
+        }
     }
 
-    // === åˆå§‹åŒ–è§’è‰² ===
-    init_character(&characters[0], 100, 300, TYPE_FIREBOY);
-    init_character(&characters[1], 200, 300, TYPE_WATERGIRL);
-
-    // === åˆå§‹åŒ–åœ°å›¾ç‰©ä½“ ===
-    // memset(objects, 0, sizeof(object_t) * num_objects);
-    // objects[0].x = 240;
-    // objects[0].y = 280;
-    // objects[0].frame_id = 2;
-    // objects[1].x = 360;
-    // objects[1].y = 280;
-    // objects[1].frame_id = 3;
-    // objects[2].x = 100;
-    // objects[2].y = 200;
-    // objects[2].frame_id = 4;
-    // objects[3].x = 300;
-    // objects[3].y = 180;
-    // objects[3].frame_id = 5;
-
-    // === å¯åŠ¨æ¸¸æˆä¸»å¾ªç¯ ===
-    run_game_loop(); // ä½ å¿…é¡»ç¡®ä¿ run_game_loop() å†…éƒ¨ä½¿ç”¨äº† vga_fd
-
-    // === é€€å‡ºå‰æ¸…ç†èµ„æº ===
-    close_vga();
-
+    // ²»»áµ½´ï£¬ÈôºóĞøÓĞÍË³öÌõ¼ş£¬¿ÉÊÍ·Å×ÊÔ´£º
+    input_handler_cleanup();
+    close(vga_top_fd);
     return 0;
 }
+
+//////////////////////////////////////////////////////////////////////////////////
+// #include <stdio.h>
+// #include <fcntl.h>
+// #include <unistd.h>
+// #include "hw_interact.h"
+// #include "player.h"
+// #include "joypad_input.h"
+
+// #define NUM_PLAYERS 2
+
+// int main()
+// {
+//     if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
+//     {
+//         fprintf(stderr, "Error: cannot open /dev/vga_top\n");
+//         return -1;
+//     }
+
+//     write_ctrl(0x00000002); // Æô¶¯ VGA ¿ØÖÆÆ÷
+//     input_handler_init();
+
+//     player_t players[NUM_PLAYERS];
+//     player_init(&players[0], 100, 400, 0, 1, PLAYER_FIREBOY);
+//     player_init(&players[1], 200, 400, 2, 3, PLAYER_WATERGIRL);
+
+//     unsigned col = 0, row = 0;
+
+//     while (1)
+//     {
+//         read_status(&col, &row);
+
+//         if (row < VACTIVE)
+//         {
+//             // ÔÚ¿É¼ûÇø·´¸´½øĞĞ£ºÊäÈë + ÎïÀí´¦Àí
+//             for (int i = 0; i < NUM_PLAYERS; i++)
+//             {
+//                 player_handle_input(&players[i], i);
+//                 player_update_physics(&players[i]);
+//             }
+//         }
+//         else
+//         {
+//             // ÔÚÏûÒşÇø·´¸´½øĞĞ sprite Ğ´Èë
+//             for (int i = 0; i < NUM_PLAYERS; i++)
+//             {
+//                 player_update_sprite(&players[i]);
+//             }
+//         }
+//     }
+
+//     input_handler_cleanup();
+//     close(vga_top_fd);
+//     return 0;
+// }

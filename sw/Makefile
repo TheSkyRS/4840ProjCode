@@ -1,74 +1,33 @@
-# Makefile for Forest Fire and Ice Game (Software)
+# ¶¥²ãÄ¿Â¼Â·¾¶
+INCLUDEDIR = include
+SRCDIR = src
 
-# === ç¼–è¯‘å™¨è®¾ç½® ===
-CC = arm-linux-gnueabihf-gcc
+# ËùÓĞÔ´ÎÄ¼ş
+SRCS = $(wildcard $(SRCDIR)/*.c)
 
-# === ç›®å½•ç»“æ„ ===
-SRC_DIR = src
-INC_DIR = include
-BUILD_DIR = build
-PACKAGE_DIR = package
-VGA_DEMO_DIR = vga_demo
+# Í·ÎÄ¼şÂ·¾¶
+INCLUDES = -I$(INCLUDEDIR)
 
-# === ç¼–è¯‘å‚æ•° ===
-CFLAGS = -Wall -Wextra -g -I$(INC_DIR) -I$(VGA_DEMO_DIR) -O2
-LDFLAGS = -lm
+# Ä¿±êÎÄ¼şÁĞ±í£¨.c ¡ú .o£©
+OBJS = $(SRCS:.c=.o)
 
-# === ä¸»ç¨‹åºæºæ–‡ä»¶ï¼ˆæ’é™¤ joypad_test.cï¼‰===
-SRCS = $(wildcard $(SRC_DIR)/*.c)
-SRCS := $(filter-out $(SRC_DIR)/joypad_test.c, $(SRCS))
-OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
-TARGET = $(BUILD_DIR)/game_sw
+# ×îÖÕ¿ÉÖ´ĞĞÎÄ¼şÃû
+TARGET = game
 
-# === Joypad æ¨¡å— ===
-JOYPAD_SRCS = $(SRC_DIR)/joypad_input.c
-JOYPAD_TEST_SRCS = $(SRC_DIR)/joypad_test.c
-JOYPAD_HEADERS = $(INC_DIR)/joypad_input.h $(INC_DIR)/input_handler.h
-JOYPAD_OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(JOYPAD_SRCS))
-JOYPAD_TEST_OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(JOYPAD_TEST_SRCS))
-JOYPAD_TEST_TARGET = $(BUILD_DIR)/joypad_test
-JOYPAD_PACKAGE = $(PACKAGE_DIR)/joypad_module.tar.gz
+# ±àÒëÆ÷ÓëÑ¡Ïî
+CC = gcc
+CFLAGS = -Wall -O2 $(INCLUDES)
 
-# === é»˜è®¤ç›®æ ‡ ===
+.PHONY: all clean
+
 all: $(TARGET)
 
-# === ä¸»ç¨‹åºé“¾æ¥ ===
 $(TARGET): $(OBJS)
-	@mkdir -p $(@D)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
-	@echo "Linking complete: $@"
+	$(CC) -o $@ $^
 
-# === ç¼–è¯‘è§„åˆ™ ===
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(@D)
+# Ã¿¸ö .c ¡ú .o
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
-	@echo "Compiled: $< -> $@"
 
-# === æ„å»º Joypad æµ‹è¯•ç¨‹åº ===
-joypad_test: $(JOYPAD_OBJS) $(JOYPAD_TEST_OBJS)
-	@mkdir -p $(BUILD_DIR)
-	$(CC) $(JOYPAD_OBJS) $(JOYPAD_TEST_OBJS) -o $(JOYPAD_TEST_TARGET) $(LDFLAGS)
-	@echo "Built joypad test program: $(JOYPAD_TEST_TARGET)"
-
-# === æ‰“åŒ… Joypad æ¨¡å—ï¼ˆå¯é€‰ï¼‰===
-joypad_package: joypad_test
-	@mkdir -p $(PACKAGE_DIR)/{include,src,bin}
-	@cp $(JOYPAD_HEADERS) $(PACKAGE_DIR)/include/
-	@cp $(JOYPAD_SRCS) $(JOYPAD_TEST_SRCS) $(PACKAGE_DIR)/src/
-	@cp $(JOYPAD_TEST_TARGET) $(PACKAGE_DIR)/bin/
-	@tar -czf $(JOYPAD_PACKAGE) -C $(PACKAGE_DIR) .
-	@echo "Packaged joypad module: $(JOYPAD_PACKAGE)"
-
-# === æ¸…ç†å‘½ä»¤ ===
 clean:
-	@rm -rf $(BUILD_DIR)
-	@echo "Cleaned build directory."
-
-clean_package:
-	@rm -rf $(PACKAGE_DIR)
-	@echo "Cleaned package directory."
-
-clean_all: clean clean_package
-	@echo "Cleaned all build and package files."
-
-.PHONY: all clean clean_package clean_all joypad_test joypad_package
+	rm -f $(SRCDIR)/*.o $(TARGET)
