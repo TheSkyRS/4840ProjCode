@@ -13,7 +13,8 @@ void player_init(player_t *p, int x, int y,
 {
     p->x = x;
     p->y = y;
-    p->vx = p->vy = 0;
+    p->vx = 0;
+    p->vy = GRAVITY;
     p->on_ground = false;
     p->state = STATE_IDLE;
     p->type = type;

@@ -17,6 +17,10 @@ int main()
     }
 
     write_ctrl(0x00000001); // Æô¶¯ VGA ¿ØÖÆÆ÷
+    for (int i = 0; i < 32; i++)
+    {
+        write_sprite(i, 0, 0, 0, 0, 0); // disable=0£¬Î»ÖÃ0£¬Ö¡0
+    }
     input_handler_init();
 
     player_t players[NUM_PLAYERS];
