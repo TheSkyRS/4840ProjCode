@@ -29,33 +29,33 @@ int main()
         write_sprite(i, 1, 0, (i % 11) * 32, (i / 11) * 32, i);
     }
 
-    while (1)
-    {
-        // === 帧同步：只在每帧顶部 row==0 时执行一次 ===
-        do
-        {
-            read_status(&col, &row);
-        } while (row != 0);
+    // while (1)
+    // {
+    //     // === 帧同步：只在每帧顶部 row==0 时执行一次 ===
+    //     do
+    //     {
+    //         read_status(&col, &row);
+    //     } while (row != 0);
 
-        // === 1. 逻辑更新阶段 ===
-        for (int i = 0; i < NUM_PLAYERS; i++)
-        {
-            player_handle_input(&players[i], i);
-            player_update_physics(&players[i]);
-        }
+    //     // === 1. 逻辑更新阶段 ===
+    //     for (int i = 0; i < NUM_PLAYERS; i++)
+    //     {
+    //         player_handle_input(&players[i], i);
+    //         player_update_physics(&players[i]);
+    //     }
 
-        // === 2. 等待消隐区 ===
-        do
-        {
-            read_status(&col, &row);
-        } while (row < VACTIVE);
+    //     // === 2. 等待消隐区 ===
+    //     do
+    //     {
+    //         read_status(&col, &row);
+    //     } while (row < VACTIVE);
 
-        // === 3. 写入 sprite 到 VGA ===
-        for (int i = 0; i < NUM_PLAYERS; i++)
-        {
-            player_update_sprite(&players[i]);
-        }
-    }
+    //     // === 3. 写入 sprite 到 VGA ===
+    //     for (int i = 0; i < NUM_PLAYERS; i++)
+    //     {
+    //         player_update_sprite(&players[i]);
+    //     }
+    // }
 
     // 不会到达，若后续有退出条件，可释放资源：
     input_handler_cleanup();
