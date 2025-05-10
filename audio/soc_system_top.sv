@@ -153,8 +153,8 @@ module soc_system_top(
 
 
  ///////// I2C /////////
- input I2C_SDAT;
- output I2C_SCLK;
+ inout I2C_SDAT,
+ output I2C_SCLK,
 
  ///////// IRDA /////////
  input 	       IRDA_RXD,
