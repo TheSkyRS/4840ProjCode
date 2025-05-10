@@ -24,10 +24,7 @@ int main()
     player_init(&players[1], 200, 400, 2, 3, PLAYER_WATERGIRL);
 
     unsigned col = 0, row = 0;
-    for (uint8_t i = 0; i < 44; i++)
-    {
-        write_sprite(i, 1, 0, (i % 11) * 32, (i / 11) * 32, i);
-    }
+    write_sprite(1, 1, 0, 32, 32, 1);
 
     // while (1)
     // {
