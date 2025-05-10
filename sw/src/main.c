@@ -16,7 +16,7 @@ int main()
         return -1;
     }
 
-    write_ctrl(0x00000002); // 启动 VGA 控制器
+    write_ctrl(0x00000001); // 启动 VGA 控制器
     input_handler_init();
 
     player_t players[NUM_PLAYERS];

@@ -128,7 +128,6 @@ void player_update_physics(player_t *p)
 static int get_frame_id(player_t *p, bool is_upper)
 {
     int base = 0;
-    int frame_offset = p->frame_index;
 
     if (p->type == PLAYER_FIREBOY)
     {
@@ -153,11 +152,31 @@ static int get_frame_id(player_t *p, bool is_upper)
             base = is_upper ? WG_HEAD_DOWNWALK : WG_LEG_UPorDOWNWALK;
     }
 
-    // 行走动画帧轮播，其他保持静态帧
+    int frame_count = get_frame_count(p, is_upper);
+    return base + (p->frame_index % frame_count);
+}
+
+static int get_frame_count(player_t *p, bool is_upper)
+{
     if (p->state == STATE_RUNNING)
-        return base + (frame_offset % 5);
+        return 5;
+
+    if (p->type == PLAYER_FIREBOY)
+    {
+        if (p->state == STATE_IDLE)
+            return is_upper ? 2 : 1;
+        else if (p->state == STATE_JUMPING || p->state == STATE_FALLING)
+            return is_upper ? 5 : 3;
+    }
     else
-        return base;
+    {
+        if (p->state == STATE_IDLE)
+            return is_upper ? 2 : 1;
+        else if (p->state == STATE_JUMPING || p->state == STATE_FALLING)
+            return is_upper ? 5 : 3;
+    }
+
+    return 1; // fallback
 }
 
 void player_update_sprite(player_t *p)
