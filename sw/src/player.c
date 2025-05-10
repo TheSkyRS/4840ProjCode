@@ -39,6 +39,15 @@ void player_handle_input(player_t *p, int player_index)
 {
     game_action_t action = get_player_action(player_index);
 
+    // 处理跳跃，必须放前面
+    if (action == ACTION_JUMP && p->on_ground)
+    {
+        p->vy = JUMP_VELOCITY;
+        p->on_ground = false;
+        p->state = STATE_JUMPING;
+    }
+
+    // 处理水平移动
     if (action == ACTION_MOVE_LEFT)
     {
         p->vx = -MOVE_SPEED;
@@ -49,16 +58,9 @@ void player_handle_input(player_t *p, int player_index)
         p->vx = MOVE_SPEED;
         p->lower_sprite.flip = 0;
     }
-    else
+    else if (p->on_ground) // 空中不立即取消横向速度
     {
         p->vx = 0;
-    }
-
-    if (action == ACTION_JUMP && p->on_ground)
-    {
-        p->vy = JUMP_VELOCITY;
-        p->on_ground = false;
-        p->state = STATE_JUMPING;
     }
 }
 
