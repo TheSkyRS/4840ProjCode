@@ -107,24 +107,24 @@ void player_update_physics(player_t *p)
 }
 
 // 火男孩
-#define FB_HEAD_IDLE ((uint8_t)(0x0000 >> 8))     // 0x00
-#define FB_HEAD_WALK ((uint8_t)(0x0200 >> 8))     // 0x02
-#define FB_HEAD_UPDOWN ((uint8_t)(0x0700 >> 8))   // 0x07
-#define FB_HEAD_DOWNWALK ((uint8_t)(0x0C00 >> 8)) // 0x0C
+#define FB_HEAD_IDLE ((uint8_t)0)      // 0x0000 >> 8 = 0
+#define FB_HEAD_WALK ((uint8_t)2)      // 0x0200 >> 8 = 2
+#define FB_HEAD_UPDOWN ((uint8_t)7)    // 0x0700 >> 8 = 7
+#define FB_HEAD_DOWNWALK ((uint8_t)12) // 0x0C00 >> 8 = 12
 
-#define FB_LEG_IDLE ((uint8_t)(0x1100 >> 8))         // 0x11
-#define FB_LEG_WALK ((uint8_t)(0x1200 >> 8))         // 0x12
-#define FB_LEG_UPorDOWNWALK ((uint8_t)(0x1500 >> 8)) // 0x15
+#define FB_LEG_IDLE ((uint8_t)17)         // 0x1100 >> 8 = 17
+#define FB_LEG_WALK ((uint8_t)18)         // 0x1200 >> 8 = 18
+#define FB_LEG_UPorDOWNWALK ((uint8_t)21) // 0x1500 >> 8 = 21
 
 // 水女孩
-#define WG_HEAD_IDLE ((uint8_t)(0x1600 >> 8))     // 0x16
-#define WG_HEAD_WALK ((uint8_t)(0x1800 >> 8))     // 0x18
-#define WG_HEAD_UPWALK ((uint8_t)(0x2100 >> 8))   // 0x21
-#define WG_HEAD_DOWNWALK ((uint8_t)(0x2200 >> 8)) // 0x22
+#define WG_HEAD_IDLE ((uint8_t)22)     // 0x1600 >> 8 = 22
+#define WG_HEAD_WALK ((uint8_t)24)     // 0x1800 >> 8 = 24
+#define WG_HEAD_UPWALK ((uint8_t)29)   // 0x2100 >> 8 = 29
+#define WG_HEAD_DOWNWALK ((uint8_t)34) // 0x2200 >> 8 = 34
 
-#define WG_LEG_IDLE ((uint8_t)(0x2700 >> 8))         // 0x27
-#define WG_LEG_WALK ((uint8_t)(0x2800 >> 8))         // 0x28
-#define WG_LEG_UPorDOWNWALK ((uint8_t)(0x2B00 >> 8)) // 0x2B
+#define WG_LEG_IDLE ((uint8_t)39)         // 0x2700 >> 8 = 39
+#define WG_LEG_WALK ((uint8_t)40)         // 0x2800 >> 8 = 40
+#define WG_LEG_UPorDOWNWALK ((uint8_t)43) // 0x2B00 >> 8 = 43
 
 // 每帧调用：自动在行走帧之间循环
 static int get_frame_id(player_t *p, bool is_upper)
