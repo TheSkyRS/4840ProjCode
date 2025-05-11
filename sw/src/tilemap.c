@@ -87,6 +87,22 @@ bool is_tile_blocked(float x, float y, float width, float height)
             if (y_local <= max_y)
                 return true;
         }
+        // 斜地板
+        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
+        {
+            float x_in_tile = fmod(sx, TILE_SIZE);
+            float y_in_tile = fmod(sy, TILE_SIZE);
+
+            int x_local = (int)x_in_tile;
+            int y_local = (int)y_in_tile;
+
+            int min_y = (tile == TILE_SLOPE_L_UP)
+                            ? x_local                  // \ ← 左高右低
+                            : TILE_SIZE - 1 - x_local; // / ← 右高左低
+
+            if (y_local >= min_y)
+                return true;
+        }
     }
 
     return false;
