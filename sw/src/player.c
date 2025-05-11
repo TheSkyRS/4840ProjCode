@@ -94,11 +94,12 @@ void player_update_physics(player_t *p)
     float new_x = p->x + p->vx;
     float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, p->vx);
 
+    float dx = new_x - p->x;
     p->vx *= x_factor;
 
     if (x_factor == 0.4f)
     {
-        p->y -= (p->vx > 0) ? p->vx : -p->vx; // 始终减去一个正值，向上提
+        p->y -= (dx > 0) ? dx : -dx; // 用 dx 作为变动量，始终上抬
     }
 
     if (x_factor > 0.0f)
