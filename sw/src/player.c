@@ -86,33 +86,40 @@ void player_update_physics(player_t *p)
         p->vy = 0;
     }
 
-    // 水平
+    // 水平插值检测斜坡，增强高速下的可靠性
     float new_x = p->x + p->vx;
-    // 基于地面 + 斜率判断决定是否允许上坡
+
     if (p->on_ground && p->vx != 0)
     {
-        float center_x = new_x + SPRITE_W_PIXELS / 2.0f;
-        float foot_y = p->y + SPRITE_H_PIXELS * 2 + 1;
-
-        int tile = get_tile_at_pixel(center_x, foot_y);
-        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
+        float x0 = p->x;
+        float x1 = new_x;
+        float dx = (x1 - x0) / fabs(x1 - x0); // ±1
+        for (float tx = x0; fabs(tx - x1) >= 0.5f; tx += dx)
         {
-            float x_in_tile = fmod(center_x, TILE_SIZE);
-            int x_local = (int)x_in_tile;
+            float center_x = tx + SPRITE_W_PIXELS / 2.0f;
+            float foot_y = p->y + SPRITE_H_PIXELS * 2 + 1;
 
-            int dy = (tile == TILE_SLOPE_L_UP) ? x_local : (TILE_SIZE - 1 - x_local);
-            float tile_top_y = floor(foot_y / TILE_SIZE) * TILE_SIZE;
-            float target_y = tile_top_y + dy - SPRITE_H_PIXELS * 2 - 2;
-
-            float delta_y = target_y - p->y;
-            float slope = fabs(delta_y / p->vx);
-
-            if (slope <= 1.0f)
+            int tile = get_tile_at_pixel(center_x, foot_y);
+            if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
             {
-                p->x = new_x;
-                p->y = target_y;
-                p->vy = 0;
-                p->on_ground = true;
+                float x_in_tile = fmod(center_x, TILE_SIZE);
+                int x_local = (int)x_in_tile;
+
+                int dy = (tile == TILE_SLOPE_L_UP) ? x_local : (TILE_SIZE - 1 - x_local);
+                float tile_top_y = floor(foot_y / TILE_SIZE) * TILE_SIZE;
+                float target_y = tile_top_y + dy - SPRITE_H_PIXELS * 2 - 2;
+
+                float delta_y = target_y - p->y;
+                float slope = fabs(delta_y / p->vx);
+
+                if (slope <= 1.0f)
+                {
+                    p->x = new_x;
+                    p->y = target_y;
+                    p->vy = 0;
+                    p->on_ground = true;
+                    break;
+                }
             }
         }
     }
@@ -126,6 +133,17 @@ void player_update_physics(player_t *p)
     {
         p->vx = 0;
     }
+
+    // 正常水平移动
+    if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    {
+        p->x = new_x;
+    }
+    else
+    {
+        p->vx = 0;
+    }
+
     // 状态切换
     if (!p->on_ground)
     {
