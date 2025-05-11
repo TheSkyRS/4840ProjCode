@@ -76,11 +76,15 @@ bool is_tile_blocked(float x, float y, float width, float height)
             float x_in_tile = fmod(sx, TILE_SIZE);
             float y_in_tile = fmod(sy, TILE_SIZE);
 
-            float max_y = (tile == TILE_CEIL_L)
-                              ? x_in_tile              // 左低右高
-                              : TILE_SIZE - x_in_tile; // 右低左高
+            // 对 tile 内坐标进行整数处理避免误差
+            int x_local = (int)x_in_tile;
+            int y_local = (int)y_in_tile;
 
-            if (y_in_tile <= max_y)
+            int max_y = (tile == TILE_CEIL_L)
+                            ? x_local                  // 左低右高
+                            : TILE_SIZE - 1 - x_local; // 右低左高
+
+            if (y_local <= max_y)
                 return true;
         }
     }
