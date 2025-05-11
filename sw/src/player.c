@@ -166,7 +166,7 @@ static int get_frame_id(player_t *p, bool is_upper)
 int get_frame_count(player_t *p, bool is_upper)
 {
     if (p->state == STATE_RUNNING)
-        return 5;
+        return is_upper ? 5 : 3;
 
     if (p->type == PLAYER_FIREBOY)
     {
@@ -195,7 +195,8 @@ void player_update_sprite(player_t *p)
         if (p->frame_timer >= MAX_FRAME_TIMER)
         {
             p->frame_timer = 0;
-            p->frame_index = (p->frame_index + 1) % 5;
+            int frame_count = get_frame_count(p, false); // 下半身帧数为准
+            p->frame_index = (p->frame_index + 1) % frame_count;
         }
     }
     else
