@@ -155,7 +155,7 @@ void adjust_to_slope_y(player_t *p)
     float base_foot_y = p->y + SPRITE_H_PIXELS * 2;
 
     // 搜索范围扩大，防止斜坡边缘未对齐
-    for (int dy = -2; dy <= 2; ++dy)
+    for (int dy = -1; dy <= 1; ++dy)
     {
         float foot_y = base_foot_y + dy;
         int tile = get_tile_at_pixel(center_x, foot_y);
