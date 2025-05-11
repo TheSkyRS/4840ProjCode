@@ -74,49 +74,28 @@ void player_update_physics(player_t *p)
 
     float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
 
-    // 落地判断：踩在实地面或斜坡上都算落地
+    // 落地判断
     if ((y_factor <= 0.5f) && falling_downward)
         p->on_ground = true;
     else
         p->on_ground = false;
 
-    // 处理 Y 位移与贴地
-    if (y_factor < 1.0f)
-    {
-        if (y_factor == 0.5f)
-        {
-            // === 斜坡贴合修正 ===
-            float foot_x = p->x + SPRITE_W_PIXELS / 2;
-            float foot_y = p->y + SPRITE_H_PIXELS * 2;
+    // 位移处理
+    if (y_factor > 0.5f)
+        p->y = new_y;
 
-            tile_type_t tile = tilemap_get_type_at(foot_x, foot_y);
-            if (is_tile_slope(tile))
-            {
-                float local_x = fmodf(foot_x, TILE_SIZE);
-                float slope_y = get_slope_height(tile, local_x);
-                float base_y = floorf(foot_y / TILE_SIZE) * TILE_SIZE;
-                p->y = base_y + slope_y - SPRITE_H_PIXELS * 2;
-                p->vy = 0; // 非常重要：立即停止下落！
-            }
-        }
-        else
-        {
-            p->y = new_y;
-            p->vy *= y_factor;
-        }
-    }
-
-    p->vy *= y_factor;
+    // 速度处理
+    if (y_factor < 0.75f)
+        p->vy = 0;
 
     // === 水平移动 ===
-    float dx = p->vx;
-    float new_x = p->x + dx;
-
+    float new_x = p->x + p->vx;
     float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
-    p->vx *= x_factor;
 
-    if (x_factor == 1.0f)
+    if (x_factor > 0.5f)
         p->x = new_x;
+    else
+        p->vx = 0; // 撞墙停止移动
 
     // === 状态切换 ===
     if (!p->on_ground)
