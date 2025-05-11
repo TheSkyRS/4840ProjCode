@@ -87,22 +87,24 @@ void player_update_physics(player_t *p)
 
     // 水平运动
     float new_x = p->x + p->vx;
+    float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
+    float new_foot_y = p->y + SPRITE_H_PIXELS * 2 + 1; // 稍微往下一点
 
-    // 检查原位置是否“踩在斜坡上”
-    int tile_below = get_tile_at_pixel(p->x + SPRITE_W_PIXELS / 2.0f, p->y + SPRITE_H_PIXELS * 2);
+    int tile = get_tile_at_pixel(new_foot_x, new_foot_y);
 
-    if (tile_below == TILE_SLOPE_L_UP || tile_below == TILE_SLOPE_R_UP)
+    if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
     {
-        // 在斜坡上 → 放宽限制，允许移动
+        // 预判断脚下是斜坡 → 放行移动并立即吸附
+        p->x = new_x;
+        adjust_to_slope_y(p);
+    }
+    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    {
         p->x = new_x;
     }
     else
     {
-        // 普通地形，照常检查水平碰撞
-        if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
-            p->x = new_x;
-        else
-            p->vx = 0;
+        p->vx = 0;
     }
 
     // 状态切换
@@ -131,32 +133,26 @@ void adjust_to_slope_y(player_t *p)
     float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
 
     // 计算角色脚底的 y 坐标（角色高 32 像素）
-    float foot_y = p->y + SPRITE_H_PIXELS * 2;
+    float base_foot_y = p->y + SPRITE_H_PIXELS * 2;
 
-    // 获取脚下 tile 类型
-    int tile = get_tile_at_pixel(center_x, foot_y);
-
-    // 如果脚下是斜坡 tile，进行吸附对齐
-    if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
+    for (int dy = 0; dy <= 2; ++dy)
     {
-        // 计算当前在 tile 内部的 x 偏移
-        float x_in_tile = fmod(center_x, TILE_SIZE);
-        int x_local = (int)x_in_tile;
+        float foot_y = base_foot_y + dy;
+        int tile = get_tile_at_pixel(center_x, foot_y);
 
-        // 根据斜坡类型计算 tile 内的地面高度
-        int min_y = (tile == TILE_SLOPE_L_UP)
-                        ? x_local                  // 左高右低（\）
-                        : TILE_SIZE - 1 - x_local; // 右高左低（/）
+        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
+        {
+            float x_in_tile = fmod(center_x, TILE_SIZE);
+            int x_local = (int)x_in_tile;
 
-        // 当前 tile 的顶部 y 坐标（整 tile 行的顶部）
-        float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
+            int min_y = (tile == TILE_SLOPE_L_UP) ? x_local : TILE_SIZE - 1 - x_local;
+            float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
 
-        // 计算角色应有的顶部 y（让脚正好贴在斜坡地面）
-        p->y = tile_top_y + min_y - SPRITE_H_PIXELS * 2;
-
-        // 标记角色在地面上，垂直速度清零
-        p->on_ground = true;
-        p->vy = 0;
+            p->y = tile_top_y + min_y - SPRITE_H_PIXELS * 2;
+            p->on_ground = true;
+            p->vy = 0;
+            break;
+        }
     }
 }
 
