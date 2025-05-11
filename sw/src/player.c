@@ -109,23 +109,13 @@ void player_update_physics(player_t *p)
         p->x = new_x;
         adjust_to_slope_y(p);
     }
+    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    {
+        p->x = new_x;
+    }
     else
     {
-        // 如果前一帧在坡上，但这一帧不再是坡 → 说明刚离开坡面
-        // 此时手动把 Y 吸附到 tile 顶部
-        float foot_y = p->y + SPRITE_H_PIXELS * 2;
-        int tile_y = (int)(foot_y / TILE_SIZE);
-        float aligned_y = tile_y * TILE_SIZE - SPRITE_H_PIXELS * 2;
-
-        if (!is_tile_blocked(new_x, aligned_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
-        {
-            p->x = new_x;
-            p->y = aligned_y;
-        }
-        else
-        {
-            p->vx = 0;
-        }
+        p->vx = 0;
     }
 
     // 状态切换
