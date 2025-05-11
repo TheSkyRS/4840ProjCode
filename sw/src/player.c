@@ -53,11 +53,13 @@ void player_handle_input(player_t *p, int player_index)
     {
         p->vx = -MOVE_SPEED;
         p->lower_sprite.flip = 1;
+        p->upper_sprite.flip = 1;
     }
     else if (action == ACTION_MOVE_RIGHT)
     {
         p->vx = MOVE_SPEED;
         p->lower_sprite.flip = 0;
+        p->upper_sprite.flip = 0;
     }
     else if (p->on_ground) // 空中不立即取消横向速度
     {
