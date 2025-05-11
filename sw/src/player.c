@@ -283,7 +283,7 @@ void player_update_sprite(player_t *p)
         p->lower_sprite.enable = true;
 
         p->upper_sprite.x = p->x;
-        p->upper_sprite.y = p->y + 11;
+        p->upper_sprite.y = p->y + 10;
         p->upper_sprite.enable = true;
     }
     if (p->type == PLAYER_WATERGIRL)
