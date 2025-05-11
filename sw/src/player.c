@@ -90,17 +90,17 @@ void player_update_physics(player_t *p)
     if (y_factor > 0.0f)
         p->y = new_y;
 
-        // === 水平移动（含方向 vx）===
+    // === 水平移动（含方向 vx）===
     float new_x = p->x + p->vx;
     float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, p->vx);
 
-    // 上坡修正：如果是斜坡减速状态，就向上抬一点点贴合坡面
+    p->vx *= x_factor;
+
     if (x_factor == 0.4f)
     {
-        p->y -= 1.0f; // 模拟顺坡上升（避免浮空或嵌入）
+        p->y -= (p->vx > 0) ? p->vx : -p->vx; // 始终减去一个正值，向上提
     }
 
-    p->vx *= x_factor;
     if (x_factor > 0.0f)
     {
         p->x = new_x;
