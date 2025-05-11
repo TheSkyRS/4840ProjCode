@@ -64,30 +64,21 @@ void player_handle_input(player_t *p, int player_index)
         p->vx = 0;
     }
 }
-
 void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
 
     // === 垂直移动 ===
     float new_y = p->y + p->vy;
-
-    // 提前保存当前 vy 的方向（是否向下）
     bool falling_downward = (p->vy > 0);
-
-    // 检查是否与地面/斜坡发生碰撞（vx=0，因为是垂直方向）
     float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, 0.0f);
 
-    // 如果撞到地面并且正在下落 → 落地
     if (y_factor == 0.0f && falling_downward)
         p->on_ground = true;
     else
         p->on_ground = false;
 
-    // 应用垂直阻尼系数
     p->vy *= y_factor;
-
-    // 如果未阻挡则更新坐标
     if (y_factor > 0.0f)
         p->y = new_y;
 
@@ -95,41 +86,41 @@ void player_update_physics(player_t *p)
     float dx = p->vx;
     float new_x = p->x + dx;
 
-    // 1. 提前判断是否走上斜坡 tile
+    // 1. 判断将要移动到的位置脚下 tile 类型
     float foot_x = new_x + SPRITE_W_PIXELS / 2;
     float foot_y = p->y + SPRITE_H_PIXELS * 2;
     tile_type_t foot_tile = tilemap_get_type_at(foot_x, foot_y);
 
-    // 2. 若是上坡方向，则抬升 Y 以贴合坡面
-    if ((dx > 0 && foot_tile == TILE_SLOPE_L_UP) ||
-        (dx < 0 && foot_tile == TILE_SLOPE_R_UP))
+    // 2. 如果是上坡方向，计算理想坡面高度并设置 y
+    if ((dx > 0 && foot_tile == TILE_SLOPE_L_UP) || (dx < 0 && foot_tile == TILE_SLOPE_R_UP))
     {
-        p->y -= fabsf(dx); // 顺坡上升
+        int tile_x = (int)(foot_x / TILE_SIZE);
+        int tile_y = (int)(foot_y / TILE_SIZE);
+        float local_x = foot_x - tile_x * TILE_SIZE;
+
+        float expected_y;
+        if (foot_tile == TILE_SLOPE_L_UP)
+            expected_y = tile_y * TILE_SIZE + (TILE_SIZE - local_x);
+        else
+            expected_y = tile_y * TILE_SIZE + local_x;
+
+        p->y = expected_y - SPRITE_H_PIXELS * 2;
     }
 
-    // 3. 判断碰撞并根据阻力系数处理
+    // 3. 判断是否允许水平移动
     float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, dx);
     p->vx *= x_factor;
 
-    // 4. 成功通过再更新位置
     if (x_factor > 0.0f)
-    {
         p->x = new_x;
-    }
 
     // === 状态切换 ===
     if (!p->on_ground)
-    {
         p->state = (p->vy < 0) ? STATE_JUMPING : STATE_FALLING;
-    }
     else if (p->vx != 0)
-    {
         p->state = STATE_RUNNING;
-    }
     else
-    {
         p->state = STATE_IDLE;
-    }
 }
 
 // 火男孩
