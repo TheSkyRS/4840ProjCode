@@ -8,7 +8,7 @@
 // #define MOVE_SPEED 1.5f
 #define GRAVITY 0.2f
 #define JUMP_VELOCITY -10.0f
-#define MOVE_SPEED 2.5f
+#define MOVE_SPEED 1.5f
 #define MAX_FRAME_TIMER 6 // 控制动画切换速度
 
 void player_init(player_t *p, int x, int y,
