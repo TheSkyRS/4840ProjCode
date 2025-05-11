@@ -75,7 +75,7 @@ void player_update_physics(player_t *p)
     // 只检测是否撞上了地形（包括斜坡），不对斜坡做任何处理
     float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
 
-    if (y_factor == 0.0f && falling_downward)
+    if (y_factor < 1.0f && falling_downward)
         p->on_ground = true;
     else
         p->on_ground = false;
