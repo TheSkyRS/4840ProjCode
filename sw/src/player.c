@@ -67,14 +67,13 @@ void player_handle_input(player_t *p, int player_index)
         p->vx = 0;
     }
 }
-
 void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
 
     // 垂直运动
     float new_y = p->y + p->vy;
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2)) // 一步之遥。
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
     {
         p->y = new_y;
         p->on_ground = false;
@@ -86,14 +85,16 @@ void player_update_physics(player_t *p)
         p->vy = 0;
     }
 
-    // 水平插值检测斜坡，增强高速下的可靠性
     float new_x = p->x + p->vx;
+    bool slope_applied = false;
 
+    // 插值检测斜坡，适配高速度
     if (p->on_ground && p->vx != 0)
     {
         float x0 = p->x;
         float x1 = new_x;
-        float dx = (x1 - x0) / fabs(x1 - x0); // ±1
+        float dx = (x1 > x0) ? 1.0f : -1.0f;
+
         for (float tx = x0; fabs(tx - x1) >= 0.5f; tx += dx)
         {
             float center_x = tx + SPRITE_W_PIXELS / 2.0f;
@@ -118,30 +119,24 @@ void player_update_physics(player_t *p)
                     p->y = target_y;
                     p->vy = 0;
                     p->on_ground = true;
+                    slope_applied = true;
                     break;
                 }
             }
         }
     }
 
-    // 正常水平移动
-    if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    // 插值失败后尝试普通水平移动
+    if (!slope_applied)
     {
-        p->x = new_x;
-    }
-    else
-    {
-        p->vx = 0;
-    }
-
-    // 正常水平移动
-    if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
-    {
-        p->x = new_x;
-    }
-    else
-    {
-        p->vx = 0;
+        if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+        {
+            p->x = new_x;
+        }
+        else
+        {
+            p->vx = 0;
+        }
     }
 
     // 状态切换
