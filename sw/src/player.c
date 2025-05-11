@@ -64,7 +64,6 @@ void player_handle_input(player_t *p, int player_index)
         p->vx = 0;
     }
 }
-
 void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
@@ -72,7 +71,9 @@ void player_update_physics(player_t *p)
     // === 垂直移动 ===
     float new_y = p->y + p->vy;
     bool falling_downward = (p->vy > 0);
-    float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, 0.0f);
+
+    // 只检测是否撞上了地形（包括斜坡），不对斜坡做任何处理
+    float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
 
     if (y_factor == 0.0f && falling_downward)
         p->on_ground = true;
@@ -80,35 +81,18 @@ void player_update_physics(player_t *p)
         p->on_ground = false;
 
     p->vy *= y_factor;
-    if (y_factor > 0.0f)
+    if (y_factor == 1.0f)
         p->y = new_y;
 
     // === 水平移动（含方向 vx）===
     float dx = p->vx;
     float new_x = p->x + dx;
 
-    // 判断将要移动到的位置脚下 tile 类型
-    float foot_x = new_x + SPRITE_W_PIXELS / 2;
-    float foot_y = p->y + SPRITE_H_PIXELS * 2;
-    tile_type_t foot_tile = tilemap_get_type_at(foot_x, foot_y);
-
-    // 如果是上坡方向，计算理想坡面高度并设置 y
-    if ((dx > 0 && foot_tile == TILE_SLOPE_L_UP) || (dx < 0 && foot_tile == TILE_SLOPE_R_UP))
-    {
-        int tile_x = (int)(foot_x / TILE_SIZE);
-        int tile_y = (int)(foot_y / TILE_SIZE);
-        float local_x = foot_x - tile_x * TILE_SIZE;
-
-        float slope_height = get_slope_height(foot_tile, local_x);
-        float expected_y = tile_y * TILE_SIZE + slope_height;
-        p->y = expected_y - SPRITE_H_PIXELS * 2;
-    }
-
-    // 判断是否允许水平移动
-    float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, dx);
+    // 不做坡道高度调整
+    float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
     p->vx *= x_factor;
 
-    if (x_factor > 0.0f)
+    if (x_factor == 1.0f)
         p->x = new_x;
 
     // === 状态切换 ===

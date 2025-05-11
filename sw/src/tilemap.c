@@ -52,28 +52,27 @@ const int tilemap[30][40] = {
  * 设计思路：采用七点采样法，其中底部中点（脚底采样）用于检测斜坡效果，
  * 其他六点（左上、右上、左中、右中、左下、右下）用于检测普通墙和天花板。
  */
-float is_tile_blocked(float x, float y, float width, float height, float vx)
+float is_tile_blocked(float x, float y, float width, float height)
 {
-    // === 计算采样点位置 ===
     float x_left = x + COLLISION_MARGIN;
     float x_right = x + width - 1 - COLLISION_MARGIN;
     float x_mid = (x_left + x_right) / 2.0f;
 
     float y_top = y + COLLISION_MARGIN;
     float y_mid = y + height / 2.0f;
-    float y_foot = y + height; // 脚底中央
+    float y_bottom = y + height - 1 - COLLISION_MARGIN;
+    float y_foot = y + height;
 
-    // === 定义五个关键采样点（左上、右上、左中、右中、底中） ===
-    float sample_points[5][2] = {
+    // 六点采样：左上、右上、左中、右中、左下、右下
+    float sample_points[6][2] = {
         {x_left, y_top},
         {x_right, y_top},
         {x_left, y_mid},
         {x_right, y_mid},
-        {x_mid, y_foot} // 脚底中心，用于斜坡判断
-    };
+        {x_left, y_bottom},
+        {x_right, y_bottom}};
 
-    // === 遍历采样点并检测碰撞 ===
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 6; ++i)
     {
         float sx = sample_points[i][0];
         float sy = sample_points[i][1];
@@ -99,28 +98,30 @@ float is_tile_blocked(float x, float y, float width, float height, float vx)
             if (local_y <= local_x)
                 return 0.0f;
             break;
-        case TILE_SLOPE_L_UP:
-            if (i == 4) // 仅底中参与斜坡判断
-            {
-                if (local_y >= TILE_SIZE - local_x)
-                    return 0.0f;
-                if (vx > 0)
-                    return 0.4f; // 上坡方向减速
-            }
-            break;
-        case TILE_SLOPE_R_UP:
-            if (i == 4)
-            {
-                if (local_y >= local_x)
-                    return 0.0f;
-                if (vx < 0)
-                    return 0.4f;
-            }
-            break;
         }
     }
 
-    return 1.0f; // 无阻挡
+    // 额外检查斜坡脚底中点
+    float foot_sx = x_mid;
+    float foot_sy = y_foot;
+    int ftx = (int)(foot_sx / TILE_SIZE);
+    int fty = (int)(foot_sy / TILE_SIZE);
+
+    if (ftx < 0 || ftx >= MAP_WIDTH || fty < 0 || fty >= MAP_HEIGHT)
+        return 0.0f;
+
+    int ftile = tilemap[fty][ftx];
+    float f_local_x = foot_sx - ftx * TILE_SIZE;
+    float f_local_y = foot_sy - fty * TILE_SIZE;
+
+    if (ftile == TILE_SLOPE_L_UP && f_local_y >= TILE_SIZE - f_local_x)
+        return 0.0f;
+    if (ftile == TILE_SLOPE_R_UP && f_local_y >= f_local_x)
+        return 0.0f;
+    if (ftile == TILE_SLOPE_L_UP || ftile == TILE_SLOPE_R_UP)
+        return 0.5f;
+
+    return 1.0f; // 无碰撞
 }
 
 float get_slope_height(tile_type_t type, float local_x)
