@@ -155,7 +155,7 @@ void adjust_to_slope_y(player_t *p)
     float base_foot_y = p->y + SPRITE_H_PIXELS * 2;
 
     // 搜索范围扩大，防止斜坡边缘未对齐
-    for (int dy = -6; dy <= 6; ++dy)
+    for (int dy = -4; dy <= 2; ++dy)
     {
         float foot_y = base_foot_y + dy;
         int tile = get_tile_at_pixel(center_x, foot_y);
@@ -171,7 +171,7 @@ void adjust_to_slope_y(player_t *p)
 
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
 
-            p->y = tile_top_y + min_y - SPRITE_H_PIXELS * 2;
+            p->y = tile_top_y + min_y - SPRITE_H_PIXELS * 2 - 3;
             p->on_ground = true;
             p->vy = 0;
             break;
