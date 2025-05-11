@@ -114,12 +114,20 @@ float is_tile_blocked(float x, float y, float width, float height)
     float f_local_x = foot_sx - ftx * TILE_SIZE;
     float f_local_y = foot_sy - fty * TILE_SIZE;
 
-    if (ftile == TILE_SLOPE_L_UP && f_local_y >= TILE_SIZE - f_local_x)
-        return 0.0f;
-    if (ftile == TILE_SLOPE_R_UP && f_local_y >= f_local_x)
-        return 0.0f;
-    if (ftile == TILE_SLOPE_L_UP || ftile == TILE_SLOPE_R_UP)
-        return 0.5f;
+    if (ftile == TILE_SLOPE_L_UP)
+    {
+        if (f_local_y <= TILE_SIZE - f_local_x)
+            return 0.5f; // 真正踩在斜面上
+        else
+            return 1.0f; // 悬空
+    }
+    if (ftile == TILE_SLOPE_R_UP)
+    {
+        if (f_local_y <= f_local_x)
+            return 0.5f; // 真正踩在斜面上
+        else
+            return 1.0f; // 悬空
+    }
 
     return 1.0f; // 无碰撞
 }
