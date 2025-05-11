@@ -8,7 +8,7 @@
 // #define MOVE_SPEED 1.5f
 #define GRAVITY 0.2f
 #define JUMP_VELOCITY -10.0f
-#define MOVE_SPEED 1.0f
+#define MOVE_SPEED 1.5f
 #define MAX_FRAME_TIMER 6 // 控制动画切换速度
 
 void player_init(player_t *p, int x, int y,
@@ -87,13 +87,22 @@ void player_update_physics(player_t *p)
 
     // 水平运动
     float new_x = p->x + p->vx;
-    if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+
+    // 检查原位置是否“踩在斜坡上”
+    int tile_below = get_tile_at_pixel(p->x + SPRITE_W_PIXELS / 2.0f, p->y + SPRITE_H_PIXELS * 2);
+
+    if (tile_below == TILE_SLOPE_L_UP || tile_below == TILE_SLOPE_R_UP)
     {
+        // 在斜坡上 → 放宽限制，允许移动
         p->x = new_x;
     }
     else
     {
-        p->vx = 0;
+        // 普通地形，照常检查水平碰撞
+        if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+            p->x = new_x;
+        else
+            p->vx = 0;
     }
 
     // 状态切换
