@@ -63,25 +63,34 @@ void player_handle_input(player_t *p, int player_index)
         p->vx = 0;
     }
 }
+
 void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
 
     // === 垂直移动 ===
     float new_y = p->y + p->vy;
-    float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, 0.0f); // vy 不影响斜坡
-    p->vy *= y_factor;
-    if (y_factor > 0.0f)
-    {
-        p->y = new_y;
-        p->on_ground = false;
-    }
-    else if (p->vy > 0)
-    {
-        p->on_ground = true;
-    }
 
-    // === 水平移动（含方向 vx）===
+    // 提前保存当前 vy 的方向（是否向下）
+    bool falling_downward = (p->vy > 0);
+
+    // 检查是否与地面/斜坡发生碰撞（vx=0，因为是垂直方向）
+    float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, 0.0f);
+
+    // 如果撞到地面并且正在下落 → 落地
+    if (y_factor == 0.0f && falling_downward)
+        p->on_ground = true;
+    else
+        p->on_ground = false;
+
+    // 应用垂直阻尼系数
+    p->vy *= y_factor;
+
+    // 如果未阻挡则更新坐标
+    if (y_factor > 0.0f)
+        p->y = new_y;
+
+        // === 水平移动（含方向 vx）===
     float new_x = p->x + p->vx;
     float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, p->vx);
 
