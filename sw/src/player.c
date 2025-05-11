@@ -23,6 +23,7 @@ void player_init(player_t *p, int x, int y,
     p->type = type;
     p->frame_timer = 0;
     p->frame_index = 0;
+    p->was_on_slope_last_frame = false;
 
     if (type == PLAYER_FIREBOY)
     {
@@ -84,15 +85,15 @@ void player_update_physics(player_t *p)
             p->on_ground = true;
         p->vy = 0;
     }
+
     // 水平运动
     float new_x = p->x + p->vx;
 
-    // 计算当前位置和目标位置的脚底中心点
-    float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
+    // 计算脚底中心点坐标
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + SPRITE_H_PIXELS * 2;
 
-    // 判断当前位置脚底左右邻近是否在斜坡范围
+    // 判断是否踩在斜坡上
     bool on_slope = false;
     for (int dx = -1; dx <= 1; ++dx)
     {
@@ -112,11 +113,26 @@ void player_update_physics(player_t *p)
     else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
     {
         p->x = new_x;
+
+        // 如果上一帧在斜坡上，这一帧不在，尝试上移补正 y 坐标
+        if (p->was_on_slope_last_frame)
+        {
+            for (int dy = 1; dy <= 4; ++dy)
+            {
+                if (!is_tile_blocked(p->x, p->y - dy, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+                {
+                    p->y -= dy;
+                    break;
+                }
+            }
+        }
     }
     else
     {
         p->vx = 0;
     }
+
+    p->was_on_slope_last_frame = on_slope;
 
     // 状态切换
     if (!p->on_ground)

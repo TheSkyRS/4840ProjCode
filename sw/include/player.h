@@ -34,6 +34,7 @@ typedef struct
 
     int frame_timer; // 控制帧切换节奏
     int frame_index; // 当前帧序号（用于行走动画）
+    bool was_on_slope_last_frame;
 } player_t;
 
 // 初始化角色（初始坐标，sprite index，角色类型）
