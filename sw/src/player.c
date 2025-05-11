@@ -64,6 +64,7 @@ void player_handle_input(player_t *p, int player_index)
         p->vx = 0;
     }
 }
+
 void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
