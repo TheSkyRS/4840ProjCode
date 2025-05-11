@@ -31,10 +31,11 @@ extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 // === Tile 碰撞检测函数 ===
 // 检查给定区域是否碰到 "阻挡" tile（墙壁或不可穿越斜面）
 // 修改函数签名，新增 vx 参数用于判断移动方向
-float is_tile_blocked(float x, float y, float width, float height);
+float is_pixel_blocked(float x, float y, float width, float height);
 
 tile_type_t tilemap_get_type_at(float x, float y);
 
+void collision_map_init();
 // 斜坡高度函数：给定 tile 类型和局部 x，返回该 x 下应有的 y 高度（单位：像素）
 float get_slope_height(tile_type_t type, float local_x);
 
