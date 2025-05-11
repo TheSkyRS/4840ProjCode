@@ -42,21 +42,12 @@ const int tilemap[30][40] = {
 #define COLLISION_MARGIN 1.0f
 bool is_tile_blocked(float x, float y, float width, float height)
 {
-    float center_x = x + width / 2.0f;
+    float x_check = x + width / 2.0f;
 
-    float y_top = y + COLLISION_MARGIN;
-    float y_mid = y + height / 2.0f;
-    float y_bottom = y + height - 1 - COLLISION_MARGIN;
-
-    float sample_points[3][2] = {
-        {center_x, y_top},
-        {center_x, y_mid},
-        {center_x, y_bottom}};
-
-    for (int i = 0; i < 3; ++i)
+    for (int offset = 0; offset < (int)height; offset++)
     {
-        float sx = sample_points[i][0];
-        float sy = sample_points[i][1];
+        float sx = x_check;
+        float sy = y + offset;
 
         int tx = (int)(sx / TILE_SIZE);
         int ty = (int)(sy / TILE_SIZE);
@@ -66,27 +57,27 @@ bool is_tile_blocked(float x, float y, float width, float height)
 
         int tile = tilemap[ty][tx];
 
-        // 普通墙壁
+        // 普通墙
         if (tile == TILE_WALL)
             return true;
 
-        // 斜天花板处理（角色头顶打到）
+        // 斜天花板
         if (tile == TILE_CEIL_L || tile == TILE_CEIL_R)
         {
             float x_in_tile = fmod(sx, TILE_SIZE);
             float y_in_tile = fmod(sy, TILE_SIZE);
 
-            // 对 tile 内坐标进行整数处理避免误差
             int x_local = (int)x_in_tile;
             int y_local = (int)y_in_tile;
 
             int max_y = (tile == TILE_CEIL_L)
-                            ? TILE_SIZE - 1 - x_local // 左低右高
-                            : x_local;                // 右低左高
+                            ? TILE_SIZE - 1 - x_local
+                            : x_local;
 
             if (y_local <= max_y)
                 return true;
         }
+
         // 斜地板
         if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
         {
@@ -97,13 +88,11 @@ bool is_tile_blocked(float x, float y, float width, float height)
             int y_local = (int)y_in_tile;
 
             int min_y = (tile == TILE_SLOPE_L_UP)
-                            ? x_local                  // \ ← 左高右低
-                            : TILE_SIZE - 1 - x_local; // / ← 右高左低
+                            ? x_local
+                            : TILE_SIZE - 1 - x_local;
 
             if (y_local >= min_y)
                 return true;
         }
     }
-
-    return false;
 }
