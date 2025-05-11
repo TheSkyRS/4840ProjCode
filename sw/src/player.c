@@ -75,15 +75,32 @@ void player_update_physics(player_t *p)
     // 只检测是否撞上了地形（包括斜坡），不对斜坡做任何处理
     float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
 
+    // 原始垂直位移逻辑中添加：
     if (y_factor < 1.0f && falling_downward)
-        p->on_ground = true;
-    else
-        p->on_ground = false;
+    {
+        // 获取角色脚底中心坐标
+        float foot_x = p->x + SPRITE_W_PIXELS / 2;
+        float foot_y = new_y + SPRITE_H_PIXELS * 2;
 
-    p->vy *= y_factor;
-    if (y_factor == 1.0f)
+        tile_type_t tile = tilemap_get_type_at(foot_x, foot_y);
+        if (is_tile_slope(tile))
+        {
+            float local_x = fmodf(foot_x, TILE_SIZE);
+            float slope_y = get_slope_height(tile, local_x);
+            float surface_y = floorf(foot_y / TILE_SIZE) * TILE_SIZE + slope_y;
+
+            // 把角色 y 位置对齐到地面上（注意是角色“脚”的位置减去高度）
+            p->y = surface_y - SPRITE_H_PIXELS * 2;
+        }
+        else
+        {
+            p->y = new_y;
+        }
+    }
+    else if (y_factor == 1.0f)
+    {
         p->y = new_y;
-
+    }
     // === 水平移动（含方向 vx）===
     float dx = p->vx;
     float new_x = p->x + dx;
