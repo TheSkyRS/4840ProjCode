@@ -1,45 +1,28 @@
 #ifndef TILEMAP_H
 #define TILEMAP_H
 
-#include <stdbool.h>
+#include <stdint.h>
 
-// === 地图常量 ===
-#define MAP_WIDTH 40  // tile 横向数量
-#define MAP_HEIGHT 30 // tile 纵向数量
-#define TILE_SIZE 16  // 每个 tile 像素大小（单位：px）
+#define TILE_SIZE 32
+#define MAP_WIDTH 40
+#define MAP_HEIGHT 30
 
-// === Tile 类型枚举 ===
 typedef enum
 {
-    TILE_EMPTY = 0, // 空地
-    TILE_WALL = 1,  // 墙壁
-    TILE_FIRE = 2,  // 火池
-    TILE_WATER = 3, // 水池
-    TILE_GOAL = 4,  // 终点
-
-    TILE_SLOPE_L_UP = 5, // 斜坡（左高右低）
-    TILE_SLOPE_R_UP = 6, // 斜坡（右高左低）
-
-    TILE_CEIL_R = 7, // 天花板（左高右低）
-    TILE_CEIL_L = 8  // 天花板（右高左低）
-
+    TILE_EMPTY = 0,
+    TILE_WALL = 1,
+    TILE_FIRE = 2,
+    TILE_WATER = 3,
+    TILE_GOAL = 4,
+    TILE_SLOPE_L_UP = 5,
+    TILE_SLOPE_R_UP = 6,
+    TILE_CEIL_R = 7,
+    TILE_CEIL_L = 8
 } tile_type_t;
 
-// === 外部地图数组（只读）===
 extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
-
-// === Tile 碰撞检测函数 ===
-// 检查给定区域是否碰到 "阻挡" tile（墙壁或不可穿越斜面）
-// 修改函数签名，新增 vx 参数用于判断移动方向
+extern uint8_t collision_map[480][640]; // ✅ ← 加上这行
+void collision_map_init();
 float is_pixel_blocked(float x, float y, float width, float height);
 
-tile_type_t tilemap_get_type_at(float x, float y);
-
-void collision_map_init();
-// 斜坡高度函数：给定 tile 类型和局部 x，返回该 x 下应有的 y 高度（单位：像素）
-float get_slope_height(tile_type_t type, float local_x);
-
-// 判断某点是否在斜坡 tile 上（用于落地检测优化）
-bool is_tile_slope(tile_type_t type);
-
-#endif // TILEMAP_H
+#endif
