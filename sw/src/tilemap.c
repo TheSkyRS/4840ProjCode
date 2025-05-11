@@ -54,28 +54,19 @@ const int tilemap[30][40] = {
  */
 float is_tile_blocked(float x, float y, float width, float height)
 {
-    float x_left = x + COLLISION_MARGIN;
-    float x_right = x + width - 1 - COLLISION_MARGIN;
-    float x_mid = (x_left + x_right) / 2.0f;
-
+    float x_mid = x + width / 2.0f;
     float y_top = y + COLLISION_MARGIN;
     float y_mid = y + height / 2.0f;
-    float y_bottom = y + height - 1 - COLLISION_MARGIN;
+    float y_bottom = y + height - COLLISION_MARGIN;
     float y_foot = y + height;
 
-    // 六点采样：左上、右上、左中、右中、左下、右下
-    float sample_points[6][2] = {
-        {x_left, y_top},
-        {x_right, y_top},
-        {x_left, y_mid},
-        {x_right, y_mid},
-        {x_left, y_bottom},
-        {x_right, y_bottom}};
+    float sample_y[3] = {y_top, y_mid, y_bottom};
 
-    for (int i = 0; i < 6; ++i)
+    // 中轴三点：上、中、下
+    for (int i = 0; i < 3; ++i)
     {
-        float sx = sample_points[i][0];
-        float sy = sample_points[i][1];
+        float sx = x_mid;
+        float sy = sample_y[i];
         int tx = (int)(sx / TILE_SIZE);
         int ty = (int)(sy / TILE_SIZE);
 
@@ -101,7 +92,7 @@ float is_tile_blocked(float x, float y, float width, float height)
         }
     }
 
-    // ==== 斜坡检测 ====
+    // ==== 脚底中点斜坡检测 ====
     float foot_sx = x_mid;
     float foot_sy = y_foot;
     int ftx = (int)(foot_sx / TILE_SIZE);
@@ -118,11 +109,11 @@ float is_tile_blocked(float x, float y, float width, float height)
     {
         float slope_y = TILE_SIZE - f_local_x;
         if (f_local_y <= slope_y)
-            return 0.5f; // 落在斜坡上
+            return 0.5f;
         else if (f_local_y <= slope_y + 4.0f)
-            return 0.75f; // 临近斜坡表面
+            return 0.75f;
         else
-            return 1.0f; // 未触碰
+            return 1.0f;
     }
     else if (ftile == TILE_SLOPE_R_UP)
     {
@@ -135,7 +126,7 @@ float is_tile_blocked(float x, float y, float width, float height)
             return 1.0f;
     }
 
-    return 1.0f; // 空中自由
+    return 1.0f;
 }
 
 float get_slope_height(tile_type_t type, float local_x)
