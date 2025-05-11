@@ -93,7 +93,6 @@ void player_update_physics(player_t *p)
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + SPRITE_H_PIXELS * 2;
 
-    // 判断是否踩在斜坡上
     bool on_slope = false;
     for (int dx = -1; dx <= 1; ++dx)
     {
@@ -114,17 +113,12 @@ void player_update_physics(player_t *p)
     {
         p->x = new_x;
 
-        // 如果上一帧在斜坡上，这一帧不在，尝试上移补正 y 坐标
+        // 如果上一帧在斜坡上，这一帧不在，强制对齐到 tile 顶部
         if (p->was_on_slope_last_frame)
         {
-            for (int dy = 1; dy <= 4; ++dy)
-            {
-                if (!is_tile_blocked(p->x, p->y - dy, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
-                {
-                    p->y -= dy;
-                    break;
-                }
-            }
+            float bottom = p->y + SPRITE_H_PIXELS * 2;
+            int tile_row = (int)(bottom / TILE_SIZE);
+            p->y = tile_row * TILE_SIZE - SPRITE_H_PIXELS * 2;
         }
     }
     else
