@@ -84,19 +84,19 @@ void player_update_physics(player_t *p)
             p->on_ground = true;
         p->vy = 0;
     }
-
     // 水平运动
     float new_x = p->x + p->vx;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
-    float new_foot_y = p->y + SPRITE_H_PIXELS * 2 + 1;
+    float new_foot_y = p->y + SPRITE_H_PIXELS * 2; // 不再 +1，防止偏离真实脚底
 
-    int tile_nextUP = get_tile_at_pixel(new_foot_x, new_foot_y - 1);
-    int tile_nextDown = get_tile_at_pixel(new_foot_x, new_foot_y);
+    // 计算目标位置脚底 tile
+    int tx = (int)(new_foot_x / TILE_SIZE);
+    int ty = (int)(new_foot_y / TILE_SIZE);
+    int tile = tilemap[ty][tx];
 
-    if (tile_nextUP == TILE_SLOPE_L_UP || tile_nextUP == TILE_SLOPE_R_UP ||
-        tile_nextDown == TILE_SLOPE_L_UP || tile_nextDown == TILE_SLOPE_R_UP)
+    // 如果目标脚底 tile 是斜坡，则放行移动并吸附
+    if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
     {
-        // 当前或目标脚下是斜坡 → 放行并吸附
         p->x = new_x;
         adjust_to_slope_y(p);
     }
