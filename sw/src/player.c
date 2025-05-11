@@ -68,24 +68,36 @@ void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
 
-    // 垂直运动
+    // === 垂直移动 ===
     float new_y = p->y + p->vy;
-    if (!is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    bool hit_vertically = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
+    if (!hit_vertically)
     {
         p->y = new_y;
         p->on_ground = false;
     }
     else
     {
-        if (p->vy > 0)
+        tile_type_t below = tilemap_get_type_at(p->x + SPRITE_W_PIXELS / 2, new_y + SPRITE_H_PIXELS * 2 - 1);
+        if (p->vy > 0 && (below == TILE_SLOPE_L_UP || below == TILE_SLOPE_R_UP || below == TILE_WALL))
+        {
             p->on_ground = true;
+        }
         p->vy = 0;
     }
 
-    // 水平运动
+    // === 水平移动 ===
     float new_x = p->x + p->vx;
-    if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    bool hit_horizontally = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
+    if (!hit_horizontally)
     {
+        // 斜坡减速判断：只有在地面上且是上坡方向时减速
+        tile_type_t foot_tile = tilemap_get_type_at(new_x + SPRITE_W_PIXELS / 2, p->y + SPRITE_H_PIXELS * 2 - 1);
+        if (p->vx > 0 && foot_tile == TILE_SLOPE_L_UP)
+            p->vx *= 0.6f;
+        else if (p->vx < 0 && foot_tile == TILE_SLOPE_R_UP)
+            p->vx *= 0.6f;
+
         p->x = new_x;
     }
     else
@@ -93,7 +105,7 @@ void player_update_physics(player_t *p)
         p->vx = 0;
     }
 
-    // 状态切换
+    // === 状态切换 ===
     if (!p->on_ground)
     {
         if (p->vy < 0)
