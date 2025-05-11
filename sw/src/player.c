@@ -278,12 +278,13 @@ void player_update_sprite(player_t *p)
         p->upper_sprite.frame_id = get_frame_id(p, true);
 
         // 设置位置与启用
+        // 身子
         p->lower_sprite.x = p->x;
-        p->lower_sprite.y = p->y + SPRITE_H_PIXELS + 8;
+        p->lower_sprite.y = p->y + SPRITE_H_PIXELS + 7;
         p->lower_sprite.enable = true;
-
+        // 头
         p->upper_sprite.x = p->x;
-        p->upper_sprite.y = p->y + 10;
+        p->upper_sprite.y = p->y + 12;
         p->upper_sprite.enable = true;
     }
     if (p->type == PLAYER_WATERGIRL)
@@ -292,11 +293,12 @@ void player_update_sprite(player_t *p)
         p->upper_sprite.frame_id = get_frame_id(p, true);
 
         // 设置位置与启用
+        // 身子
         p->lower_sprite.x = p->x;
         p->lower_sprite.y = p->y + SPRITE_H_PIXELS + 4;
         p->lower_sprite.enable = true;
-
-        p->upper_sprite.x = p->x;
+        // 头
+        p->upper_sprite.x = p->x - 1;
         p->upper_sprite.y = p->y + 10;
         p->upper_sprite.enable = true;
     }
