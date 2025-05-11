@@ -87,24 +87,25 @@ void player_update_physics(player_t *p)
 
     // 水平运动
     float new_x = p->x + p->vx;
-    float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
-    float new_foot_y = p->y + SPRITE_H_PIXELS * 2 + 1; // 稍微往下一点
 
-    int tile = get_tile_at_pixel(new_foot_x, new_foot_y);
+    // 获取新位置脚底下 tile
+    float test_x = new_x + SPRITE_W_PIXELS / 2.0f;
+    float test_y = p->y + SPRITE_H_PIXELS * 2 + 1;
+    int tile = get_tile_at_pixel(test_x, test_y);
 
+    // 如果移动后踩在斜坡 → 放行 + 吸附
     if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
     {
-        // 预判断脚下是斜坡 → 放行移动并立即吸附
         p->x = new_x;
         adjust_to_slope_y(p);
     }
-    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
-    {
-        p->x = new_x;
-    }
     else
     {
-        p->vx = 0;
+        // 正常地形 → 才进行碰撞判断
+        if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+            p->x = new_x;
+        else
+            p->vx = 0;
     }
 
     // 状态切换
