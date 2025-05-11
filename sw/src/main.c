@@ -4,22 +4,24 @@
 #include "hw_interact.h"
 #include "player.h"
 #include "joypad_input.h"
+#include "tilemap.h" // ä¸€å®šè¦åŒ…å«
 
 #define NUM_PLAYERS 2
 #define VACTIVE 480
 
 int main()
 {
+    collision_map_init(); // âœ… åˆå§‹åŒ–åƒç´ çº§ç¢°æ’å›¾
     if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
     {
         fprintf(stderr, "Error: cannot open /dev/vga_top\n");
         return -1;
     }
 
-    write_ctrl(0x00000001); // Æô¶¯ VGA ¿ØÖÆÆ÷
+    write_ctrl(0x00000001); // å¯åŠ¨ VGA æ§åˆ¶å™¨
     for (int i = 0; i < 32; i++)
     {
-        write_sprite(i, 0, 0, 0, 0, 0); // disable=0£¬Î»ÖÃ0£¬Ö¡0
+        write_sprite(i, 0, 0, 0, 0, 0); // disable=0ï¼Œä½ç½®0ï¼Œå¸§0
     }
     input_handler_init();
 
@@ -29,7 +31,7 @@ int main()
 
     unsigned col = 0, row = 0;
 
-    // ¶¯»­Ö¡²âÊÔ
+    // åŠ¨ç”»å¸§æµ‹è¯•
     for (uint8_t i = 0; i < 32; i++)
     {
         write_sprite(i, 1, 0, (i % 8) * 32, (i / 8) * 32, i + 17); // frame_id = i
@@ -38,89 +40,34 @@ int main()
 
     while (1)
     {
-        // === Ö¡Í¬²½£ºÖ»ÔÚÃ¿Ö¡¶¥²¿ row==0 Ê±Ö´ĞĞÒ»´Î ===
+        // === å¸§åŒæ­¥ï¼šåªåœ¨æ¯å¸§é¡¶éƒ¨ row==0 æ—¶æ‰§è¡Œä¸€æ¬¡ ===
         do
         {
             read_status(&col, &row);
         } while (row != 0);
 
-        // === 1. Âß¼­¸üĞÂ½×¶Î ===
+        // === 1. é€»è¾‘æ›´æ–°é˜¶æ®µ ===
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_handle_input(&players[i], i);
             player_update_physics(&players[i]);
         }
 
-        // === 2. µÈ´ıÏûÒşÇø ===
+        // === 2. ç­‰å¾…æ¶ˆéšåŒº ===
         do
         {
             read_status(&col, &row);
         } while (row < VACTIVE);
 
-        // === 3. Ğ´Èë sprite µ½ VGA ===
+        // === 3. å†™å…¥ sprite åˆ° VGA ===
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_update_sprite(&players[i]);
         }
     }
 
-    // ²»»áµ½´ï£¬ÈôºóĞøÓĞÍË³öÌõ¼ş£¬¿ÉÊÍ·Å×ÊÔ´£º
+    // ä¸ä¼šåˆ°è¾¾ï¼Œè‹¥åç»­æœ‰é€€å‡ºæ¡ä»¶ï¼Œå¯é‡Šæ”¾èµ„æºï¼š
     input_handler_cleanup();
     close(vga_top_fd);
     return 0;
 }
-
-//////////////////////////////////////////////////////////////////////////////////
-// #include <stdio.h>
-// #include <fcntl.h>
-// #include <unistd.h>
-// #include "hw_interact.h"
-// #include "player.h"
-// #include "joypad_input.h"
-
-// #define NUM_PLAYERS 2
-
-// int main()
-// {
-//     if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
-//     {
-//         fprintf(stderr, "Error: cannot open /dev/vga_top\n");
-//         return -1;
-//     }
-
-//     write_ctrl(0x00000002); // Æô¶¯ VGA ¿ØÖÆÆ÷
-//     input_handler_init();
-
-//     player_t players[NUM_PLAYERS];
-//     player_init(&players[0], 100, 400, 0, 1, PLAYER_FIREBOY);
-//     player_init(&players[1], 200, 400, 2, 3, PLAYER_WATERGIRL);
-
-//     unsigned col = 0, row = 0;
-
-//     while (1)
-//     {
-//         read_status(&col, &row);
-
-//         if (row < VACTIVE)
-//         {
-//             // ÔÚ¿É¼ûÇø·´¸´½øĞĞ£ºÊäÈë + ÎïÀí´¦Àí
-//             for (int i = 0; i < NUM_PLAYERS; i++)
-//             {
-//                 player_handle_input(&players[i], i);
-//                 player_update_physics(&players[i]);
-//             }
-//         }
-//         else
-//         {
-//             // ÔÚÏûÒşÇø·´¸´½øĞĞ sprite Ğ´Èë
-//             for (int i = 0; i < NUM_PLAYERS; i++)
-//             {
-//                 player_update_sprite(&players[i]);
-//             }
-//         }
-//     }
-
-//     input_handler_cleanup();
-//     close(vga_top_fd);
-//     return 0;
-// }

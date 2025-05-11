@@ -3,9 +3,9 @@
 
 #include "tilemap.h"
 #include <math.h> // 用于 floor()
-
+#include <cstdint>
 // === 示例地图数据 ===
-// 0: 空地  1: 墙壁  2: 火池  3: 水池  4: 终点 5
+// 0: 空地  1: 墙壁  2: 火池  3: 水池  4: 终点 5  6, 7,
 const int tilemap[30][40] = {
     //               x              1              5              2              5              3              5              4
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -39,118 +39,107 @@ const int tilemap[30][40] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
+uint8_t collision_map[480][640];
+
 #define COLLISION_MARGIN 1.0f
-float EPSILON = 1.0f;
-/*
- * is_tile_blocked -- 检查给定区域（x,y,width,height）与 tilemap 中障碍物的碰撞情况
- *
- * 返回值意义：
- *   1.0f  : 完全没有碰撞，可以自由通过；
- *   0.4f  : 处于斜坡区域（减速区域），允许通过，但应减速；
- *   0.0f  : 碰撞发生（墙、天花板或超出地图），不允许通过。
- *
- * 设计思路：采用七点采样法，其中底部中点（脚底采样）用于检测斜坡效果，
- * 其他六点（左上、右上、左中、右中、左下、右下）用于检测普通墙和天花板。
- */
-float is_tile_blocked(float x, float y, float width, float height)
+void collision_map_init()
 {
-    float x_mid = x + width / 2.0f;
-    float y_top = y + COLLISION_MARGIN;
-    float y_mid = y + height / 2.0f;
-    float y_bottom = y + height - COLLISION_MARGIN;
+    for (int ty = 0; ty < MAP_HEIGHT; ++ty)
+    {
+        for (int tx = 0; tx < MAP_WIDTH; ++tx)
+        {
+            tile_type_t tile = tilemap[ty][tx];
+            int px_start = tx * TILE_SIZE;
+            int py_start = ty * TILE_SIZE;
 
-    float sample_y[3] = {y_top, y_mid, y_bottom};
+            for (int dy = 0; dy < TILE_SIZE; ++dy)
+            {
+                for (int dx = 0; dx < TILE_SIZE; ++dx)
+                {
+                    int x = px_start + dx;
+                    int y = py_start + dy;
 
-    float min_factor = 1.0f; // 默认为自由
+                    uint8_t value = 0;
 
+                    switch (tile)
+                    {
+                    case TILE_EMPTY:
+                        value = 0;
+                        break;
+                    case TILE_WALL:
+                        value = 1;
+                        break;
+                    case TILE_FIRE:
+                        value = 2;
+                        break;
+                    case TILE_WATER:
+                        value = 3;
+                        break;
+                    case TILE_GOAL:
+                        value = 0;
+                        break;
+                    case TILE_SLOPE_L_UP:
+                        value = (dy >= TILE_SIZE - dx) ? 1 : 0;
+                        break;
+                    case TILE_SLOPE_R_UP:
+                        value = (dy >= dx) ? 1 : 0;
+                        break;
+                    case TILE_CEIL_L:
+                        value = (dy >= dx) ? 1 : 0;
+                        break;
+                    case TILE_CEIL_R:
+                        value = (dy >= TILE_SIZE - dx - 1) ? 1 : 0;
+                        break;
+                    default:
+                        value = 0;
+                        break;
+                    }
+
+                    collision_map[y][x] = value;
+                }
+            }
+        }
+    }
+}
+
+float is_pixel_blocked(float x, float y, float width, float height)
+{
+    float x_center = x + width / 2.0f;
+    float y_head = y + COLLISION_MARGIN;
+    float y_body = y + height / 2.0f;
+    float y_feet = y + height - COLLISION_MARGIN;
+
+    int sample_x = (int)x_center;
+    int sample_y[3] = {(int)y_head, (int)y_body, (int)y_feet};
+
+    // 脚底点所在 tile 决定返回值组
+    int tile_tx = sample_x / TILE_SIZE;
+    int tile_ty = sample_y[2] / TILE_SIZE;
+
+    float collision_if_hit = 0.0f;
+    float collision_if_free = 1.0f;
+
+    if (tile_tx >= 0 && tile_tx < MAP_WIDTH && tile_ty >= 0 && tile_ty < MAP_HEIGHT)
+    {
+        tile_type_t tile = tilemap[tile_ty][tile_tx];
+        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
+        {
+            collision_if_hit = 0.25f;
+            collision_if_free = 0.75f;
+        }
+    }
+
+    // 三点检测是否任意点发生碰撞
     for (int i = 0; i < 3; ++i)
     {
-        float sx = x_mid;
-        float sy = sample_y[i];
-        int tx = (int)(sx / TILE_SIZE);
-        int ty = (int)(sy / TILE_SIZE);
+        int sy = sample_y[i];
 
-        if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
-            return 0.0f;
+        if (sample_x < 0 || sample_x >= 640 || sy < 0 || sy >= 480)
+            return collision_if_hit;
 
-        int tile = tilemap[ty][tx];
-        float local_x = sx - tx * TILE_SIZE;
-        float local_y = sy - ty * TILE_SIZE;
-
-        float this_factor = 1.0f;
-
-        switch (tile)
-        {
-        case TILE_WALL:
-            this_factor = 0.0f;
-            break;
-        case TILE_CEIL_R:
-            if (local_y >= TILE_SIZE - local_x)
-                this_factor = 0.0f;
-            break;
-        case TILE_CEIL_L:
-            if (local_y <= local_x)
-                this_factor = 0.0f;
-            break;
-        case TILE_SLOPE_L_UP:
-        {
-            float slope_y = TILE_SIZE - local_x;
-            if (local_y <= slope_y + EPSILON)
-                this_factor = 0.25f;
-            else
-                this_factor = 0.75f;
-            break;
-        }
-        case TILE_SLOPE_R_UP:
-        {
-            float slope_y = local_x;
-            if (local_y <= slope_y + EPSILON)
-                this_factor = 0.25f;
-            else
-                this_factor = 0.75f;
-        }
-        default:
-            break;
-        }
-
-        if (this_factor < min_factor)
-            min_factor = this_factor;
+        if (collision_map[sy][sample_x] == 1)
+            return collision_if_hit;
     }
 
-    return min_factor;
-}
-
-float get_slope_height(tile_type_t type, float local_x)
-{
-    // 确保 local_x 在 [0, TILE_SIZE)
-    if (local_x < 0)
-        local_x = 0;
-    if (local_x >= TILE_SIZE)
-        local_x = TILE_SIZE - 1;
-
-    switch (type)
-    {
-    case TILE_SLOPE_L_UP:
-        return TILE_SIZE - local_x; // y = -x + TILE_SIZE
-    case TILE_SLOPE_R_UP:
-        return local_x; // y = x
-    default:
-        return 0.0f; // 普通地形无高度
-    }
-}
-
-bool is_tile_slope(tile_type_t type)
-{
-    return (type == TILE_SLOPE_L_UP || type == TILE_SLOPE_R_UP);
-}
-
-tile_type_t tilemap_get_type_at(float x, float y)
-{
-    int tx = (int)(x / TILE_SIZE);
-    int ty = (int)(y / TILE_SIZE);
-
-    if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
-        return TILE_WALL; // 越界视作墙壁
-
-    return tilemap[ty][tx];
+    return collision_if_free;
 }
