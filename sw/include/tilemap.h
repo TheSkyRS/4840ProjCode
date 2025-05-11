@@ -32,4 +32,6 @@ extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 // 检查给定区域是否碰到 "阻挡" tile（墙壁或不可穿越斜面）
 bool is_tile_blocked(float x, float y, float width, float height);
 
+tile_type_t tilemap_get_type_at(float x, float y);
+
 #endif // TILEMAP_H
