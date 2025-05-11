@@ -1,14 +1,13 @@
 #include "player.h"
 #include "joypad_input.h"
 #include "tilemap.h"
-#include <math.h>
 
 // #define GRAVITY 0.4f
 // #define JUMP_VELOCITY -5.0f
 // #define MOVE_SPEED 1.5f
 #define GRAVITY 0.2f
 #define JUMP_VELOCITY -10.0f
-#define MOVE_SPEED 1.5f
+#define MOVE_SPEED 2.5f
 #define MAX_FRAME_TIMER 6 // 控制动画切换速度
 
 void player_init(player_t *p, int x, int y,
@@ -69,36 +68,47 @@ void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
 
+    // 垂直运动
     float new_y = p->y + p->vy;
-    bool falling_downward = (p->vy > 0);
-
-    float y_factor = is_pixel_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
-
-    if ((y_factor <= 0.25f) && falling_downward)
-        p->on_ground = true;
-    else
-        p->on_ground = false;
-
-    if (y_factor >= 0.75f)
+    if (!is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    {
         p->y = new_y;
-
-    if (y_factor <= 0.25f)
+        p->on_ground = false;
+    }
+    else
+    {
+        if (p->vy > 0)
+            p->on_ground = true;
         p->vy = 0;
+    }
 
+    // 水平运动
     float new_x = p->x + p->vx;
-    float x_factor = is_pixel_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
-
-    if (x_factor >= 0.75f)
+    if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    {
         p->x = new_x;
+    }
     else
+    {
         p->vx = 0;
+    }
 
+    // 状态切换
     if (!p->on_ground)
-        p->state = (p->vy < 0) ? STATE_JUMPING : STATE_FALLING;
+    {
+        if (p->vy < 0)
+            p->state = STATE_JUMPING;
+        else
+            p->state = STATE_FALLING;
+    }
     else if (p->vx != 0)
+    {
         p->state = STATE_RUNNING;
+    }
     else
+    {
         p->state = STATE_IDLE;
+    }
 }
 
 // 火男孩

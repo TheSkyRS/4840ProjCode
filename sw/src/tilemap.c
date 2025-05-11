@@ -3,10 +3,9 @@
 
 #include "tilemap.h"
 #include <math.h> // 用于 floor()
-#include <stdint.h>
 
 // === 示例地图数据 ===
-// 0: 空地  1: 墙壁  2: 火池  3: 水池  4: 终点 5  6, 7,
+// 0: 空地  1: 墙壁  2: 火池  3: 水池  4: 终点
 const int tilemap[30][40] = {
     //               x              1              5              2              5              3              5              4
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -40,107 +39,36 @@ const int tilemap[30][40] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-uint8_t collision_map[480][640];
-
 #define COLLISION_MARGIN 1.0f
-void collision_map_init()
+
+bool is_tile_blocked(float x, float y, float width, float height)
 {
-    for (int ty = 0; ty < MAP_HEIGHT; ++ty)
+    float x_left = x + COLLISION_MARGIN;
+    float x_right = x + width - 1 - COLLISION_MARGIN;
+
+    float y_top = y + COLLISION_MARGIN;
+    float y_mid = y + height / 2.0f;
+    float y_bottom = y + height - 1 - COLLISION_MARGIN;
+
+    float sample_points[6][2] = {
+        {x_left, y_top},
+        {x_right, y_top},
+        {x_left, y_mid},
+        {x_right, y_mid},
+        {x_left, y_bottom},
+        {x_right, y_bottom}};
+
+    for (int i = 0; i < 6; ++i)
     {
-        for (int tx = 0; tx < MAP_WIDTH; ++tx)
-        {
-            tile_type_t tile = tilemap[ty][tx];
-            int px_start = tx * TILE_SIZE;
-            int py_start = ty * TILE_SIZE;
+        int tx = (int)(sample_points[i][0] / TILE_SIZE);
+        int ty = (int)(sample_points[i][1] / TILE_SIZE);
 
-            for (int dy = 0; dy < TILE_SIZE; ++dy)
-            {
-                for (int dx = 0; dx < TILE_SIZE; ++dx)
-                {
-                    int x = px_start + dx;
-                    int y = py_start + dy;
+        if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
+            return true;
 
-                    uint8_t value = 0;
-
-                    switch (tile)
-                    {
-                    case TILE_EMPTY:
-                        value = 0;
-                        break;
-                    case TILE_WALL:
-                        value = 1;
-                        break;
-                    case TILE_FIRE:
-                        value = 2;
-                        break;
-                    case TILE_WATER:
-                        value = 3;
-                        break;
-                    case TILE_GOAL:
-                        value = 0;
-                        break;
-                    case TILE_SLOPE_L_UP:
-                        value = (dy >= TILE_SIZE - dx) ? 1 : 0;
-                        break;
-                    case TILE_SLOPE_R_UP:
-                        value = (dy >= dx) ? 1 : 0;
-                        break;
-                    case TILE_CEIL_L:
-                        value = (dy >= dx) ? 1 : 0;
-                        break;
-                    case TILE_CEIL_R:
-                        value = (dy >= TILE_SIZE - dx - 1) ? 1 : 0;
-                        break;
-                    default:
-                        value = 0;
-                        break;
-                    }
-
-                    collision_map[y][x] = value;
-                }
-            }
-        }
-    }
-}
-
-float is_pixel_blocked(float x, float y, float width, float height)
-{
-    float x_center = x + width / 2.0f;
-    float y_head = y + COLLISION_MARGIN;
-    float y_body = y + height / 2.0f;
-    float y_feet = y + height - COLLISION_MARGIN;
-
-    int sample_x = (int)x_center;
-    int sample_y[3] = {(int)y_head, (int)y_body, (int)y_feet};
-
-    // 脚底点所在 tile 决定返回值组
-    int tile_tx = sample_x / TILE_SIZE;
-    int tile_ty = sample_y[2] / TILE_SIZE;
-
-    float collision_if_hit = 0.0f;
-    float collision_if_free = 1.0f;
-
-    if (tile_tx >= 0 && tile_tx < MAP_WIDTH && tile_ty >= 0 && tile_ty < MAP_HEIGHT)
-    {
-        tile_type_t tile = tilemap[tile_ty][tile_tx];
-        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
-        {
-            collision_if_hit = 0.25f;
-            collision_if_free = 0.75f;
-        }
+        if (tilemap[ty][tx] == TILE_WALL)
+            return true;
     }
 
-    // 三点检测是否任意点发生碰撞
-    for (int i = 0; i < 3; ++i)
-    {
-        int sy = sample_y[i];
-
-        if (sample_x < 0 || sample_x >= 640 || sy < 0 || sy >= 480)
-            return collision_if_hit;
-
-        if (collision_map[sy][sample_x] == 1)
-            return collision_if_hit;
-    }
-
-    return collision_if_free;
+    return false;
 }
