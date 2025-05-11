@@ -74,7 +74,7 @@ void player_update_physics(player_t *p)
 
     // 垂直运动
     float new_y = p->y + p->vy;
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2)) // yibuzhiyao
     {
         p->y = new_y;
         p->on_ground = false;
