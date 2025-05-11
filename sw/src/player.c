@@ -63,55 +63,44 @@ void player_handle_input(player_t *p, int player_index)
         p->vx = 0;
     }
 }
-
 void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
 
     // === 垂直移动 ===
     float new_y = p->y + p->vy;
-    bool hit_vertically = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
-    if (!hit_vertically)
+    float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, 0.0f); // vy 不影响斜坡
+    p->vy *= y_factor;
+    if (y_factor > 0.0f)
     {
         p->y = new_y;
         p->on_ground = false;
     }
-    else
+    else if (p->vy > 0)
     {
-        tile_type_t below = tilemap_get_type_at(p->x + SPRITE_W_PIXELS / 2, new_y + SPRITE_H_PIXELS * 2 - 1);
-        if (p->vy > 0 && (below == TILE_SLOPE_L_UP || below == TILE_SLOPE_R_UP || below == TILE_WALL))
-        {
-            p->on_ground = true;
-        }
-        p->vy = 0;
+        p->on_ground = true;
     }
 
-    // === 水平移动 ===
+    // === 水平移动（含方向 vx）===
     float new_x = p->x + p->vx;
-    bool hit_horizontally = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
-    if (!hit_horizontally)
-    {
-        // 斜坡减速判断：只有在地面上且是上坡方向时减速
-        tile_type_t foot_tile = tilemap_get_type_at(new_x + SPRITE_W_PIXELS / 2, p->y + SPRITE_H_PIXELS * 2 - 1);
-        if (p->vx > 0 && foot_tile == TILE_SLOPE_L_UP)
-            p->vx *= 0.6f;
-        else if (p->vx < 0 && foot_tile == TILE_SLOPE_R_UP)
-            p->vx *= 0.6f;
+    float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, p->vx);
 
-        p->x = new_x;
-    }
-    else
+    // 上坡修正：如果是斜坡减速状态，就向上抬一点点贴合坡面
+    if (x_factor == 0.4f)
     {
-        p->vx = 0;
+        p->y -= 1.0f; // 模拟顺坡上升（避免浮空或嵌入）
+    }
+
+    p->vx *= x_factor;
+    if (x_factor > 0.0f)
+    {
+        p->x = new_x;
     }
 
     // === 状态切换 ===
     if (!p->on_ground)
     {
-        if (p->vy < 0)
-            p->state = STATE_JUMPING;
-        else
-            p->state = STATE_FALLING;
+        p->state = (p->vy < 0) ? STATE_JUMPING : STATE_FALLING;
     }
     else if (p->vx != 0)
     {

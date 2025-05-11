@@ -29,6 +29,13 @@ int main()
 
     unsigned col = 0, row = 0;
 
+    // 动画帧测试
+    for (uint8_t i = 0; i < 32; i++)
+    {
+        write_sprite(i, 1, 0, (i % 8) * 32, (i / 8) * 32, i + 17); // frame_id = i
+    }
+    //
+
     while (1)
     {
         // === 帧同步：只在每帧顶部 row==0 时执行一次 ===

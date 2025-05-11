@@ -41,73 +41,111 @@ const int tilemap[30][40] = {
 
 #define COLLISION_MARGIN 1.0f
 
-bool is_tile_blocked(float x, float y, float width, float height)
+/*
+ * is_tile_blocked -- 检查给定区域（x,y,width,height）与 tilemap 中障碍物的碰撞情况
+ *
+ * 返回值意义：
+ *   1.0f  : 完全没有碰撞，可以自由通过；
+ *   0.4f  : 处于斜坡区域（减速区域），允许通过，但应减速；
+ *   0.0f  : 碰撞发生（墙、天花板或超出地图），不允许通过。
+ *
+ * 设计思路：采用七点采样法，其中底部中点（脚底采样）用于检测斜坡效果，
+ * 其他六点（左上、右上、左中、右中、左下、右下）用于检测普通墙和天花板。
+ */
+// 修改函数签名，新增 vx 参数用于判断移动方向
+float is_tile_blocked(float x, float y, float width, float height, float vx)
 {
+    // 计算区域左右边界，在x方向加入 COLLISION_MARGIN 以避免浮点误差
     float x_left = x + COLLISION_MARGIN;
     float x_right = x + width - 1 - COLLISION_MARGIN;
+    // 计算区域x轴中点
+    float x_mid = (x_left + x_right) / 2.0f;
 
+    // 计算区域顶部、中部和底部（排除边缘）
     float y_top = y + COLLISION_MARGIN;
     float y_mid = y + height / 2.0f;
     float y_bottom = y + height - 1 - COLLISION_MARGIN;
-    float y_foot = y + height; // 新增脚底采样
+    // 脚底边界：整个模型的最下边，用于判断是否踩在斜坡上
+    float y_foot = y + height;
 
-    float sample_points[7][2] = {
-        {x_left, y_top},
-        {x_right, y_top},
-        {x_left, y_mid},
-        {x_right, y_mid},
-        {x_left, y_bottom},
-        {x_right, y_bottom},
-        {(x_left + x_right) / 2.0f, y_foot} // 新增底部中心点
+    // --- 1. 优先采样底部中点（脚底中心）用于斜坡处理 ---
+    float sx = x_mid;
+    float sy = y_foot;
+    int tx = (int)(sx / TILE_SIZE);
+    int ty = (int)(sy / TILE_SIZE);
+
+    // 如果采样点超出地图范围，视作碰撞
+    if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
+        return 0.0f;
+
+    int tile = tilemap[ty][tx];
+    // 计算采样点在 tile 内部的局部坐标
+    float local_x = sx - tx * TILE_SIZE;
+    float local_y = sy - ty * TILE_SIZE;
+
+    // 根据 tile 类型对脚底采样点做特殊处理（主要针对斜坡 tile）
+    switch (tile)
+    {
+    case TILE_SLOPE_L_UP: // 左低右高（右移是上坡）
+        if (local_y >= TILE_SIZE - local_x)
+            return 0.0f; // 撞到了
+        if (vx > 0)      // 向右是上坡，减速
+            return 0.4f;
+        return 1.0f;      // 向左则不减速
+    case TILE_SLOPE_R_UP: // 右低左高（左移是上坡）
+        if (local_y >= local_x)
+            return 0.0f;
+        if (vx < 0) // 向左是上坡，减速
+            return 0.4f;
+        return 1.0f; // 向右不减速
+    }
+
+    // --- 2. 对于其余情况，采用六点采样判断墙壁和天花板碰撞 ---
+    float sample_points[6][2] = {
+        {x_left, y_top},    // 左上角
+        {x_right, y_top},   // 右上角
+        {x_left, y_mid},    // 左中
+        {x_right, y_mid},   // 右中
+        {x_left, y_bottom}, // 左下（但不含脚底）
+        {x_right, y_bottom} // 右下（但不含脚底）
     };
 
-    for (int i = 0; i < 7; ++i)
+    for (int i = 0; i < 6; ++i)
     {
-        float sx = sample_points[i][0];
-        float sy = sample_points[i][1];
-        int tx = (int)(sx / TILE_SIZE);
-        int ty = (int)(sy / TILE_SIZE);
+        sx = sample_points[i][0];
+        sy = sample_points[i][1];
+        tx = (int)(sx / TILE_SIZE);
+        ty = (int)(sy / TILE_SIZE);
 
+        // 如果采样点超出地图范围，直接视为碰撞发生
         if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
-            return true;
+            return 0.0f;
 
-        int tile = tilemap[ty][tx];
+        tile = tilemap[ty][tx];
+        local_x = sx - tx * TILE_SIZE;
+        local_y = sy - ty * TILE_SIZE;
 
-        float local_x = sx - tx * TILE_SIZE;
-        float local_y = sy - ty * TILE_SIZE;
-
+        // 根据 tile 类型进行碰撞判断
         switch (tile)
         {
         case TILE_WALL:
-            return true;
-        case TILE_SLOPE_L_UP: // 左下高右上低
-            if (local_y >= TILE_SIZE - local_x)
-                return true;
-            break;
-        case TILE_SLOPE_R_UP: // 左下低右上高
-            if (local_y >= local_x)
-                return true;
-            break;
-        case TILE_CEIL_R: // 右下斜，顶部碰撞（左高右低）
+            // 对于普通墙壁，任何碰撞都返回 0
+            return 0.0f;
+        case TILE_CEIL_R:
+            // 对于右边天花板（左高右低）：
+            // 当局部 y 坐标小于等于 (TILE_SIZE - local_x) 时认为碰撞
             if (local_y <= TILE_SIZE - local_x)
-                return true;
+                return 0.0f;
             break;
-        case TILE_CEIL_L: // 左下斜，顶部碰撞（右高左低）
+        case TILE_CEIL_L:
+            // 对于左边天花板（右高左低）：
+            // 当局部 y 坐标小于等于 local_x 时认为碰撞
             if (local_y <= local_x)
-                return true;
+                return 0.0f;
             break;
         }
     }
-    return false;
-}
 
-tile_type_t tilemap_get_type_at(float x, float y)
-{
-    int tx = (int)(x / TILE_SIZE);
-    int ty = (int)(y / TILE_SIZE);
-
-    if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
-        return TILE_WALL; // 越界视作墙壁
-
-    return tilemap[ty][tx];
+    // --- 3. 如果所有采样点均未检测到碰撞，则返回 1 表示自由移动 ---
+    return 1.0f;
 }
