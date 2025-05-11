@@ -88,9 +88,8 @@ void player_update_physics(player_t *p)
     float new_x = p->x + p->vx;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + SPRITE_H_PIXELS * 2;
+    int next_tile = get_tile_at_pixel(new_x + SPRITE_W_PIXELS / 2.0f, foot_y);
 
-    // Step 1: 判断目标脚下 tile 是否为斜坡
-    int next_tile = get_tile_at_pixel(new_foot_x, foot_y);
     bool next_on_slope = (next_tile == TILE_SLOPE_L_UP || next_tile == TILE_SLOPE_R_UP);
 
     // Step 2: 如果目标仍在坡上，直接贴坡
