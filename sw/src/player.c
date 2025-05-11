@@ -159,7 +159,7 @@ void adjust_to_slope_y(player_t *p)
 
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
 
-            p->y = tile_top_y + min_y - SPRITE_H_PIXELS * 2 - 3;
+            p->y = tile_top_y + min_y - SPRITE_H_PIXELS * 2 - 2;
             p->on_ground = true;
             p->vy = 0;
             break;
