@@ -48,5 +48,6 @@ void player_handle_input(player_t *p, int player_index);
 void player_update_physics(player_t *p);
 void player_check_collision(player_t *p);
 void player_update_sprite(player_t *p);
+void adjust_to_slope_y(player_t *p);
 
 #endif // PLAYER_H

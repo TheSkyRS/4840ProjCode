@@ -99,3 +99,14 @@ bool is_tile_blocked(float x, float y, float width, float height)
 
     return false;
 }
+
+int get_tile_at_pixel(float x, float y)
+{
+    int tx = (int)(x / TILE_SIZE);
+    int ty = (int)(y / TILE_SIZE);
+
+    if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
+        return TILE_WALL; // 越界当作墙体
+
+    return tilemap[ty][tx];
+}
