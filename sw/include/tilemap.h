@@ -33,4 +33,6 @@ extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 // 修改函数签名，新增 vx 参数用于判断移动方向
 float is_tile_blocked(float x, float y, float width, float height, float vx);
 
+tile_type_t tilemap_get_type_at(float x, float y);
+
 #endif // TILEMAP_H

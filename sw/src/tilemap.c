@@ -149,3 +149,14 @@ float is_tile_blocked(float x, float y, float width, float height, float vx)
     // --- 3. 如果所有采样点均未检测到碰撞，则返回 1 表示自由移动 ---
     return 1.0f;
 }
+
+tile_type_t tilemap_get_type_at(float x, float y)
+{
+    int tx = (int)(x / TILE_SIZE);
+    int ty = (int)(y / TILE_SIZE);
+
+    if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
+        return TILE_WALL; // 越界视作墙壁
+
+    return tilemap[ty][tx];
+}
