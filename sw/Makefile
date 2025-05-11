@@ -17,6 +17,7 @@ TARGET = game
 # 编译器与选项
 CC = gcc
 CFLAGS = -Wall -O2 $(INCLUDES)
+LDLIBS = -lm  # 添加数学库链接
 
 .PHONY: all clean
 
