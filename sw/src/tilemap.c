@@ -58,11 +58,11 @@ float is_tile_blocked(float x, float y, float width, float height)
     float y_top = y + COLLISION_MARGIN;
     float y_mid = y + height / 2.0f;
     float y_bottom = y + height - COLLISION_MARGIN;
-    float y_foot = y + height;
 
     float sample_y[3] = {y_top, y_mid, y_bottom};
 
-    // 中轴三点：上、中、下
+    float min_factor = 1.0f; // 默认为自由
+
     for (int i = 0; i < 3; ++i)
     {
         float sx = x_mid;
@@ -77,56 +77,42 @@ float is_tile_blocked(float x, float y, float width, float height)
         float local_x = sx - tx * TILE_SIZE;
         float local_y = sy - ty * TILE_SIZE;
 
+        float this_factor = 1.0f;
+
         switch (tile)
         {
         case TILE_WALL:
-            return 0.0f;
+            this_factor = 0.0f;
+            break;
         case TILE_CEIL_R:
-            if (local_y <= TILE_SIZE - local_x)
-                return 0.0f;
+            if (local_y >= TILE_SIZE - local_x)
+                this_factor = 0.0f;
             break;
         case TILE_CEIL_L:
-            if (local_y <= local_x)
-                return 0.0f;
+            if (local_y >= local_x)
+                this_factor = 0.0f;
+            break;
+        case TILE_SLOPE_L_UP:
+        {
+            float slope_y = TILE_SIZE - local_x;
+            this_factor = (local_y <= slope_y) ? 0.25f : 0.75f;
             break;
         }
+        case TILE_SLOPE_R_UP:
+        {
+            float slope_y = local_x;
+            this_factor = (local_y <= slope_y) ? 0.25f : 0.75f;
+            break;
+        }
+        default:
+            break;
+        }
+
+        if (this_factor < min_factor)
+            min_factor = this_factor;
     }
 
-    // ==== 脚底中点斜坡检测 ====
-    float foot_sx = x_mid;
-    float foot_sy = y_foot;
-    int ftx = (int)(foot_sx / TILE_SIZE);
-    int fty = (int)(foot_sy / TILE_SIZE);
-
-    if (ftx < 0 || ftx >= MAP_WIDTH || fty < 0 || fty >= MAP_HEIGHT)
-        return 0.0f;
-
-    int ftile = tilemap[fty][ftx];
-    float f_local_x = foot_sx - ftx * TILE_SIZE;
-    float f_local_y = foot_sy - fty * TILE_SIZE;
-
-    if (ftile == TILE_SLOPE_L_UP)
-    {
-        float slope_y = TILE_SIZE - f_local_x;
-        if (f_local_y <= slope_y)
-            return 0.5f;
-        else if (f_local_y <= slope_y + 4.0f)
-            return 0.75f;
-        else
-            return 1.0f;
-    }
-    else if (ftile == TILE_SLOPE_R_UP)
-    {
-        float slope_y = f_local_x;
-        if (f_local_y <= slope_y)
-            return 0.5f;
-        else if (f_local_y <= slope_y + 4.0f)
-            return 0.75f;
-        else
-            return 1.0f;
-    }
-
-    return 1.0f;
+    return min_factor;
 }
 
 float get_slope_height(tile_type_t type, float local_x)
