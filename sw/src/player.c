@@ -87,7 +87,7 @@ void player_update_physics(player_t *p)
         {
             // === 斜坡贴合修正 ===
             float foot_x = p->x + SPRITE_W_PIXELS / 2;
-            float foot_y = new_y + SPRITE_H_PIXELS * 2;
+            float foot_y = p->y + SPRITE_H_PIXELS * 2;
 
             tile_type_t tile = tilemap_get_type_at(foot_x, foot_y);
             if (is_tile_slope(tile))
