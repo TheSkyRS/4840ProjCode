@@ -40,7 +40,6 @@ const int tilemap[30][40] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
 #define COLLISION_MARGIN 1.0f
-
 bool is_tile_blocked(float x, float y, float width, float height)
 {
     float center_x = x + width / 2.0f;
@@ -56,14 +55,34 @@ bool is_tile_blocked(float x, float y, float width, float height)
 
     for (int i = 0; i < 3; ++i)
     {
-        int tx = (int)(sample_points[i][0] / TILE_SIZE);
-        int ty = (int)(sample_points[i][1] / TILE_SIZE);
+        float sx = sample_points[i][0];
+        float sy = sample_points[i][1];
+
+        int tx = (int)(sx / TILE_SIZE);
+        int ty = (int)(sy / TILE_SIZE);
 
         if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
             return true;
 
-        if (tilemap[ty][tx] == TILE_WALL)
+        int tile = tilemap[ty][tx];
+
+        // 普通墙壁
+        if (tile == TILE_WALL)
             return true;
+
+        // 斜天花板处理（角色头顶打到）
+        if (tile == TILE_CEIL_L || tile == TILE_CEIL_R)
+        {
+            float x_in_tile = fmod(sx, TILE_SIZE);
+            float y_in_tile = fmod(sy, TILE_SIZE);
+
+            float max_y = (tile == TILE_CEIL_L)
+                              ? x_in_tile              // 左低右高
+                              : TILE_SIZE - x_in_tile; // 右低左高
+
+            if (y_in_tile <= max_y)
+                return true;
+        }
     }
 
     return false;
