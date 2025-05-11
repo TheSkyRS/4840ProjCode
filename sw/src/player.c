@@ -85,14 +85,15 @@ void player_update_physics(player_t *p)
             p->on_ground = true;
         p->vy = 0;
     }
-
     // 水平运动
     float new_x = p->x + p->vx;
 
-    // 计算脚底中心点坐标
+    // 计算当前位置和目标位置的脚底中心点
+    float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + SPRITE_H_PIXELS * 2;
 
+    // 判断当前位置脚底左右邻近是否在斜坡范围
     bool on_slope = false;
     for (int dx = -1; dx <= 1; ++dx)
     {
@@ -112,21 +113,11 @@ void player_update_physics(player_t *p)
     else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
     {
         p->x = new_x;
-
-        // 如果上一帧在斜坡上，这一帧不在，强制对齐到 tile 顶部
-        if (p->was_on_slope_last_frame)
-        {
-            float bottom = p->y + SPRITE_H_PIXELS * 2;
-            int tile_row = (int)(bottom / TILE_SIZE);
-            p->y = tile_row * TILE_SIZE - SPRITE_H_PIXELS * 2;
-        }
     }
     else
     {
-        p->vx = 0;
+        p->vx = 0; // 一步之遥
     }
-
-    p->was_on_slope_last_frame = on_slope;
 
     // 状态切换
     if (!p->on_ground)
