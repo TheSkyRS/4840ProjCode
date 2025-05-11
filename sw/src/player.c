@@ -69,47 +69,41 @@ void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
 
-    // 垂直运动
     float new_y = p->y + p->vy;
-    if (is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2) == 1.0f || is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2) == 0.75)
-    {
-        p->y = new_y;
+    bool falling_downward = (p->vy > 0);
+
+    float y_factor = is_tile_blocked(p->x, new_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
+
+    // 落地判断（撞到墙或落在斜坡）
+    if ((y_factor <= 0.25f) && falling_downward)
+        p->on_ground = true;
+    else
         p->on_ground = false;
-    }
-    else
-    {
-        if (p->vy > 0)
-            p->on_ground = true;
+
+    // 位移处理（自由或未触碰斜坡才允许移动）
+    if (y_factor >= 0.75f)
+        p->y = new_y;
+
+    // 碰撞则停止垂直速度
+    if (y_factor <= 0.25f)
         p->vy = 0;
-    }
 
-    // 水平运动
+    // === 水平移动 ===
     float new_x = p->x + p->vx;
-    if (is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2) == 0.25f || is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2) == 0.0f)
-    {
-        p->x = new_x;
-    }
-    else
-    {
-        p->vx = 0;
-    }
+    float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2);
 
-    // 状态切换
-    if (!p->on_ground)
-    {
-        if (p->vy < 0)
-            p->state = STATE_JUMPING;
-        else
-            p->state = STATE_FALLING;
-    }
-    else if (p->vx != 0)
-    {
-        p->state = STATE_RUNNING;
-    }
+    if (x_factor >= 0.75f)
+        p->x = new_x;
     else
-    {
+        p->vx = 0;
+
+    // === 状态切换 ===
+    if (!p->on_ground)
+        p->state = (p->vy < 0) ? STATE_JUMPING : STATE_FALLING;
+    else if (p->vx != 0)
+        p->state = STATE_RUNNING;
+    else
         p->state = STATE_IDLE;
-    }
 }
 
 // 火男孩
