@@ -1,6 +1,7 @@
 #include "player.h"
 #include "joypad_input.h"
 #include "tilemap.h"
+#include <math.h>
 
 // #define GRAVITY 0.4f
 // #define JUMP_VELOCITY -5.0f
