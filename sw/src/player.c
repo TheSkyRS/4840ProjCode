@@ -86,27 +86,31 @@ void player_update_physics(player_t *p)
     }
     // 水平运动
     float new_x = p->x + p->vx;
+
+    // 计算当前位置和目标位置的脚底中心点
+    float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
-    float new_foot_y = p->y + SPRITE_H_PIXELS * 2; // 不再 +1，防止偏离真实脚底
+    float foot_y = p->y + SPRITE_H_PIXELS * 2;
 
-    // 计算目标位置脚底 tile
-    int tx = (int)(new_foot_x / TILE_SIZE);
-    int ty = (int)(new_foot_y / TILE_SIZE);
-    int tile = tilemap[ty][tx];
+    // 获取当前位置和目标位置下的 tile
+    int tile_now = get_tile_at_pixel(cur_foot_x, foot_y);
+    int tile_next = get_tile_at_pixel(new_foot_x, foot_y);
 
-    // 如果目标脚底 tile 是斜坡，则放行移动并吸附
-    if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
+    // 如果任一为斜坡 → 放行并吸附
+    if (tile_now == TILE_SLOPE_L_UP || tile_now == TILE_SLOPE_R_UP ||
+        tile_next == TILE_SLOPE_L_UP || tile_next == TILE_SLOPE_R_UP)
     {
         p->x = new_x;
         adjust_to_slope_y(p);
     }
     else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
     {
-        // 正常地形下照常移动
+        // 普通地形下照常移动
         p->x = new_x;
     }
     else
     {
+        // 撞墙则停止
         p->vx = 0;
     }
 
