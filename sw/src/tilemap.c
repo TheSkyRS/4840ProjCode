@@ -43,22 +43,18 @@ const int tilemap[30][40] = {
 
 bool is_tile_blocked(float x, float y, float width, float height)
 {
-    float x_left = x + COLLISION_MARGIN;
-    float x_right = x + width - 1 - COLLISION_MARGIN;
+    float center_x = x + width / 2.0f;
 
     float y_top = y + COLLISION_MARGIN;
     float y_mid = y + height / 2.0f;
     float y_bottom = y + height - 1 - COLLISION_MARGIN;
 
-    float sample_points[6][2] = {
-        {x_left, y_top},
-        {x_right, y_top},
-        {x_left, y_mid},
-        {x_right, y_mid},
-        {x_left, y_bottom},
-        {x_right, y_bottom}};
+    float sample_points[3][2] = {
+        {center_x, y_top},
+        {center_x, y_mid},
+        {center_x, y_bottom}};
 
-    for (int i = 0; i < 6; ++i)
+    for (int i = 0; i < 3; ++i)
     {
         int tx = (int)(sample_points[i][0] / TILE_SIZE);
         int ty = (int)(sample_points[i][1] / TILE_SIZE);
