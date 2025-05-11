@@ -40,7 +40,7 @@ const int tilemap[30][40] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
 #define COLLISION_MARGIN 1.0f
-
+float EPSILON = 1.0f;
 /*
  * is_tile_blocked -- 检查给定区域（x,y,width,height）与 tilemap 中障碍物的碰撞情况
  *
@@ -89,20 +89,25 @@ float is_tile_blocked(float x, float y, float width, float height)
                 this_factor = 0.0f;
             break;
         case TILE_CEIL_L:
-            if (local_y >= local_x)
+            if (local_y <= local_x)
                 this_factor = 0.0f;
             break;
         case TILE_SLOPE_L_UP:
         {
             float slope_y = TILE_SIZE - local_x;
-            this_factor = (local_y <= slope_y) ? 0.25f : 0.75f;
+            if (local_y <= slope_y + EPSILON)
+                this_factor = 0.25f;
+            else
+                this_factor = 0.75f;
             break;
         }
         case TILE_SLOPE_R_UP:
         {
             float slope_y = local_x;
-            this_factor = (local_y <= slope_y) ? 0.25f : 0.75f;
-            break;
+            if (local_y <= slope_y + EPSILON)
+                this_factor = 0.25f;
+            else
+                this_factor = 0.75f;
         }
         default:
             break;
