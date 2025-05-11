@@ -14,10 +14,10 @@
 `timescale 1ns/1ps
 module ffi_audio #(
     parameter ADDR_WIDTH = 13,               // 8192 samples ≈ 1.024 s @8 kHz
-    parameter CLIP0_FILE = "clip0.mif",
-    parameter CLIP1_FILE = "clip1.mif",
-    parameter CLIP2_FILE = "clip2.mif",
-    parameter CLIP3_FILE = "clip3.mif"
+    parameter CLIP0_FILE = "bgm.mif",
+    parameter CLIP1_FILE = "death.mif",
+    parameter CLIP2_FILE = "jumpfb.mif",
+    parameter CLIP3_FILE = "jumpwg.mif"
 )(
     input  logic         clk50,
     input  logic         reset_n,
