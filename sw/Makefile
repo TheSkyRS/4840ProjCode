@@ -1,31 +1,32 @@
-# ����Ŀ¼·��
+# 顶层目录路径
 INCLUDEDIR = include
 SRCDIR = src
 
-# ����Դ�ļ�
+# 所有源文件
 SRCS = $(wildcard $(SRCDIR)/*.c)
 
-# ͷ�ļ�·��
+# 头文件路径
 INCLUDES = -I$(INCLUDEDIR)
 
-# Ŀ���ļ��б���.c �� .o��
+# 目标文件列表（.c → .o）
 OBJS = $(SRCS:.c=.o)
 
-# ���տ�ִ���ļ���
+# 最终可执行文件名
 TARGET = game
 
-# ��������ѡ��
+# 编译器与选项
 CC = gcc
 CFLAGS = -Wall -O2 $(INCLUDES)
+LDLIBS = -lm  # 添加数学库链接
 
 .PHONY: all clean
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $^
+	$(CC) -o $@ $^ $(LDLIBS)
 
-# ÿ�� .c �� .o
+# 每个 .c → .o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 

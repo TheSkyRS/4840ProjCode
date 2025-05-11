@@ -101,7 +101,7 @@ float is_tile_blocked(float x, float y, float width, float height)
         }
     }
 
-    // 额外检查斜坡脚底中点
+    // ==== 斜坡检测 ====
     float foot_sx = x_mid;
     float foot_sy = y_foot;
     int ftx = (int)(foot_sx / TILE_SIZE);
@@ -116,20 +116,26 @@ float is_tile_blocked(float x, float y, float width, float height)
 
     if (ftile == TILE_SLOPE_L_UP)
     {
-        if (f_local_y <= TILE_SIZE - f_local_x)
-            return 0.5f; // 真正踩在斜面上
+        float slope_y = TILE_SIZE - f_local_x;
+        if (f_local_y <= slope_y)
+            return 0.5f; // 落在斜坡上
+        else if (f_local_y <= slope_y + 4.0f)
+            return 0.75f; // 临近斜坡表面
         else
-            return 1.0f; // 悬空
+            return 1.0f; // 未触碰
     }
-    if (ftile == TILE_SLOPE_R_UP)
+    else if (ftile == TILE_SLOPE_R_UP)
     {
-        if (f_local_y <= f_local_x)
-            return 0.5f; // 真正踩在斜面上
+        float slope_y = f_local_x;
+        if (f_local_y <= slope_y)
+            return 0.5f;
+        else if (f_local_y <= slope_y + 4.0f)
+            return 0.75f;
         else
-            return 1.0f; // 悬空
+            return 1.0f;
     }
 
-    return 1.0f; // 无碰撞
+    return 1.0f; // 空中自由
 }
 
 float get_slope_height(tile_type_t type, float local_x)
