@@ -271,19 +271,28 @@ void player_update_sprite(player_t *p)
         p->frame_index = 0;
     }
 
-    // 设置帧 ID
-    p->lower_sprite.frame_id = get_frame_id(p, false);
-    p->upper_sprite.frame_id = get_frame_id(p, true);
-
     // 设置位置与启用
     p->lower_sprite.x = p->x;
-    p->lower_sprite.y = p->y + SPRITE_H_PIXELS + 4;
-    p->lower_sprite.enable = true;
-
     p->upper_sprite.x = p->x;
-    p->upper_sprite.y = p->y + 8;
-    p->upper_sprite.enable = true;
 
-    sprite_update(&p->lower_sprite);
-    sprite_update(&p->upper_sprite);
+    // 基础偏移
+    int body_offset = SPRITE_H_PIXELS + 4;
+    int head_offset = 8;
+
+    // 角色类型特定微调
+    if (p->type == PLAYER_FIREBOY)
+    {
+        body_offset += 2; // 身体再下移 2px
+        head_offset += 4; // 头部再下移 4px
+    }
+    else if (p->type == PLAYER_WATERGIRL)
+    {
+        head_offset += 2; // 水女孩头部下移 2px
+    }
+
+    p->lower_sprite.y = p->y + body_offset;
+    p->upper_sprite.y = p->y + head_offset;
+
+    p->lower_sprite.enable = true;
+    p->upper_sprite.enable = true;
 }
