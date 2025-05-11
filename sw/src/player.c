@@ -277,11 +277,11 @@ void player_update_sprite(player_t *p)
 
     // 设置位置与启用
     p->lower_sprite.x = p->x;
-    p->lower_sprite.y = p->y + SPRITE_H_PIXELS + 2;
+    p->lower_sprite.y = p->y + SPRITE_H_PIXELS + 4;
     p->lower_sprite.enable = true;
 
     p->upper_sprite.x = p->x;
-    p->upper_sprite.y = p->y + 4;
+    p->upper_sprite.y = p->y + 8;
     p->upper_sprite.enable = true;
 
     sprite_update(&p->lower_sprite);
