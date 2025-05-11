@@ -91,17 +91,26 @@ void player_update_physics(player_t *p)
         p->y = new_y;
 
     // === 水平移动（含方向 vx）===
-    float new_x = p->x + p->vx;
-    float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, p->vx);
+    float dx = p->vx;
+    float new_x = p->x + dx;
 
-    float dx = new_x - p->x;
-    p->vx *= x_factor;
+    // 1. 提前判断是否走上斜坡 tile
+    float foot_x = new_x + SPRITE_W_PIXELS / 2;
+    float foot_y = p->y + SPRITE_H_PIXELS * 2;
+    tile_type_t foot_tile = tilemap_get_type_at(foot_x, foot_y);
 
-    if (x_factor == 0.4f)
+    // 2. 若是上坡方向，则抬升 Y 以贴合坡面
+    if ((dx > 0 && foot_tile == TILE_SLOPE_L_UP) ||
+        (dx < 0 && foot_tile == TILE_SLOPE_R_UP))
     {
-        p->y -= (dx > 0) ? dx : -dx; // 用 dx 作为变动量，始终上抬
+        p->y -= fabsf(dx); // 顺坡上升
     }
 
+    // 3. 判断碰撞并根据阻力系数处理
+    float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, dx);
+    p->vx *= x_factor;
+
+    // 4. 成功通过再更新位置
     if (x_factor > 0.0f)
     {
         p->x = new_x;
