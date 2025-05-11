@@ -90,11 +90,11 @@ void player_update_physics(player_t *p)
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_y = p->y + SPRITE_H_PIXELS * 2 + 1;
 
-    int tile_now = get_tile_at_pixel(p->x + SPRITE_W_PIXELS / 2.0f, p->y + SPRITE_H_PIXELS * 2 + 1);
-    int tile_next = get_tile_at_pixel(new_foot_x, new_foot_y);
+    int tile_nextUP = get_tile_at_pixel(new_foot_x, new_foot_y - 2);
+    int tile_nextDown = get_tile_at_pixel(new_foot_x, new_foot_y);
 
-    if (tile_now == TILE_SLOPE_L_UP || tile_now == TILE_SLOPE_R_UP ||
-        tile_next == TILE_SLOPE_L_UP || tile_next == TILE_SLOPE_R_UP)
+    if (tile_nextUP == TILE_SLOPE_L_UP || tile_nextUP == TILE_SLOPE_R_UP ||
+        tile_nextDown == TILE_SLOPE_L_UP || tile_nextDown == TILE_SLOPE_R_UP)
     {
         // 当前或目标脚下是斜坡 → 放行并吸附
         p->x = new_x;
