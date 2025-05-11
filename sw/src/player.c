@@ -90,7 +90,7 @@ void player_update_physics(player_t *p)
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_y = p->y + SPRITE_H_PIXELS * 2 + 1;
 
-    int tile_nextUP = get_tile_at_pixel(new_foot_x, new_foot_y - 2);
+    int tile_nextUP = get_tile_at_pixel(new_foot_x, new_foot_y - 1);
     int tile_nextDown = get_tile_at_pixel(new_foot_x, new_foot_y);
 
     if (tile_nextUP == TILE_SLOPE_L_UP || tile_nextUP == TILE_SLOPE_R_UP ||
