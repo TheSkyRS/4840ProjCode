@@ -74,7 +74,7 @@ void player_update_physics(player_t *p)
 
     // 垂直运动
     float new_y = p->y + p->vy;
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2)) // yibuzhiyao
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2)) // 一步之遥。
     {
         p->y = new_y;
         p->on_ground = false;
@@ -85,32 +85,40 @@ void player_update_physics(player_t *p)
             p->on_ground = true;
         p->vy = 0;
     }
-    // 水平运动
+
+    // 水平
     float new_x = p->x + p->vx;
-
-    // 计算当前位置和目标位置的脚底中心点
-    float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
-    float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
-    float foot_y = p->y + SPRITE_H_PIXELS * 2;
-
-    // 判断当前位置脚底左右邻近是否在斜坡范围
-    bool on_slope = false;
-    for (int dx = -1; dx <= 1; ++dx)
+    // 基于地面 + 斜率判断决定是否允许上坡
+    if (p->on_ground && p->vx != 0)
     {
-        int tile = get_tile_at_pixel(new_foot_x + dx * 8, foot_y);
+        float center_x = new_x + SPRITE_W_PIXELS / 2.0f;
+        float foot_y = p->y + SPRITE_H_PIXELS * 2 + 1;
+
+        int tile = get_tile_at_pixel(center_x, foot_y);
         if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
         {
-            on_slope = true;
-            break;
+            float x_in_tile = fmod(center_x, TILE_SIZE);
+            int x_local = (int)x_in_tile;
+
+            int dy = (tile == TILE_SLOPE_L_UP) ? x_local : (TILE_SIZE - 1 - x_local);
+            float tile_top_y = floor(foot_y / TILE_SIZE) * TILE_SIZE;
+            float target_y = tile_top_y + dy - SPRITE_H_PIXELS * 2 - 2;
+
+            float delta_y = target_y - p->y;
+            float slope = fabs(delta_y / p->vx);
+
+            if (slope <= 1.0f)
+            {
+                p->x = new_x;
+                p->y = target_y;
+                p->vy = 0;
+                p->on_ground = true;
+            }
         }
     }
 
-    if (on_slope)
-    {
-        p->x = new_x;
-        adjust_to_slope_y(p);
-    }
-    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    // 正常水平移动
+    if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
     {
         p->x = new_x;
     }
@@ -118,7 +126,6 @@ void player_update_physics(player_t *p)
     {
         p->vx = 0;
     }
-
     // 状态切换
     if (!p->on_ground)
     {
@@ -137,35 +144,6 @@ void player_update_physics(player_t *p)
     }
 }
 
-void adjust_to_slope_y(player_t *p)
-{
-    float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
-    float base_foot_y = p->y + SPRITE_H_PIXELS * 2;
-
-    // 搜索范围扩大，防止斜坡边缘未对齐
-    for (int dy = -4; dy <= 2; ++dy)
-    {
-        float foot_y = base_foot_y + dy;
-        int tile = get_tile_at_pixel(center_x, foot_y);
-
-        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
-        {
-            float x_in_tile = fmod(center_x, TILE_SIZE);
-            int x_local = (int)x_in_tile;
-
-            int min_y = (tile == TILE_SLOPE_L_UP)
-                            ? x_local
-                            : TILE_SIZE - 1 - x_local;
-
-            float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
-
-            p->y = tile_top_y + min_y - SPRITE_H_PIXELS * 2 - 2;
-            p->on_ground = true;
-            p->vy = 0;
-            break;
-        }
-    }
-}
 // 火男孩
 #define FB_HEAD_IDLE ((uint8_t)0)      // 0x0000 >> 8 = 0
 #define FB_HEAD_WALK ((uint8_t)2)      // 0x0200 >> 8 = 2
