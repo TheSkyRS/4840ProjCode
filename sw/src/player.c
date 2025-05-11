@@ -84,7 +84,6 @@ void player_update_physics(player_t *p)
             p->on_ground = true;
         p->vy = 0;
     }
-
     // 水平运动
     float new_x = p->x + p->vx;
 
@@ -93,7 +92,7 @@ void player_update_physics(player_t *p)
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + SPRITE_H_PIXELS * 2;
 
-    // 判断目标位置脚底左右邻近是否在斜坡范围
+    // 判断当前位置脚底左右邻近是否在斜坡范围
     bool on_slope = false;
     for (int dx = -1; dx <= 1; ++dx)
     {
@@ -110,27 +109,13 @@ void player_update_physics(player_t *p)
         p->x = new_x;
         adjust_to_slope_y(p);
     }
+    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    {
+        p->x = new_x;
+    }
     else
     {
-        // 离开坡面时尝试对齐地面高度，但不提前设置 on_ground
-        float aligned_foot_y = p->y + SPRITE_H_PIXELS * 2;
-        int tile_y = (int)(aligned_foot_y / TILE_SIZE);
-        float aligned_y = tile_y * TILE_SIZE - SPRITE_H_PIXELS * 2;
-
-        if (!is_tile_blocked(new_x, aligned_y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
-        {
-            p->x = new_x;
-            p->y = aligned_y;
-            // 不设置 on_ground，保持由垂直逻辑决定
-        }
-        else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
-        {
-            p->x = new_x;
-        }
-        else
-        {
-            p->vx = 0;
-        }
+        p->vx = 0;
     }
 
     // 状态切换
@@ -149,10 +134,6 @@ void player_update_physics(player_t *p)
     {
         p->state = STATE_IDLE;
     }
-
-    // 最后再补一遍吸附（防止落地后还未贴合斜坡）
-    if (p->on_ground)
-        adjust_to_slope_y(p);
 }
 
 void adjust_to_slope_y(player_t *p)
