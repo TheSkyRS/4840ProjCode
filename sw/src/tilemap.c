@@ -3,7 +3,8 @@
 
 #include "tilemap.h"
 #include <math.h> // 用于 floor()
-#include <cstdint>
+#include <stdint.h>
+
 // === 示例地图数据 ===
 // 0: 空地  1: 墙壁  2: 火池  3: 水池  4: 终点 5  6, 7,
 const int tilemap[30][40] = {
