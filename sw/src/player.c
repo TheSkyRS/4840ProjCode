@@ -86,28 +86,24 @@ void player_update_physics(player_t *p)
     float dx = p->vx;
     float new_x = p->x + dx;
 
-    // 1. 判断将要移动到的位置脚下 tile 类型
+    // 判断将要移动到的位置脚下 tile 类型
     float foot_x = new_x + SPRITE_W_PIXELS / 2;
     float foot_y = p->y + SPRITE_H_PIXELS * 2;
     tile_type_t foot_tile = tilemap_get_type_at(foot_x, foot_y);
 
-    // 2. 如果是上坡方向，计算理想坡面高度并设置 y
+    // 如果是上坡方向，计算理想坡面高度并设置 y
     if ((dx > 0 && foot_tile == TILE_SLOPE_L_UP) || (dx < 0 && foot_tile == TILE_SLOPE_R_UP))
     {
         int tile_x = (int)(foot_x / TILE_SIZE);
         int tile_y = (int)(foot_y / TILE_SIZE);
         float local_x = foot_x - tile_x * TILE_SIZE;
 
-        float expected_y;
-        if (foot_tile == TILE_SLOPE_L_UP)
-            expected_y = tile_y * TILE_SIZE + (TILE_SIZE - local_x);
-        else
-            expected_y = tile_y * TILE_SIZE + local_x;
-
+        float slope_height = get_slope_height(foot_tile, local_x);
+        float expected_y = tile_y * TILE_SIZE + slope_height;
         p->y = expected_y - SPRITE_H_PIXELS * 2;
     }
 
-    // 3. 判断是否允许水平移动
+    // 判断是否允许水平移动
     float x_factor = is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2, dx);
     p->vx *= x_factor;
 

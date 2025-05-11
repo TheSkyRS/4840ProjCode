@@ -123,6 +123,30 @@ float is_tile_blocked(float x, float y, float width, float height, float vx)
     return 1.0f; // 无阻挡
 }
 
+float get_slope_height(tile_type_t type, float local_x)
+{
+    // 确保 local_x 在 [0, TILE_SIZE)
+    if (local_x < 0)
+        local_x = 0;
+    if (local_x >= TILE_SIZE)
+        local_x = TILE_SIZE - 1;
+
+    switch (type)
+    {
+    case TILE_SLOPE_L_UP:
+        return TILE_SIZE - local_x; // y = -x + TILE_SIZE
+    case TILE_SLOPE_R_UP:
+        return local_x; // y = x
+    default:
+        return 0.0f; // 普通地形无高度
+    }
+}
+
+bool is_tile_slope(tile_type_t type)
+{
+    return (type == TILE_SLOPE_L_UP || type == TILE_SLOPE_R_UP);
+}
+
 tile_type_t tilemap_get_type_at(float x, float y)
 {
     int tx = (int)(x / TILE_SIZE);

@@ -35,4 +35,10 @@ float is_tile_blocked(float x, float y, float width, float height, float vx);
 
 tile_type_t tilemap_get_type_at(float x, float y);
 
+// 斜坡高度函数：给定 tile 类型和局部 x，返回该 x 下应有的 y 高度（单位：像素）
+float get_slope_height(tile_type_t type, float local_x);
+
+// 判断某点是否在斜坡 tile 上（用于落地检测优化）
+bool is_tile_slope(tile_type_t type);
+
 #endif // TILEMAP_H
