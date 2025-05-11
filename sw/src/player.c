@@ -112,7 +112,7 @@ void player_update_physics(player_t *p)
     }
     else
     {
-        // 离开坡面时尝试对齐地面高度
+        // 离开坡面时尝试对齐地面高度，但不提前设置 on_ground
         float aligned_foot_y = p->y + SPRITE_H_PIXELS * 2;
         int tile_y = (int)(aligned_foot_y / TILE_SIZE);
         float aligned_y = tile_y * TILE_SIZE - SPRITE_H_PIXELS * 2;
@@ -121,7 +121,7 @@ void player_update_physics(player_t *p)
         {
             p->x = new_x;
             p->y = aligned_y;
-            p->on_ground = true;
+            // 不设置 on_ground，保持由垂直逻辑决定
         }
         else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
         {
