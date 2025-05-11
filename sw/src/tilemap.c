@@ -81,8 +81,8 @@ bool is_tile_blocked(float x, float y, float width, float height)
             int y_local = (int)y_in_tile;
 
             int max_y = (tile == TILE_CEIL_L)
-                            ? x_local                  // 左低右高
-                            : TILE_SIZE - 1 - x_local; // 右低左高
+                            ? TILE_SIZE - 1 - x_local // 左低右高
+                            : x_local;                // 右低左高
 
             if (y_local <= max_y)
                 return true;

@@ -16,10 +16,12 @@ typedef enum
     TILE_FIRE = 2,
     TILE_WATER = 3,
     TILE_GOAL = 4,
-    TILE_SLOPE_L_UP = 5,
-    TILE_SLOPE_R_UP = 6,
-    TILE_CEIL_R = 7,
-    TILE_CEIL_L = 8
+
+    TILE_SLOPE_L_UP = 5, // 地面：左高右低（\）
+    TILE_SLOPE_R_UP = 6, // 地面：右高左低（/）
+
+    TILE_CEIL_R = 7, // 天花板：左高右低（\）
+    TILE_CEIL_L = 8  // 天花板：左低右高（/）
 } tile_type_t;
 
 // === 外部地图数组（只读）===
