@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import pathlib, struct, sys
 
-raw = 'jumpfb.raw'
-mif = 'jumpfb.mif'
+raw = 'bgm.raw'
+mif = 'bgm.mif'
 data = pathlib.Path(raw).read_bytes()
 depth = len(data)
 
 lines = [
-    f'WIDTH=8;',
+    f'WIDTH=16;',
     f'DEPTH={depth};',
     'ADDRESS_RADIX=HEX;',
     'DATA_RADIX=HEX;',
