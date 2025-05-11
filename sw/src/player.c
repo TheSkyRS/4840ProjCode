@@ -83,23 +83,26 @@ void player_update_physics(player_t *p)
     // 处理 Y 位移与贴地
     if (y_factor < 1.0f)
     {
-        // 默认移动
-        p->y = new_y;
-
-        // 若踩在斜坡上，执行贴合（可选）
         if (y_factor == 0.5f)
         {
+            // === 斜坡贴合修正 ===
             float foot_x = p->x + SPRITE_W_PIXELS / 2;
-            float foot_y = p->y + SPRITE_H_PIXELS * 2;
+            float foot_y = new_y + SPRITE_H_PIXELS * 2;
 
             tile_type_t tile = tilemap_get_type_at(foot_x, foot_y);
             if (is_tile_slope(tile))
             {
                 float local_x = fmodf(foot_x, TILE_SIZE);
-                float surface_y = get_slope_height(tile, local_x);
+                float slope_y = get_slope_height(tile, local_x);
                 float base_y = floorf(foot_y / TILE_SIZE) * TILE_SIZE;
-                p->y = base_y + surface_y - SPRITE_H_PIXELS * 2;
+                p->y = base_y + slope_y - SPRITE_H_PIXELS * 2;
+                p->vy = 0; // 非常重要：立即停止下落！
             }
+        }
+        else
+        {
+            p->y = new_y;
+            p->vy *= y_factor;
         }
     }
 
