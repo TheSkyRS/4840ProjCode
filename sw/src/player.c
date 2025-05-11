@@ -85,54 +85,38 @@ void player_update_physics(player_t *p)
             p->on_ground = true;
         p->vy = 0;
     }
+    // 水平运动
     float new_x = p->x + p->vx;
+
+    // 计算当前位置和目标位置的脚底中心点
+    float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + SPRITE_H_PIXELS * 2;
-    int next_tile = get_tile_at_pixel(new_x + SPRITE_W_PIXELS / 2.0f, foot_y);
 
-    bool next_on_slope = (next_tile == TILE_SLOPE_L_UP || next_tile == TILE_SLOPE_R_UP);
+    // 判断当前位置脚底左右邻近是否在斜坡范围
+    bool on_slope = false;
+    for (int dx = -1; dx <= 1; ++dx)
+    {
+        int tile = get_tile_at_pixel(new_foot_x + dx * 8, foot_y);
+        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
+        {
+            on_slope = true;
+            break;
+        }
+    }
 
-    // Step 2: 如果目标仍在坡上，直接贴坡
-    if (next_on_slope)
+    if (on_slope)
     {
         p->x = new_x;
         adjust_to_slope_y(p);
     }
+    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    {
+        p->x = new_x;
+    }
     else
     {
-        // Step 3: 判断当前是否在坡上
-        int cur_tile = get_tile_at_pixel(p->x + SPRITE_W_PIXELS / 2.0f, foot_y);
-        bool cur_on_slope = (cur_tile == TILE_SLOPE_L_UP || cur_tile == TILE_SLOPE_R_UP);
-
-        if (cur_on_slope)
-        {
-            // 即将离开坡：将 y 补到目标 tile 顶部（如果是地面）
-            if (next_tile == TILE_EMPTY || next_tile == TILE_GOAL) // 你定义的平地类型
-            {
-                int tile_row = (int)(foot_y / TILE_SIZE);
-                p->y = tile_row * TILE_SIZE - SPRITE_H_PIXELS * 2;
-                p->on_ground = true;
-                p->vy = 0;
-            }
-            else
-            {
-                // 离开坡但目标不是地面，说明是空地或坑，继续掉落
-            }
-
-            p->x = new_x;
-        }
-        else
-        {
-            // 完全不在坡上，常规碰撞处理
-            if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
-            {
-                p->x = new_x;
-            }
-            else
-            {
-                p->vx = 0;
-            }
-        }
+        p->vx = 0; // 一步之遥
     }
 
     // 状态切换
