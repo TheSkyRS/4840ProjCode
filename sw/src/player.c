@@ -181,8 +181,8 @@ void player_update_physics(player_t *p)
     {
         p->state = STATE_IDLE;
     }
-    if (p->type == PLAYER_WATERGIRL)
-        debug_print_player_state(p, p->type == "WATERGIRL");
+    // if (p->type == PLAYER_WATERGIRL)
+    //     debug_print_player_state(p, p->type == "WATERGIRL");
 }
 void adjust_to_slope_y(player_t *p)
 {

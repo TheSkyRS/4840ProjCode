@@ -68,7 +68,7 @@ int main()
                     continue;
 
                 float pw = SPRITE_W_PIXELS;
-                float ph = PLAYER_HEIGHT_PIXELS;
+                float ph = SPRITE_H_PIXELS;
 
                 if (check_overlap(players[i].x, players[i].y, pw, ph,
                                   items[j].x, items[j].y, items[j].width, items[j].height))
