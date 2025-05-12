@@ -37,6 +37,8 @@ int main()
     items[0].sprite.frame_start = BLUE_GEM_FRAME;
     items[0].owner_type = ITEM_WATERGIRL_ONLY;
     items[0].float_anim = true;
+    items[0].width = 12;  // 碰撞箱宽度
+    items[0].height = 12; // 碰撞箱高度
 
     item_init(&items[1], 0, 0, 5, RED_GEM_FRAME);
     item_place_on_tile(&items[1], 29, 26);
