@@ -134,9 +134,10 @@ void player_update_physics(player_t *p)
 
     if (on_slope && p->vy >= 0)
     {
+        // 移动或不移动都允许贴坡
         p->x = new_x;
 
-        // 只有连续两帧都检测到斜坡才执行吸附，避免误判
+        // 连续两帧都在坡道才吸附
         if (p->was_on_slope_last_frame)
         {
             adjust_to_slope_y(p);
@@ -148,6 +149,7 @@ void player_update_physics(player_t *p)
     {
         p->was_on_slope_last_frame = false;
 
+        // 不是坡道：正常阻挡检测
         if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
         {
             p->x = new_x;
