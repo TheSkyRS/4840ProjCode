@@ -208,10 +208,21 @@ void box_update_position(box_t *box, player_t *players)
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
+        // 如果当前玩家的中心位置与箱子方向不一致，略过检测
         float px = players[i].x;
         float py = players[i].y + PLAYER_HITBOX_OFFSET_Y;
         float pw = SPRITE_W_PIXELS;
         float ph = PLAYER_HITBOX_HEIGHT;
+
+        float player_center_x = px + pw / 2.0f;
+        float box_center_x = box->x + 16;
+
+        // 如果玩家在箱子后面，允许重叠（是推箱子的玩家）
+        if ((box->vx > 0 && player_center_x < box_center_x) ||
+            (box->vx < 0 && player_center_x > box_center_x))
+        {
+            continue;
+        }
 
         if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
         {
@@ -219,7 +230,7 @@ void box_update_position(box_t *box, player_t *players)
             break;
         }
     }
-    printf("       blocked=%d, collides_with_player=%d\n", blocked, collides_with_player);
+
     // 如果不阻挡，则移动
     if (!blocked && !collides_with_player)
     {
