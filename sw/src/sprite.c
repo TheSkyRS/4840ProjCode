@@ -129,17 +129,30 @@ void box_try_push(box_t *box, const player_t *p)
     // 垂直方向有交集才考虑推动
     bool vertical_overlap = (py + ph > by) && (py < by + bh);
     if (!vertical_overlap)
+    {
+        printf("[PUSH] Player Y=%.1f~%.1f not overlapping box Y=%.1f~%.1f\n",
+               py, py + ph, by, by + bh);
         return;
+    }
 
     // 玩家靠近箱子左边并向右推动
-    if ((px + pw >= bx - 1 && px + pw <= bx + 4) && p->vx > 0)
+    if ((px + pw >= bx - 4 && px + pw <= bx + 8) && p->vx > 0)
     {
+        printf("[PUSH] Player %.1f~%.1f pushing RIGHT into box %.1f~%.1f\n",
+               px, px + pw, bx, bx + bw);
         box->vx = BOX_PUSH_SPEED;
     }
     // 玩家靠近箱子右边并向左推动
-    else if ((px <= bx + bw + 1 && px >= bx + bw - 4) && p->vx < 0)
+    else if ((px <= bx + bw + 4 && px >= bx + bw - 8) && p->vx < 0)
     {
+        printf("[PUSH] Player %.1f~%.1f pushing LEFT into box %.1f~%.1f\n",
+               px, px + pw, bx, bx + bw);
         box->vx = -BOX_PUSH_SPEED;
+    }
+    else
+    {
+        printf("[PUSH] Player %.1f~%.1f near box %.1f~%.1f but not pushing\n",
+               px, px + pw, bx, bx + bw);
     }
 }
 
@@ -188,8 +201,6 @@ void box_update_position(box_t *box, player_t *players)
 
 bool is_box_blocked(float x, float y, float w, float h)
 {
-    printf("[DEBUG] Checking box collision: x=%.1f y=%.1f w=%.1f h=%.1f\n", x, y, w, h);
-
     for (int i = 0; i < NUM_BOXES; i++)
     {
         if (!boxes[i].active)
@@ -198,11 +209,8 @@ bool is_box_blocked(float x, float y, float w, float h)
         float bx = boxes[i].x;
         float by = boxes[i].y;
 
-        printf("  → Box[%d] at: (%.1f, %.1f)-(%.1f, %.1f)\n", i, bx, by, bx + 32, by + 32);
-
         if (check_overlap(x, y, w, h, bx, by, 32, 32))
         {
-            printf("  ? Overlap with Box[%d]!\n", i);
             return true;
         }
     }

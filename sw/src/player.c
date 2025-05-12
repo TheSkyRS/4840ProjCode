@@ -79,7 +79,8 @@ void player_update_physics(player_t *p)
     // 垂直运动
     float new_y = p->y + p->vy;
 
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) &&
+        !is_box_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
     {
         p->y = new_y;
         p->on_ground = false;
@@ -124,7 +125,7 @@ void player_update_physics(player_t *p)
     // 水平运动
     float new_x = p->x + p->vx;
 
-        // 计算当前位置和目标位置的脚底中心点
+    // 计算当前位置和目标位置的脚底中心点
     float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + PLAYER_HEIGHT_PIXELS;
