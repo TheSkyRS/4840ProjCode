@@ -2,6 +2,8 @@
 #include "hw_interact.h"
 #include <math.h> // 为 sinf 提供声明
 #include "type.h"
+#include <stdio.h>
+
 extern box_t boxes[NUM_BOXES];
 // 初始化 sprite 索引和帧数
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
@@ -186,13 +188,22 @@ void box_update_position(box_t *box, player_t *players)
 
 bool is_box_blocked(float x, float y, float w, float h)
 {
+    printf("[DEBUG] Checking box collision at (%.1f, %.1f, %.1f×%.1f)\n", x, y, w, h);
+
     for (int i = 0; i < NUM_BOXES; i++)
     {
+        if (!boxes[i].active)
+            continue;
+
+        printf("  → Box[%d] at (%.1f, %.1f)\n", i, boxes[i].x, boxes[i].y);
+
         if (check_overlap(x, y, w, h, boxes[i].x, boxes[i].y, 32, 32))
         {
+            printf("  ? Overlap with Box[%d] detected!\n", i);
             return true;
         }
     }
+
     return false;
 }
 
