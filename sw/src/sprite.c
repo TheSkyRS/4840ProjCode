@@ -230,7 +230,7 @@ void box_update_position(box_t *box, player_t *players)
             break;
         }
     }
-
+    printf("       blocked=%d, collides_with_player=%d\n", blocked, collides_with_player);
     // 如果不阻挡，则移动
     if (!blocked && !collides_with_player)
     {
