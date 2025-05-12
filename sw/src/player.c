@@ -72,28 +72,10 @@ void player_handle_input(player_t *p, int player_index)
 void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
+
     // 垂直运动
     float new_y = p->y + p->vy;
-
-    // 判断脚底 tile 是不是坡道
-    float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
-    float foot_y = new_y + PLAYER_HEIGHT_PIXELS;
-    int tile_below = get_tile_at_pixel(center_x, foot_y);
-
-    // 只有下落时、非坡道才阻挡//这是一个补丁
-    bool block_vertical = true;
-    if (p->vy < 0 && (tile_below == TILE_SLOPE_L_UP || tile_below == TILE_SLOPE_R_UP))
-    {
-        block_vertical = false;
-    }
-
-    if (!block_vertical && p->vy < 0)
-    {
-        // 斜坡上跳跃，不做阻挡
-        p->y = new_y;
-        p->on_ground = false;
-    }
-    else if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
     {
         p->y = new_y;
         p->on_ground = false;
@@ -104,7 +86,6 @@ void player_update_physics(player_t *p)
             p->on_ground = true;
         p->vy = 0;
     }
-
     // 水平运动
     float new_x = p->x + p->vx;
 
