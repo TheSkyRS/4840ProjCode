@@ -94,15 +94,15 @@ void box_update_sprite(box_t *b)
     float y = b->y;
 
     b->sprites[0].x = x;
-    b->sprites[0].y = y;
+    b->sprites[0].y = y + 1;
 
-    b->sprites[1].x = x + 16;
-    b->sprites[1].y = y;
+    b->sprites[1].x = x + 15;
+    b->sprites[1].y = y + 1;
 
     b->sprites[2].x = x;
     b->sprites[2].y = y + 16;
 
-    b->sprites[3].x = x + 16;
+    b->sprites[3].x = x + 15;
     b->sprites[3].y = y + 16;
 
     for (int i = 0; i < 4; i++)
