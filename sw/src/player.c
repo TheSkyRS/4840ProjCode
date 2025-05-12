@@ -97,7 +97,7 @@ void player_update_physics(player_t *p)
     if (is_tile_blocked(p->x, p->y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
     {
         // 碰撞 → 强制吸附到 tile 顶部
-        float foot_y = p->y + PLAYER_HEIGHT_PIXELS;
+        float foot_y = p->y + PLAYER_HEIGHT_PIXELS + 6;
         float tile_top_y = floorf(foot_y / TILE_SIZE) * TILE_SIZE;
         p->y = tile_top_y - PLAYER_HEIGHT_PIXELS;
 
