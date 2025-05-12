@@ -87,34 +87,33 @@ void player_update_physics(player_t *p)
     p->vy += GRAVITY;
 
     // 垂直运动
-    bool was_on_ground = p->on_ground; // 记录前一帧是否落地
-
+    bool was_on_ground = p->on_ground;
     float new_y = p->y + p->vy;
 
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 向下预测一像素
-    {
-        p->y = new_y;
-        p->on_ground = false;
-    }
-    else
-    {
-        // 获取“即将接触”的脚底位置
-        float contact_foot_y = new_y + PLAYER_HEIGHT_PIXELS;
+    // 先尝试移动
+    p->y = new_y;
 
-        // 将角色吸附到这个 tile 顶部
-        float tile_top_y = floorf(contact_foot_y / TILE_SIZE) * TILE_SIZE;
+    // 再判断脚底是否碰撞
+    if (is_tile_blocked(p->x, p->y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    {
+        // 碰撞 → 强制吸附到 tile 顶部
+        float foot_y = p->y + PLAYER_HEIGHT_PIXELS;
+        float tile_top_y = floorf(foot_y / TILE_SIZE) * TILE_SIZE;
         p->y = tile_top_y - PLAYER_HEIGHT_PIXELS;
 
-        p->vy = 0;
-        p->on_ground = true;
-
-        // 仅首次落地打印
         if (p->vy > 0 && !was_on_ground && p->type == PLAYER_WATERGIRL)
         {
             printf("[%s] FOOT LAND: vy=%.2f y=%.2f\n",
                    p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
                    p->vy, p->y);
         }
+
+        p->vy = 0;
+        p->on_ground = true;
+    }
+    else
+    {
+        p->on_ground = false;
     }
 
     // // 垂直运动
