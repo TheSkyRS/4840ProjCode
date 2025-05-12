@@ -79,7 +79,7 @@ void player_update_physics(player_t *p)
     // 垂直运动
     float new_y = p->y + p->vy;
 
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) && !is_box_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
     {
         p->y = new_y;
         p->on_ground = false;
