@@ -31,37 +31,37 @@ int main()
 
     item_t items[NUM_ITEMS];
 
-    item_init(&items[0], 0, 0, 11, BLUE_GEM_FRAME);
+    item_init(&items[0], 0, 0, 4, BLUE_GEM_FRAME);
     item_place_on_tile(&items[0], 21, 26);
     items[0].sprite.frame_count = 1;
     items[0].sprite.frame_start = BLUE_GEM_FRAME;
     items[0].owner_type = ITEM_WATERGIRL_ONLY;
 
-    item_init(&items[1], 0, 0, 10, RED_GEM_FRAME);
+    item_init(&items[1], 0, 0, 5, RED_GEM_FRAME);
     item_place_on_tile(&items[1], 29, 26);
     items[1].sprite.frame_count = 1;
     items[1].sprite.frame_start = RED_GEM_FRAME;
     items[1].owner_type = ITEM_FIREBOY_ONLY;
 
-    item_init(&items[2], 0, 0, 10, RED_GEM_FRAME);
+    item_init(&items[2], 0, 0, 6, RED_GEM_FRAME);
     item_place_on_tile(&items[2], 6, 14);
     items[2].sprite.frame_count = 1;
     items[2].sprite.frame_start = RED_GEM_FRAME;
     items[2].owner_type = ITEM_FIREBOY_ONLY;
 
-    item_init(&items[3], 0, 0, 11, BLUE_GEM_FRAME);
+    item_init(&items[3], 0, 0, 7, BLUE_GEM_FRAME);
     item_place_on_tile(&items[3], 23, 14);
     items[3].sprite.frame_count = 1;
     items[3].sprite.frame_start = BLUE_GEM_FRAME;
     items[3].owner_type = ITEM_WATERGIRL_ONLY;
 
-    item_init(&items[4], 0, 0, 11, BLUE_GEM_FRAME);
+    item_init(&items[4], 0, 0, 8, BLUE_GEM_FRAME);
     item_place_on_tile(&items[4], 11, 7);
     items[4].sprite.frame_count = 1;
     items[4].sprite.frame_start = BLUE_GEM_FRAME;
     items[4].owner_type = ITEM_WATERGIRL_ONLY;
 
-    item_init(&items[5], 0, 0, 10, RED_GEM_FRAME);
+    item_init(&items[5], 0, 0, 9, RED_GEM_FRAME);
     item_place_on_tile(&items[5], 1, 4);
     items[5].sprite.frame_count = 1;
     items[5].sprite.frame_start = RED_GEM_FRAME;
