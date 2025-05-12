@@ -1,5 +1,11 @@
 
 module soc_system (
+	audio_0_external_interface_BCLK,
+	audio_0_external_interface_DACDAT,
+	audio_0_external_interface_DACLRCK,
+	audio_and_video_config_0_external_interface_SDAT,
+	audio_and_video_config_0_external_interface_SCLK,
+	audio_pll_0_audio_clk_clk,
 	clk_clk,
 	hps_hps_io_emac1_inst_TX_CLK,
 	hps_hps_io_emac1_inst_TXD0,
@@ -66,26 +72,14 @@ module soc_system (
 	hps_ddr3_mem_odt,
 	hps_ddr3_mem_dm,
 	hps_ddr3_oct_rzqin,
-	reset_reset_n,
-	audio_0_external_interface_BCLK,
-	audio_0_external_interface_DACDAT,
-	audio_0_external_interface_DACLRCK,
-	audio_and_video_config_0_external_interface_SDAT,
-	audio_and_video_config_0_external_interface_SCLK,
-	audio_pll_0_audio_clk_clk,
-	audio_left_chan_ready,
-	audio_right_chan_ready,
-	audio_sample_data_l,
-	audio_sample_data_r,
-	audio_sample_valid_l,
-	audio_sample_valid_r,
-	audio_0_avalon_left_channel_sink_data,
-	audio_0_avalon_left_channel_sink_valid,
-	audio_0_avalon_left_channel_sink_ready,
-	audio_0_avalon_right_channel_sink_data,
-	audio_0_avalon_right_channel_sink_valid,
-	audio_0_avalon_right_channel_sink_ready);	
+	reset_reset_n);	
 
+	input		audio_0_external_interface_BCLK;
+	output		audio_0_external_interface_DACDAT;
+	input		audio_0_external_interface_DACLRCK;
+	inout		audio_and_video_config_0_external_interface_SDAT;
+	output		audio_and_video_config_0_external_interface_SCLK;
+	output		audio_pll_0_audio_clk_clk;
 	input		clk_clk;
 	output		hps_hps_io_emac1_inst_TX_CLK;
 	output		hps_hps_io_emac1_inst_TXD0;
@@ -153,22 +147,4 @@ module soc_system (
 	output	[3:0]	hps_ddr3_mem_dm;
 	input		hps_ddr3_oct_rzqin;
 	input		reset_reset_n;
-	input		audio_0_external_interface_BCLK;
-	output		audio_0_external_interface_DACDAT;
-	input		audio_0_external_interface_DACLRCK;
-	inout		audio_and_video_config_0_external_interface_SDAT;
-	output		audio_and_video_config_0_external_interface_SCLK;
-	output		audio_pll_0_audio_clk_clk;
-	input		audio_left_chan_ready;
-	input		audio_right_chan_ready;
-	output	[15:0]	audio_sample_data_l;
-	output	[15:0]	audio_sample_data_r;
-	output		audio_sample_valid_l;
-	output		audio_sample_valid_r;
-	input	[15:0]	audio_0_avalon_left_channel_sink_data;
-	input		audio_0_avalon_left_channel_sink_valid;
-	output		audio_0_avalon_left_channel_sink_ready;
-	input	[15:0]	audio_0_avalon_right_channel_sink_data;
-	input		audio_0_avalon_right_channel_sink_valid;
-	output		audio_0_avalon_right_channel_sink_ready;
 endmodule

@@ -92,24 +92,14 @@
  <parameter name="hideFromIPCatalog" value="false" />
  <parameter name="lockedInterfaceDefinition" value="" />
  <parameter name="maxAdditionalLatency" value="1" />
- <parameter name="projectName" value="" />
+ <parameter name="projectName" value="soc_system.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="0" />
  <parameter name="testBenchDutName" value="" />
  <parameter name="timeStamp" value="0" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
- <interface name="audio" internal="fgpa_audio_0.audio" type="conduit" dir="end" />
- <interface
-   name="audio_0_avalon_left_channel_sink"
-   internal="audio_0.avalon_left_channel_sink"
-   type="avalon_streaming"
-   dir="end" />
- <interface
-   name="audio_0_avalon_right_channel_sink"
-   internal="audio_0.avalon_right_channel_sink"
-   type="avalon_streaming"
-   dir="end" />
+ <interface name="audio" internal="fgpa_audio_0.audio" />
  <interface
    name="audio_0_external_interface"
    internal="audio_0.external_interface"
@@ -720,6 +710,16 @@
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
+ <connection
+   kind="avalon_streaming"
+   version="21.1"
+   start="fgpa_audio_0.audio_out_l"
+   end="audio_0.avalon_left_channel_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="21.1"
+   start="fgpa_audio_0.audio_out_r"
+   end="audio_0.avalon_right_channel_sink" />
  <connection
    kind="clock"
    version="21.1"

@@ -1,4 +1,10 @@
 	soc_system u0 (
+		.audio_0_external_interface_BCLK                  (<connected-to-audio_0_external_interface_BCLK>),                  //                  audio_0_external_interface.BCLK
+		.audio_0_external_interface_DACDAT                (<connected-to-audio_0_external_interface_DACDAT>),                //                                            .DACDAT
+		.audio_0_external_interface_DACLRCK               (<connected-to-audio_0_external_interface_DACLRCK>),               //                                            .DACLRCK
+		.audio_and_video_config_0_external_interface_SDAT (<connected-to-audio_and_video_config_0_external_interface_SDAT>), // audio_and_video_config_0_external_interface.SDAT
+		.audio_and_video_config_0_external_interface_SCLK (<connected-to-audio_and_video_config_0_external_interface_SCLK>), //                                            .SCLK
+		.audio_pll_0_audio_clk_clk                        (<connected-to-audio_pll_0_audio_clk_clk>),                        //                       audio_pll_0_audio_clk.clk
 		.clk_clk                                          (<connected-to-clk_clk>),                                          //                                         clk.clk
 		.hps_hps_io_emac1_inst_TX_CLK                     (<connected-to-hps_hps_io_emac1_inst_TX_CLK>),                     //                                         hps.hps_io_emac1_inst_TX_CLK
 		.hps_hps_io_emac1_inst_TXD0                       (<connected-to-hps_hps_io_emac1_inst_TXD0>),                       //                                            .hps_io_emac1_inst_TXD0
@@ -65,24 +71,6 @@
 		.hps_ddr3_mem_odt                                 (<connected-to-hps_ddr3_mem_odt>),                                 //                                            .mem_odt
 		.hps_ddr3_mem_dm                                  (<connected-to-hps_ddr3_mem_dm>),                                  //                                            .mem_dm
 		.hps_ddr3_oct_rzqin                               (<connected-to-hps_ddr3_oct_rzqin>),                               //                                            .oct_rzqin
-		.reset_reset_n                                    (<connected-to-reset_reset_n>),                                    //                                       reset.reset_n
-		.audio_0_external_interface_BCLK                  (<connected-to-audio_0_external_interface_BCLK>),                  //                  audio_0_external_interface.BCLK
-		.audio_0_external_interface_DACDAT                (<connected-to-audio_0_external_interface_DACDAT>),                //                                            .DACDAT
-		.audio_0_external_interface_DACLRCK               (<connected-to-audio_0_external_interface_DACLRCK>),               //                                            .DACLRCK
-		.audio_and_video_config_0_external_interface_SDAT (<connected-to-audio_and_video_config_0_external_interface_SDAT>), // audio_and_video_config_0_external_interface.SDAT
-		.audio_and_video_config_0_external_interface_SCLK (<connected-to-audio_and_video_config_0_external_interface_SCLK>), //                                            .SCLK
-		.audio_pll_0_audio_clk_clk                        (<connected-to-audio_pll_0_audio_clk_clk>),                        //                       audio_pll_0_audio_clk.clk
-		.audio_left_chan_ready                            (<connected-to-audio_left_chan_ready>),                            //                                       audio.left_chan_ready
-		.audio_right_chan_ready                           (<connected-to-audio_right_chan_ready>),                           //                                            .right_chan_ready
-		.audio_sample_data_l                              (<connected-to-audio_sample_data_l>),                              //                                            .sample_data_l
-		.audio_sample_data_r                              (<connected-to-audio_sample_data_r>),                              //                                            .sample_data_r
-		.audio_sample_valid_l                             (<connected-to-audio_sample_valid_l>),                             //                                            .sample_valid_l
-		.audio_sample_valid_r                             (<connected-to-audio_sample_valid_r>),                             //                                            .sample_valid_r
-		.audio_0_avalon_left_channel_sink_data            (<connected-to-audio_0_avalon_left_channel_sink_data>),            //            audio_0_avalon_left_channel_sink.data
-		.audio_0_avalon_left_channel_sink_valid           (<connected-to-audio_0_avalon_left_channel_sink_valid>),           //                                            .valid
-		.audio_0_avalon_left_channel_sink_ready           (<connected-to-audio_0_avalon_left_channel_sink_ready>),           //                                            .ready
-		.audio_0_avalon_right_channel_sink_data           (<connected-to-audio_0_avalon_right_channel_sink_data>),           //           audio_0_avalon_right_channel_sink.data
-		.audio_0_avalon_right_channel_sink_valid          (<connected-to-audio_0_avalon_right_channel_sink_valid>),          //                                            .valid
-		.audio_0_avalon_right_channel_sink_ready          (<connected-to-audio_0_avalon_right_channel_sink_ready>)           //                                            .ready
+		.reset_reset_n                                    (<connected-to-reset_reset_n>)                                     //                                       reset.reset_n
 	);
 

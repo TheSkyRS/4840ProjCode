@@ -175,18 +175,18 @@ module soc_system_top(
  input [7:0]   TD_DATA,
  input 	       TD_HS,
  output        TD_RESET_N,
- input 	       TD_VS,
+ input 	       TD_VS
 
 
  ///////// VGA /////////
- output [7:0]  VGA_B,
- output        VGA_BLANK_N,
- output        VGA_CLK,
- output [7:0]  VGA_G,
- output        VGA_HS,
- output [7:0]  VGA_R,
- output        VGA_SYNC_N,
- output        VGA_VS
+ //output [7:0]  VGA_B,
+ //output        VGA_BLANK_N,
+ //output        VGA_CLK,
+ //output [7:0]  VGA_G,
+ //output        VGA_HS,
+ //output [7:0]  VGA_R,
+ //output        VGA_SYNC_N,
+ //output        VGA_VS
 );
 
    soc_system soc_system0(
@@ -284,11 +284,11 @@ module soc_system_top(
    assign ADC_DIN = SW[0];
    assign ADC_SCLK = SW[0];
    
-   assign AUD_ADCLRCK = SW[1] ? SW[0] : 1'bZ;
-   assign AUD_BCLK = SW[1] ? SW[0] : 1'bZ;
-   assign AUD_DACDAT = SW[0];
-   assign AUD_DACLRCK = SW[1] ? SW[0] : 1'bZ;
-   assign AUD_XCK = SW[0];      
+   //assign AUD_ADCLRCK = SW[1] ? SW[0] : 1'bZ;
+   //assign AUD_BCLK = SW[1] ? SW[0] : 1'bZ;
+   //assign AUD_DACDAT = SW[0];
+   //assign AUD_DACLRCK = SW[1] ? SW[0] : 1'bZ;
+   //assign AUD_XCK = SW[0];      
 
    assign DRAM_ADDR = { 13{ SW[0] } };
    assign DRAM_BA = { 2{ SW[0] } };
@@ -298,8 +298,8 @@ module soc_system_top(
 
    assign FAN_CTRL = SW[0];
 
-   assign FPGA_I2C_SCLK = SW[0];
-   assign FPGA_I2C_SDAT = SW[1] ? SW[0] : 1'bZ;
+   //assign FPGA_I2C_SCLK = SW[0];
+   //assign FPGA_I2C_SDAT = SW[1] ? SW[0] : 1'bZ;
 
    assign GPIO_0 = SW[1] ? { 36{ SW[0] } } : { 36{ 1'bZ } };
    assign GPIO_1 = SW[1] ? { 36{ SW[0] } } : { 36{ 1'bZ } };   

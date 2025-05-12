@@ -4,18 +4,6 @@
 
 `timescale 1 ps / 1 ps
 module soc_system (
-		input  wire        audio_left_chan_ready,                            //                                       audio.left_chan_ready
-		input  wire        audio_right_chan_ready,                           //                                            .right_chan_ready
-		output wire [15:0] audio_sample_data_l,                              //                                            .sample_data_l
-		output wire [15:0] audio_sample_data_r,                              //                                            .sample_data_r
-		output wire        audio_sample_valid_l,                             //                                            .sample_valid_l
-		output wire        audio_sample_valid_r,                             //                                            .sample_valid_r
-		input  wire [15:0] audio_0_avalon_left_channel_sink_data,            //            audio_0_avalon_left_channel_sink.data
-		input  wire        audio_0_avalon_left_channel_sink_valid,           //                                            .valid
-		output wire        audio_0_avalon_left_channel_sink_ready,           //                                            .ready
-		input  wire [15:0] audio_0_avalon_right_channel_sink_data,           //           audio_0_avalon_right_channel_sink.data
-		input  wire        audio_0_avalon_right_channel_sink_valid,          //                                            .valid
-		output wire        audio_0_avalon_right_channel_sink_ready,          //                                            .ready
 		input  wire        audio_0_external_interface_BCLK,                  //                  audio_0_external_interface.BCLK
 		output wire        audio_0_external_interface_DACDAT,                //                                            .DACDAT
 		input  wire        audio_0_external_interface_DACLRCK,               //                                            .DACLRCK
@@ -91,6 +79,12 @@ module soc_system (
 		input  wire        reset_reset_n                                     //                                       reset.reset_n
 	);
 
+	wire         fgpa_audio_0_audio_out_l_valid;                           // fgpa_audio_0:sample_valid_l -> audio_0:to_dac_left_channel_valid
+	wire  [15:0] fgpa_audio_0_audio_out_l_data;                            // fgpa_audio_0:sample_data_l -> audio_0:to_dac_left_channel_data
+	wire         fgpa_audio_0_audio_out_l_ready;                           // audio_0:to_dac_left_channel_ready -> fgpa_audio_0:left_chan_ready
+	wire         fgpa_audio_0_audio_out_r_valid;                           // fgpa_audio_0:sample_valid_r -> audio_0:to_dac_right_channel_valid
+	wire  [15:0] fgpa_audio_0_audio_out_r_data;                            // fgpa_audio_0:sample_data_r -> audio_0:to_dac_right_channel_data
+	wire         fgpa_audio_0_audio_out_r_ready;                           // audio_0:to_dac_right_channel_ready -> fgpa_audio_0:right_chan_ready
 	wire   [1:0] hps_0_h2f_lw_axi_master_awburst;                          // hps_0:h2f_lw_AWBURST -> mm_interconnect_0:hps_0_h2f_lw_axi_master_awburst
 	wire   [3:0] hps_0_h2f_lw_axi_master_arlen;                            // hps_0:h2f_lw_ARLEN -> mm_interconnect_0:hps_0_h2f_lw_axi_master_arlen
 	wire   [3:0] hps_0_h2f_lw_axi_master_wstrb;                            // hps_0:h2f_lw_WSTRB -> mm_interconnect_0:hps_0_h2f_lw_axi_master_wstrb
@@ -136,23 +130,23 @@ module soc_system (
 	wire         hps_0_h2f_reset_reset;                                    // hps_0:h2f_rst_n -> rst_controller_001:reset_in0
 
 	soc_system_audio_0 audio_0 (
-		.clk                          (clk_clk),                                 //                         clk.clk
-		.reset                        (rst_controller_reset_out_reset),          //                       reset.reset
-		.from_adc_left_channel_ready  (),                                        //  avalon_left_channel_source.ready
-		.from_adc_left_channel_data   (),                                        //                            .data
-		.from_adc_left_channel_valid  (),                                        //                            .valid
-		.from_adc_right_channel_ready (),                                        // avalon_right_channel_source.ready
-		.from_adc_right_channel_data  (),                                        //                            .data
-		.from_adc_right_channel_valid (),                                        //                            .valid
-		.to_dac_left_channel_data     (audio_0_avalon_left_channel_sink_data),   //    avalon_left_channel_sink.data
-		.to_dac_left_channel_valid    (audio_0_avalon_left_channel_sink_valid),  //                            .valid
-		.to_dac_left_channel_ready    (audio_0_avalon_left_channel_sink_ready),  //                            .ready
-		.to_dac_right_channel_data    (audio_0_avalon_right_channel_sink_data),  //   avalon_right_channel_sink.data
-		.to_dac_right_channel_valid   (audio_0_avalon_right_channel_sink_valid), //                            .valid
-		.to_dac_right_channel_ready   (audio_0_avalon_right_channel_sink_ready), //                            .ready
-		.AUD_BCLK                     (audio_0_external_interface_BCLK),         //          external_interface.export
-		.AUD_DACDAT                   (audio_0_external_interface_DACDAT),       //                            .export
-		.AUD_DACLRCK                  (audio_0_external_interface_DACLRCK)       //                            .export
+		.clk                          (clk_clk),                            //                         clk.clk
+		.reset                        (rst_controller_reset_out_reset),     //                       reset.reset
+		.from_adc_left_channel_ready  (),                                   //  avalon_left_channel_source.ready
+		.from_adc_left_channel_data   (),                                   //                            .data
+		.from_adc_left_channel_valid  (),                                   //                            .valid
+		.from_adc_right_channel_ready (),                                   // avalon_right_channel_source.ready
+		.from_adc_right_channel_data  (),                                   //                            .data
+		.from_adc_right_channel_valid (),                                   //                            .valid
+		.to_dac_left_channel_data     (fgpa_audio_0_audio_out_l_data),      //    avalon_left_channel_sink.data
+		.to_dac_left_channel_valid    (fgpa_audio_0_audio_out_l_valid),     //                            .valid
+		.to_dac_left_channel_ready    (fgpa_audio_0_audio_out_l_ready),     //                            .ready
+		.to_dac_right_channel_data    (fgpa_audio_0_audio_out_r_data),      //   avalon_right_channel_sink.data
+		.to_dac_right_channel_valid   (fgpa_audio_0_audio_out_r_valid),     //                            .valid
+		.to_dac_right_channel_ready   (fgpa_audio_0_audio_out_r_ready),     //                            .ready
+		.AUD_BCLK                     (audio_0_external_interface_BCLK),    //          external_interface.export
+		.AUD_DACDAT                   (audio_0_external_interface_DACDAT),  //                            .export
+		.AUD_DACLRCK                  (audio_0_external_interface_DACLRCK)  //                            .export
 	);
 
 	soc_system_audio_and_video_config_0 audio_and_video_config_0 (
@@ -183,12 +177,12 @@ module soc_system (
 		.write            (mm_interconnect_0_fgpa_audio_0_avalon_slave_0_write),      //               .write
 		.chipselect       (mm_interconnect_0_fgpa_audio_0_avalon_slave_0_chipselect), //               .chipselect
 		.address          (mm_interconnect_0_fgpa_audio_0_avalon_slave_0_address),    //               .address
-		.left_chan_ready  (audio_left_chan_ready),                                    //          audio.left_chan_ready
-		.right_chan_ready (audio_right_chan_ready),                                   //               .right_chan_ready
-		.sample_data_l    (audio_sample_data_l),                                      //               .sample_data_l
-		.sample_data_r    (audio_sample_data_r),                                      //               .sample_data_r
-		.sample_valid_l   (audio_sample_valid_l),                                     //               .sample_valid_l
-		.sample_valid_r   (audio_sample_valid_r)                                      //               .sample_valid_r
+		.left_chan_ready  (fgpa_audio_0_audio_out_l_ready),                           //    audio_out_l.ready
+		.sample_data_l    (fgpa_audio_0_audio_out_l_data),                            //               .data
+		.sample_valid_l   (fgpa_audio_0_audio_out_l_valid),                           //               .valid
+		.right_chan_ready (fgpa_audio_0_audio_out_r_ready),                           //    audio_out_r.ready
+		.sample_data_r    (fgpa_audio_0_audio_out_r_data),                            //               .data
+		.sample_valid_r   (fgpa_audio_0_audio_out_r_valid)                            //               .valid
 	);
 
 	soc_system_hps_0 #(

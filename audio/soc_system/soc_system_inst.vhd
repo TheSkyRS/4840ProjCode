@@ -1,5 +1,11 @@
 	component soc_system is
 		port (
+			audio_0_external_interface_BCLK                  : in    std_logic                     := 'X';             -- BCLK
+			audio_0_external_interface_DACDAT                : out   std_logic;                                        -- DACDAT
+			audio_0_external_interface_DACLRCK               : in    std_logic                     := 'X';             -- DACLRCK
+			audio_and_video_config_0_external_interface_SDAT : inout std_logic                     := 'X';             -- SDAT
+			audio_and_video_config_0_external_interface_SCLK : out   std_logic;                                        -- SCLK
+			audio_pll_0_audio_clk_clk                        : out   std_logic;                                        -- clk
 			clk_clk                                          : in    std_logic                     := 'X';             -- clk
 			hps_hps_io_emac1_inst_TX_CLK                     : out   std_logic;                                        -- hps_io_emac1_inst_TX_CLK
 			hps_hps_io_emac1_inst_TXD0                       : out   std_logic;                                        -- hps_io_emac1_inst_TXD0
@@ -66,30 +72,18 @@
 			hps_ddr3_mem_odt                                 : out   std_logic;                                        -- mem_odt
 			hps_ddr3_mem_dm                                  : out   std_logic_vector(3 downto 0);                     -- mem_dm
 			hps_ddr3_oct_rzqin                               : in    std_logic                     := 'X';             -- oct_rzqin
-			reset_reset_n                                    : in    std_logic                     := 'X';             -- reset_n
-			audio_0_external_interface_BCLK                  : in    std_logic                     := 'X';             -- BCLK
-			audio_0_external_interface_DACDAT                : out   std_logic;                                        -- DACDAT
-			audio_0_external_interface_DACLRCK               : in    std_logic                     := 'X';             -- DACLRCK
-			audio_and_video_config_0_external_interface_SDAT : inout std_logic                     := 'X';             -- SDAT
-			audio_and_video_config_0_external_interface_SCLK : out   std_logic;                                        -- SCLK
-			audio_pll_0_audio_clk_clk                        : out   std_logic;                                        -- clk
-			audio_left_chan_ready                            : in    std_logic                     := 'X';             -- left_chan_ready
-			audio_right_chan_ready                           : in    std_logic                     := 'X';             -- right_chan_ready
-			audio_sample_data_l                              : out   std_logic_vector(15 downto 0);                    -- sample_data_l
-			audio_sample_data_r                              : out   std_logic_vector(15 downto 0);                    -- sample_data_r
-			audio_sample_valid_l                             : out   std_logic;                                        -- sample_valid_l
-			audio_sample_valid_r                             : out   std_logic;                                        -- sample_valid_r
-			audio_0_avalon_left_channel_sink_data            : in    std_logic_vector(15 downto 0) := (others => 'X'); -- data
-			audio_0_avalon_left_channel_sink_valid           : in    std_logic                     := 'X';             -- valid
-			audio_0_avalon_left_channel_sink_ready           : out   std_logic;                                        -- ready
-			audio_0_avalon_right_channel_sink_data           : in    std_logic_vector(15 downto 0) := (others => 'X'); -- data
-			audio_0_avalon_right_channel_sink_valid          : in    std_logic                     := 'X';             -- valid
-			audio_0_avalon_right_channel_sink_ready          : out   std_logic                                         -- ready
+			reset_reset_n                                    : in    std_logic                     := 'X'              -- reset_n
 		);
 	end component soc_system;
 
 	u0 : component soc_system
 		port map (
+			audio_0_external_interface_BCLK                  => CONNECTED_TO_audio_0_external_interface_BCLK,                  --                  audio_0_external_interface.BCLK
+			audio_0_external_interface_DACDAT                => CONNECTED_TO_audio_0_external_interface_DACDAT,                --                                            .DACDAT
+			audio_0_external_interface_DACLRCK               => CONNECTED_TO_audio_0_external_interface_DACLRCK,               --                                            .DACLRCK
+			audio_and_video_config_0_external_interface_SDAT => CONNECTED_TO_audio_and_video_config_0_external_interface_SDAT, -- audio_and_video_config_0_external_interface.SDAT
+			audio_and_video_config_0_external_interface_SCLK => CONNECTED_TO_audio_and_video_config_0_external_interface_SCLK, --                                            .SCLK
+			audio_pll_0_audio_clk_clk                        => CONNECTED_TO_audio_pll_0_audio_clk_clk,                        --                       audio_pll_0_audio_clk.clk
 			clk_clk                                          => CONNECTED_TO_clk_clk,                                          --                                         clk.clk
 			hps_hps_io_emac1_inst_TX_CLK                     => CONNECTED_TO_hps_hps_io_emac1_inst_TX_CLK,                     --                                         hps.hps_io_emac1_inst_TX_CLK
 			hps_hps_io_emac1_inst_TXD0                       => CONNECTED_TO_hps_hps_io_emac1_inst_TXD0,                       --                                            .hps_io_emac1_inst_TXD0
@@ -156,24 +150,6 @@
 			hps_ddr3_mem_odt                                 => CONNECTED_TO_hps_ddr3_mem_odt,                                 --                                            .mem_odt
 			hps_ddr3_mem_dm                                  => CONNECTED_TO_hps_ddr3_mem_dm,                                  --                                            .mem_dm
 			hps_ddr3_oct_rzqin                               => CONNECTED_TO_hps_ddr3_oct_rzqin,                               --                                            .oct_rzqin
-			reset_reset_n                                    => CONNECTED_TO_reset_reset_n,                                    --                                       reset.reset_n
-			audio_0_external_interface_BCLK                  => CONNECTED_TO_audio_0_external_interface_BCLK,                  --                  audio_0_external_interface.BCLK
-			audio_0_external_interface_DACDAT                => CONNECTED_TO_audio_0_external_interface_DACDAT,                --                                            .DACDAT
-			audio_0_external_interface_DACLRCK               => CONNECTED_TO_audio_0_external_interface_DACLRCK,               --                                            .DACLRCK
-			audio_and_video_config_0_external_interface_SDAT => CONNECTED_TO_audio_and_video_config_0_external_interface_SDAT, -- audio_and_video_config_0_external_interface.SDAT
-			audio_and_video_config_0_external_interface_SCLK => CONNECTED_TO_audio_and_video_config_0_external_interface_SCLK, --                                            .SCLK
-			audio_pll_0_audio_clk_clk                        => CONNECTED_TO_audio_pll_0_audio_clk_clk,                        --                       audio_pll_0_audio_clk.clk
-			audio_left_chan_ready                            => CONNECTED_TO_audio_left_chan_ready,                            --                                       audio.left_chan_ready
-			audio_right_chan_ready                           => CONNECTED_TO_audio_right_chan_ready,                           --                                            .right_chan_ready
-			audio_sample_data_l                              => CONNECTED_TO_audio_sample_data_l,                              --                                            .sample_data_l
-			audio_sample_data_r                              => CONNECTED_TO_audio_sample_data_r,                              --                                            .sample_data_r
-			audio_sample_valid_l                             => CONNECTED_TO_audio_sample_valid_l,                             --                                            .sample_valid_l
-			audio_sample_valid_r                             => CONNECTED_TO_audio_sample_valid_r,                             --                                            .sample_valid_r
-			audio_0_avalon_left_channel_sink_data            => CONNECTED_TO_audio_0_avalon_left_channel_sink_data,            --            audio_0_avalon_left_channel_sink.data
-			audio_0_avalon_left_channel_sink_valid           => CONNECTED_TO_audio_0_avalon_left_channel_sink_valid,           --                                            .valid
-			audio_0_avalon_left_channel_sink_ready           => CONNECTED_TO_audio_0_avalon_left_channel_sink_ready,           --                                            .ready
-			audio_0_avalon_right_channel_sink_data           => CONNECTED_TO_audio_0_avalon_right_channel_sink_data,           --           audio_0_avalon_right_channel_sink.data
-			audio_0_avalon_right_channel_sink_valid          => CONNECTED_TO_audio_0_avalon_right_channel_sink_valid,          --                                            .valid
-			audio_0_avalon_right_channel_sink_ready          => CONNECTED_TO_audio_0_avalon_right_channel_sink_ready           --                                            .ready
+			reset_reset_n                                    => CONNECTED_TO_reset_reset_n                                     --                                       reset.reset_n
 		);
 

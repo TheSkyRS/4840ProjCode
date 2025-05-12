@@ -67,7 +67,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </table>
   <table class="blueBar">
    <tr>
-    <td class="l">2025.05.12.00:12:25</td>
+    <td class="l">2025.05.12.01:39:19</td>
     <td class="r">Datasheet</td>
    </tr>
   </table>
@@ -871,10 +871,28 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     <table class="connectionboxes">
      <tr>
       <td class="neighbor" rowspan="4">
+       <a href="#module_fgpa_audio_0">fgpa_audio_0</a>
+      </td>
+      <td class="from">audio_out_l&#160;&#160;</td>
+      <td class="main" rowspan="9">audio_0</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;avalon_left_channel_sink</td>
+     </tr>
+     <tr>
+      <td class="from">audio_out_r&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;avalon_right_channel_sink</td>
+     </tr>
+     <tr style="height:6px">
+      <td></td>
+     </tr>
+     <tr>
+      <td class="neighbor" rowspan="4">
        <a href="#module_clk_0">clk_0</a>
       </td>
       <td class="from">clk&#160;&#160;</td>
-      <td class="main" rowspan="4">audio_0</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk</td>
@@ -1194,7 +1212,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_hps_0_bridges">hps_0_bridges</a>
       </td>
       <td class="from">h2f_lw&#160;&#160;</td>
-      <td class="main" rowspan="7">fgpa_audio_0</td>
+      <td class="main" rowspan="11">fgpa_audio_0</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;avalon_slave_0</td>
@@ -1216,6 +1234,29 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="from">audio_out_l&#160;&#160;</td>
+      <td class="neighbor" rowspan="4">
+       <a href="#module_audio_0">audio_0</a>
+      </td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="to">&#160;&#160;avalon_left_channel_sink</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="from">audio_out_r&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td></td>
+      <td></td>
+      <td class="to">&#160;&#160;avalon_right_channel_sink</td>
      </tr>
     </table>
    </div>
@@ -28674,8 +28715,8 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </div>
   <table class="blueBar">
    <tr>
-    <td class="l">generation took 0.01 seconds</td>
-    <td class="r">rendering took 0.42 seconds</td>
+    <td class="l">generation took 0.02 seconds</td>
+    <td class="r">rendering took 0.49 seconds</td>
    </tr>
   </table>
  </body>

@@ -3,14 +3,13 @@
  <debug showDebugMenu="0" />
  <systemtable filter="All Interfaces">
   <columns>
-   <connections preferredWidth="191" />
+   <connections preferredWidth="223" />
    <irq preferredWidth="34" />
    <name preferredWidth="233" />
    <inputclock preferredWidth="151" />
    <export preferredWidth="332" />
   </columns>
  </systemtable>
- <library
-   expandedCategories="Library/Interface Protocols,Library/University Program/Clock,Library/University Program/Audio &amp; Video/Video,Project,Library/University Program,Library/Interface Protocols/Audio &amp; Video,Library/University Program/Audio &amp; Video,Library" />
+ <library expandedCategories="Project,Library" />
  <window width="1648" height="988" x="209" y="27" />
 </preferences>
