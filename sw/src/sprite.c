@@ -131,11 +131,13 @@ void box_try_push(box_t *box, const player_t *p)
     if (!vertical_overlap)
         return;
 
-    if ((px + pw >= bx - 4 && px + pw <= bx + 8) && p->vx > 0)
+    // 玩家靠近箱子左边并向右推动（右手推）
+    if ((px + pw >= bx - 1 && px + pw <= bx + 1) && p->vx > 0)
     {
         box->vx = BOX_PUSH_SPEED;
     }
-    else if ((px <= bx + bw + 4 && px >= bx + bw - 8) && p->vx < 0)
+    // 玩家靠近箱子右边并向左推动（左手推）
+    else if ((px <= bx + bw + 1 && px >= bx + bw - 1) && p->vx < 0)
     {
         box->vx = -BOX_PUSH_SPEED;
     }
