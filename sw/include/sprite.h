@@ -3,9 +3,13 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "player.h"
+#include "tilemap.h"
 
 #define SPRITE_H_PIXELS 16
 #define SPRITE_W_PIXELS 16
+#define BOX_PUSH_SPEED 1.0f
+#define BOX_FRICTION 0.2f
 // 红钻石
 #define RED_GEM_FRAME ((uint8_t)44) // 0x2C00 >> 8 = 44
 
@@ -67,6 +71,8 @@ typedef struct
 } box_t;
 
 void box_init(box_t *b, int tile_x, int tile_y, int sprite_base_index, uint8_t frame_id);
+void box_try_push(box_t *box, const player_t *player);
+void box_update_position(box_t *box, player_t *players, int num_players);
 
 bool check_overlap(float x1, float y1, float w1, float h1,
                    float x2, float y2, float w2, float h2);

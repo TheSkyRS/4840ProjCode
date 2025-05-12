@@ -417,7 +417,7 @@ void player_update_sprite(player_t *p)
         p->lower_sprite.y = p->y + SPRITE_H_PIXELS - 2;
         p->lower_sprite.enable = true;
         // 头
-        p->upper_sprite.x = p->x - 1;
+        p->upper_sprite.x = p->x;
         p->upper_sprite.y = p->y + 4;
         p->upper_sprite.enable = true;
     }

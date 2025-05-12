@@ -6,7 +6,6 @@
 #include "joypad_input.h"
 #include "sprite.h" // 新增
 
-#define NUM_PLAYERS 2
 #define NUM_ITEMS 6
 #define VACTIVE 480
 #define NUM_BOXES 1
@@ -127,6 +126,14 @@ int main()
                 {
                     items[j].active = false;
                 }
+            }
+            for (int i = 0; i < NUM_BOXES; i++)
+            {
+                for (int j = 0; j < NUM_PLAYERS; j++)
+                {
+                    box_try_push(&boxes[i], &players[j]);
+                }
+                box_update_position(&boxes[i]);
             }
         }
         // === 2. 等待消隐区 ===

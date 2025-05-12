@@ -12,6 +12,7 @@
 #define PLAYER_HEIGHT_PIXELS 28
 #define PLAYER_HITBOX_HEIGHT 24
 #define PLAYER_HITBOX_OFFSET_Y 4
+#define NUM_PLAYERS 2
 
 typedef enum
 {

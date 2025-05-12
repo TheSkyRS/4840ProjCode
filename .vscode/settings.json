@@ -3,7 +3,8 @@
         "game_logic.h": "c",
         "input_handler.h": "c",
         "math.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "tilemap.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
