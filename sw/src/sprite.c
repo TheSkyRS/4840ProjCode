@@ -72,6 +72,45 @@ void item_update_sprite(item_t *item)
     }
 }
 
+void box_init(box_t *b, int tile_x, int tile_y, int sprite_base_index, uint8_t frame_id)
+
+{
+    b->x = tile_x * 16;
+    b->y = tile_y * 16;
+    b->vx = 0;
+    b->active = true;
+
+    for (int i = 0; i < 4; i++)
+    {
+        sprite_set(&b->sprites[i], sprite_base_index + i, 1);
+        b->sprites[i].frame_id = frame_id + i;
+        b->sprites[i].enable = true;
+    }
+}
+
+void box_update_sprite(box_t *b)
+{
+    float x = b->x;
+    float y = b->y;
+
+    b->sprites[0].x = x;
+    b->sprites[0].y = y;
+
+    b->sprites[1].x = x + 16;
+    b->sprites[1].y = y;
+
+    b->sprites[2].x = x;
+    b->sprites[2].y = y + 16;
+
+    b->sprites[3].x = x + 16;
+    b->sprites[3].y = y + 16;
+
+    for (int i = 0; i < 4; i++)
+    {
+        sprite_update(&b->sprites[i]);
+    }
+}
+
 bool check_overlap(float x1, float y1, float w1, float h1,
                    float x2, float y2, float w2, float h2)
 {

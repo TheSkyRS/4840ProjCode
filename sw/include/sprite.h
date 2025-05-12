@@ -58,6 +58,16 @@ typedef struct
     item_owner_t owner_type;
 } item_t;
 
+typedef struct
+{
+    float x, y; // 左上角坐标（对齐 tile）
+    float vx;   // 当前水平速度
+    bool active;
+    sprite_t sprites[4]; // 4 个子 sprite，顺序：左上、右上、左下、右下
+} box_t;
+
+void box_init(box_t *b, int tile_x, int tile_y, int sprite_base_index, uint8_t frame_id);
+
 bool check_overlap(float x1, float y1, float w1, float h1,
                    float x2, float y2, float w2, float h2);
 

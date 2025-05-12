@@ -9,6 +9,7 @@
 #define NUM_PLAYERS 2
 #define NUM_ITEMS 6
 #define VACTIVE 480
+#define NUM_BOXES 1
 unsigned frame_counter = 0; // 全局变量，每帧 ++
 int main()
 {
@@ -46,6 +47,8 @@ int main()
     items[1].sprite.frame_start = RED_GEM_FRAME;
     items[1].owner_type = ITEM_FIREBOY_ONLY;
     items[1].float_anim = true;
+    items[1].width = 12;  // 碰撞箱宽度
+    items[1].height = 12; // 碰撞箱高度
 
     item_init(&items[2], 0, 0, 6, RED_GEM_FRAME);
     item_place_on_tile(&items[2], 6, 14);
@@ -53,6 +56,8 @@ int main()
     items[2].sprite.frame_start = RED_GEM_FRAME;
     items[2].owner_type = ITEM_FIREBOY_ONLY;
     items[2].float_anim = true;
+    items[2].width = 12;  // 碰撞箱宽度
+    items[2].height = 12; // 碰撞箱高度
 
     item_init(&items[3], 0, 0, 7, BLUE_GEM_FRAME);
     item_place_on_tile(&items[3], 23, 14);
@@ -60,6 +65,8 @@ int main()
     items[3].sprite.frame_start = BLUE_GEM_FRAME;
     items[3].owner_type = ITEM_WATERGIRL_ONLY;
     items[3].float_anim = true;
+    items[3].width = 12;  // 碰撞箱宽度
+    items[3].height = 12; // 碰撞箱高度
 
     item_init(&items[4], 0, 0, 8, BLUE_GEM_FRAME);
     item_place_on_tile(&items[4], 11, 7);
@@ -67,6 +74,8 @@ int main()
     items[4].sprite.frame_start = BLUE_GEM_FRAME;
     items[4].owner_type = ITEM_WATERGIRL_ONLY;
     items[4].float_anim = true;
+    items[4].width = 12;  // 碰撞箱宽度
+    items[4].height = 12; // 碰撞箱高度
 
     item_init(&items[5], 0, 0, 9, RED_GEM_FRAME);
     item_place_on_tile(&items[5], 1, 4);
@@ -74,6 +83,10 @@ int main()
     items[5].sprite.frame_start = RED_GEM_FRAME;
     items[5].owner_type = ITEM_FIREBOY_ONLY;
     items[5].float_anim = true;
+    items[5].width = 12;  // 碰撞箱宽度
+    items[5].height = 12; // 碰撞箱高度
+    box_t boxes[NUM_BOXES];
+    box_init(&boxes[0], 17, 11, 20, BOX_FRAME);
 
     unsigned col = 0, row = 0;
 
@@ -116,7 +129,6 @@ int main()
                 }
             }
         }
-
         // === 2. 等待消隐区 ===
         do
         {
@@ -131,6 +143,10 @@ int main()
         for (int j = 0; j < NUM_ITEMS; j++)
         {
             item_update_sprite(&items[j]);
+        }
+        for (int i = 0; i < NUM_BOXES; i++)
+        {
+            box_update_sprite(&boxes[i]);
         }
     }
 
