@@ -30,11 +30,11 @@ int main()
     player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
 
     item_t items[NUM_ITEMS];
-    item_init(&items[0], 416, 464, 10, RED_GEM_FRAME);
+    item_init(&items[0], 464, 416, 10, RED_GEM_FRAME);
     items[0].sprite.frame_count = 1;
     items[0].sprite.frame_start = RED_GEM_FRAME;
 
-    item_init(&items[1], 112, 176, 11, BLUE_GEM_FRAME);
+    item_init(&items[1], 176, 96, 11, BLUE_GEM_FRAME);
     items[1].sprite.frame_count = 1;
     items[1].sprite.frame_start = BLUE_GEM_FRAME;
 
