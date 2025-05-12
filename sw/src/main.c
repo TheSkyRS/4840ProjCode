@@ -6,8 +6,10 @@
 #include "joypad_input.h"
 #include "sprite.h" // 新增
 #include "type.h"
-
-unsigned frame_counter = 0; // 全局变量，每帧 ++
+player_t players[NUM_PLAYERS];
+item_t items[NUM_ITEMS];
+box_t boxes[NUM_BOXES];
+unsigned frame_counter = 0;
 int main()
 {
     if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
