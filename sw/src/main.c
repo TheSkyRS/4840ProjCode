@@ -7,7 +7,7 @@
 #include "sprite.h" // 新增
 
 #define NUM_PLAYERS 2
-#define NUM_ITEMS 2
+#define NUM_ITEMS 6
 #define VACTIVE 480
 
 int main()
