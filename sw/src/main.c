@@ -30,17 +30,42 @@ int main()
     player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
 
     item_t items[NUM_ITEMS];
-    item_init(&items[0], 0, 0, 10, RED_GEM_FRAME);
-    item_place_on_tile(&items[0], 29, 26); // 红钻位于 tilemap[26][29]
+
+    item_init(&items[0], 0, 0, 11, BLUE_GEM_FRAME);
+    item_place_on_tile(&items[0], 21, 26);
+    items[1].sprite.frame_count = 1;
+    items[1].sprite.frame_start = BLUE_GEM_FRAME;
+    items[1].owner_type = ITEM_WATERGIRL_ONLY;
+
+    item_init(&items[1], 0, 0, 10, RED_GEM_FRAME);
+    item_place_on_tile(&items[1], 29, 26);
     items[0].sprite.frame_count = 1;
     items[0].sprite.frame_start = RED_GEM_FRAME;
     items[0].owner_type = ITEM_FIREBOY_ONLY;
 
-    item_init(&items[1], 0, 0, 11, BLUE_GEM_FRAME);
-    item_place_on_tile(&items[1], 21, 26); // 蓝钻位于红钻左移8格，即 tilemap[26][21]
+    item_init(&items[3], 0, 0, 10, RED_GEM_FRAME);
+    item_place_on_tile(&items[3], 6, 14);
+    items[0].sprite.frame_count = 1;
+    items[0].sprite.frame_start = RED_GEM_FRAME;
+    items[0].owner_type = ITEM_FIREBOY_ONLY;
+
+    item_init(&items[4], 0, 0, 11, BLUE_GEM_FRAME);
+    item_place_on_tile(&items[4], 23, 14);
     items[1].sprite.frame_count = 1;
     items[1].sprite.frame_start = BLUE_GEM_FRAME;
     items[1].owner_type = ITEM_WATERGIRL_ONLY;
+
+    item_init(&items[4], 0, 0, 11, BLUE_GEM_FRAME);
+    item_place_on_tile(&items[4], 11, 7);
+    items[1].sprite.frame_count = 1;
+    items[1].sprite.frame_start = BLUE_GEM_FRAME;
+    items[1].owner_type = ITEM_WATERGIRL_ONLY;
+
+    item_init(&items[3], 0, 0, 10, RED_GEM_FRAME);
+    item_place_on_tile(&items[3], 1, 7);
+    items[0].sprite.frame_count = 1;
+    items[0].sprite.frame_start = RED_GEM_FRAME;
+    items[0].owner_type = ITEM_FIREBOY_ONLY;
 
     unsigned col = 0, row = 0;
 
