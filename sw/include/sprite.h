@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "player.h"
 #include "tilemap.h"
-
+typedef struct player_t player_t;
 #define SPRITE_H_PIXELS 16
 #define SPRITE_W_PIXELS 16
 #define BOX_PUSH_SPEED 1.0f
