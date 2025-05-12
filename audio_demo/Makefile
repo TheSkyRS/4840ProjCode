@@ -1,9 +1,12 @@
-obj-m += audio_fpga.o
+obj-m += fpga_audio.o
 
-audio_test: audio_test.c
-	$(CC) $^ -o $@
+CFLAGS_audio_play.o = -Wall
 
-all: audio_fpga.ko audio_test
+audio_play: audio_play.c fpga_audio.h
+	$(CC) $< -o $@
+
+all: fpga_audio.ko audio_play
+
 clean:
-	make -C $(KDIR) M=$(PWD) clean
-	rm -f audio_test
+	$(MAKE) -C $(KDIR) M=$(PWD) clean
+	rm -f audio_play
