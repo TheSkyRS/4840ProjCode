@@ -146,6 +146,9 @@ void box_update_sprite(box_t *b)
 // }
 void box_try_push(box_t *box, const player_t *p)
 {
+    if (p->type != PLAYER_WATERGIRL)
+        return; // 只打印水女孩的调试信息
+
     float pw = SPRITE_W_PIXELS;
     float ph = PLAYER_HITBOX_HEIGHT;
     float px = p->x;
@@ -156,7 +159,6 @@ void box_try_push(box_t *box, const player_t *p)
     float bx = box->x;
     float by = box->y;
 
-    // 垂直方向有交集才考虑推动
     bool vertical_overlap = (py + ph > by) && (py < by + bh);
     if (!vertical_overlap)
     {
@@ -169,18 +171,18 @@ void box_try_push(box_t *box, const player_t *p)
     float b_left = bx;
     float b_right = bx + bw;
 
-    printf("[PUSH] Player center x=%.1f, vx=%.1f | Box left=%.1f, right=%.1f\n",
+    printf("[PUSH] Watergirl center x=%.1f, vx=%.1f | Box left=%.1f, right=%.1f\n",
            p_center_x, p->vx, b_left, b_right);
 
     if ((fabsf(p_center_x - b_left) <= 2.0f) && p->vx > 0)
     {
-        printf("  [PUSH RIGHT] Triggered push: player_center %.1f close to box_left %.1f\n",
+        printf("  [PUSH RIGHT] Triggered push: center %.1f close to box_left %.1f\n",
                p_center_x, b_left);
         box->vx = BOX_PUSH_SPEED;
     }
     else if ((fabsf(p_center_x - b_right) <= 2.0f) && p->vx < 0)
     {
-        printf("  [PUSH LEFT] Triggered push: player_center %.1f close to box_right %.1f\n",
+        printf("  [PUSH LEFT] Triggered push: center %.1f close to box_right %.1f\n",
                p_center_x, b_right);
         box->vx = -BOX_PUSH_SPEED;
     }
