@@ -188,34 +188,28 @@ void box_update_position(box_t *box, player_t *players)
 
 bool is_box_blocked(float x, float y, float w, float h)
 {
-    float x1 = x, y1 = y, x2 = x + w, y2 = y + h;
-
-    // printf("[DEBUG] Checking player box: (%.1f, %.1f)-(%.1f, %.1f)\n", x1, y1, x2, y2);
+    printf("[DEBUG] Checking box collision: x=%.1f y=%.1f w=%.1f h=%.1f\n", x, y, w, h);
 
     for (int i = 0; i < NUM_BOXES; i++)
     {
         if (!boxes[i].active)
             continue;
 
-        float bx1 = boxes[i].x;
-        float by1 = boxes[i].y;
-        float bx2 = bx1 + 32;
-        float by2 = by1 + 32;
+        float bx = boxes[i].x;
+        float by = boxes[i].y;
 
-        // printf("  ¡ú Box[%d] at: (%.1f, %.1f)-(%.1f, %.1f)\n", i, bx1, by1, bx2, by2);
+        printf("  ¡ú Box[%d] at: (%.1f, %.1f)-(%.1f, %.1f)\n", i, bx, by, bx + 32, by + 32);
 
-        bool overlap = (x1 < bx2 && x2 > bx1 &&
-                        y1 < by2 && y2 > by1);
-
-        if (overlap)
+        if (check_overlap(x, y, w, h, bx, by, 32, 32))
         {
-            // printf("    ? Overlap detected with Box[%d]!\n", i);
+            printf("  ? Overlap with Box[%d]!\n", i);
             return true;
         }
     }
 
     return false;
 }
+
 bool check_overlap(float x1, float y1, float w1, float h1,
                    float x2, float y2, float w2, float h2)
 {
