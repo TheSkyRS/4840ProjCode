@@ -74,7 +74,7 @@ void player_update_physics(player_t *p)
 
     // 垂直运动
     float new_y = p->y + p->vy;
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2)) // 一步之遥。
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, 28)) // 一步之遥。
     {
         p->y = new_y;
         p->on_ground = false;
@@ -110,7 +110,7 @@ void player_update_physics(player_t *p)
         p->x = new_x;
         adjust_to_slope_y(p);
     }
-    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, SPRITE_H_PIXELS * 2))
+    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, 28))
     {
         p->x = new_x;
     }
@@ -280,11 +280,11 @@ void player_update_sprite(player_t *p)
         // 设置位置与启用
         // 身子
         p->lower_sprite.x = p->x;
-        p->lower_sprite.y = p->y + SPRITE_H_PIXELS + 5;
+        p->lower_sprite.y = p->y + SPRITE_H_PIXELS - 1;
         p->lower_sprite.enable = true;
         // 头
         p->upper_sprite.x = p->x;
-        p->upper_sprite.y = p->y + 11;
+        p->upper_sprite.y = p->y + 5;
         p->upper_sprite.enable = true;
     }
     if (p->type == PLAYER_WATERGIRL)
@@ -295,11 +295,11 @@ void player_update_sprite(player_t *p)
         // 设置位置与启用
         // 身子
         p->lower_sprite.x = p->x;
-        p->lower_sprite.y = p->y + SPRITE_H_PIXELS + 4;
+        p->lower_sprite.y = p->y + SPRITE_H_PIXELS - 2;
         p->lower_sprite.enable = true;
         // 头
         p->upper_sprite.x = p->x - 1;
-        p->upper_sprite.y = p->y + 10;
+        p->upper_sprite.y = p->y + 4;
         p->upper_sprite.enable = true;
     }
 
