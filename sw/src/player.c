@@ -4,7 +4,7 @@
 #include <math.h> // 用于 floor()
 #include "type.h"
 #include <stdio.h> // 顶部加这个
-
+extern box_t boxes[NUM_BOXES];
 void debug_print_player_state(player_t *p, const char *tag)
 {
     float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
@@ -152,7 +152,14 @@ void player_update_physics(player_t *p)
     }
     else
     {
-        p->vx = 0;
+        if (is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+        {
+            p->vx = 0;
+        }
+        else if (is_box_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+        {
+            p->vx = boxes[0].vx;
+        }
     }
 
     // 状态切换
