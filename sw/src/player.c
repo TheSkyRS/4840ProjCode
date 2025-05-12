@@ -87,16 +87,43 @@ void player_update_physics(player_t *p)
     p->vy += GRAVITY;
 
     // 垂直运动
+    // float new_y = p->y + p->vy;
+    // if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
+    // {
+    //     p->y = new_y;
+    //     p->on_ground = false;
+    // }
+    // else
+    // {
+    //     if (p->vy > 0)
+    //         p->on_ground = true;
+    //     p->vy = 0;
+    // }
+
     float new_y = p->y + p->vy;
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
+
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
     {
         p->y = new_y;
         p->on_ground = false;
     }
     else
     {
-        if (p->vy > 0)
+        // 垂直方向碰撞输出调试信息
+        if (p->vy < 0)
+        {
+            printf("[%s] HEAD HIT: vy=%.2f y=%.2f\n",
+                   p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
+                   p->vy, p->y);
+        }
+        else if (p->vy > 0)
+        {
+            printf("[%s] FOOT LAND: vy=%.2f y=%.2f\n",
+                   p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
+                   p->vy, p->y);
             p->on_ground = true;
+        }
+
         p->vy = 0;
     }
 
