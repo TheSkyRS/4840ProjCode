@@ -9,7 +9,7 @@
 #define NUM_PLAYERS 2
 #define NUM_ITEMS 6
 #define VACTIVE 480
-static unsigned frame_counter = 0;
+unsigned frame_counter = 0; // 全局变量，每帧 ++
 int main()
 {
     if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
