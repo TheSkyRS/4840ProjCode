@@ -268,7 +268,7 @@ void adjust_to_platform_y(player_t *p)
         if (tile == 1) // 平台 tile
         {
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
-            float new_y = tile_top_y - PLAYER_HEIGHT_PIXELS - 4; // 经验偏移量
+            float new_y = tile_top_y - PLAYER_HEIGHT_PIXELS - 3; // 经验偏移量
 
             float old_y = p->y;
 
