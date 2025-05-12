@@ -311,14 +311,14 @@ module soc_system_top(
    assign HEX4 = { 7{ SW[5] } };
    assign HEX5 = { 7{ SW[6] } };
 
-   assign IRDA_TXD = SW[0];
+   //assign IRDA_TXD = SW[0];
 
    assign LEDR = { 10{SW[7]} };
 
-   assign PS2_CLK = SW[1] ? SW[0] : 1'bZ;
-   assign PS2_CLK2 = SW[1] ? SW[0] : 1'bZ;
-   assign PS2_DAT = SW[1] ? SW[0] : 1'bZ;
-   assign PS2_DAT2 = SW[1] ? SW[0] : 1'bZ;
+   // assign PS2_CLK = SW[1] ? SW[0] : 1'bZ;
+   // assign PS2_CLK2 = SW[1] ? SW[0] : 1'bZ;
+   // assign PS2_DAT = SW[1] ? SW[0] : 1'bZ;
+   // assign PS2_DAT2 = SW[1] ? SW[0] : 1'bZ;
 
    // assign TD_RESET_N = SW[0];
 
