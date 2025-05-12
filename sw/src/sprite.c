@@ -58,7 +58,7 @@ void item_update_sprite(item_t *item)
         float offset = 0.0f;
         if (item->float_anim)
         {
-            offset = 1.0f * sinf((float)frame_counter * 0.05f + item->sprite.index); // 经验抖动频率和幅度
+            offset = 0.5f * sinf((float)frame_counter * 0.1f + item->sprite.index); // 经验抖动频率和幅度
         }
 
         item->sprite.x = (uint16_t)item->x;
