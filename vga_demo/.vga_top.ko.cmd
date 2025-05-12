@@ -1,0 +1,1 @@
+cmd_/root/4840ProjCode/vga_demo/vga_top.ko := ld -r  -EL -T ./scripts/module-common.lds -T ./arch/arm/kernel/module.lds  --build-id  -o /root/4840ProjCode/vga_demo/vga_top.ko /root/4840ProjCode/vga_demo/vga_top.o /root/4840ProjCode/vga_demo/vga_top.mod.o ;  true
