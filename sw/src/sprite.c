@@ -202,7 +202,8 @@ void box_update_position(box_t *box, player_t *players)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
-
+    printf("[BOX] box->vx=%.2f, next_x=%.1f\n", box->vx, next_x);
+    printf("       blocked=%d, collides_with_player=%d\n", blocked, collides_with_player);
     // ¼ì²éÊÇ·ñ×²ÉÏ player
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
