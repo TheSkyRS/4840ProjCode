@@ -1,6 +1,7 @@
 #include "sprite.h"
 #include "hw_interact.h"
-extern unsigned frame_counter;
+#include <math.h>              // 为 sinf 提供声明
+extern unsigned frame_counter; // 引入主循环中定义的帧计数器
 // 初始化 sprite 索引和帧数
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
 {
