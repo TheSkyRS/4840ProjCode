@@ -85,35 +85,25 @@ void player_handle_input(player_t *p, int player_index)
 void player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
-
     // 垂直运动
     float new_y = p->y + p->vy;
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
+
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
     {
         p->y = new_y;
         p->on_ground = false;
     }
     else
-    { // debug
-        if (p->vy < 0 && (p->type == PLAYER_WATERGIRL))
-        {
-            printf("[%s] HEAD HIT: vy=%.2f y=%.2f\n",
-                   p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
-                   p->vy, p->y);
-        }
-        else if (p->vy > 0 && (p->type == PLAYER_WATERGIRL))
-        {
-            printf("[%s] FOOT LAND: vy=%.2f y=%.2f\n",
-                   p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
-                   p->vy, p->y);
-        }
-        // debug
+    {
+        // 调用你写的吸附函数
+        adjust_to_platform_y(p);
+
         if (p->vy > 0)
             p->on_ground = true;
+
         p->vy = 0;
     }
 
-    // // 垂直运动
     // float new_y = p->y + p->vy;
     // if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
     // {
@@ -257,6 +247,40 @@ void adjust_to_slope_y(player_t *p)
             {
                 p->y = new_y;
                 p->vy = 0; // 只有明显吸附时才归零
+            }
+
+            p->on_ground = true;
+            break;
+        }
+    }
+}
+
+void adjust_to_platform_y(player_t *p)
+{
+    float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
+    float base_foot_y = p->y + PLAYER_HEIGHT_PIXELS;
+
+    for (int dy = -4; dy <= 2; ++dy)
+    {
+        float foot_y = base_foot_y + dy;
+        int tile = get_tile_at_pixel(center_x, foot_y);
+
+        if (tile == 1) // 平台 tile
+        {
+            float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
+            float new_y = tile_top_y - PLAYER_HEIGHT_PIXELS;
+
+            float old_y = p->y;
+
+            if (fabsf(new_y - old_y) < 0.2f)
+            {
+                p->y = new_y;
+                // vy 保留
+            }
+            else
+            {
+                p->y = new_y;
+                p->vy = 0;
             }
 
             p->on_ground = true;
