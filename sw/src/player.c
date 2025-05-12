@@ -136,15 +136,16 @@ void player_update_physics(player_t *p)
     {
         p->state = STATE_IDLE;
     }
-    if (!p->on_ground)
+    // 不论是否处于on_ground，检查是否脚下为坡道 tile
     {
         float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
-        float foot_y = p->y + PLAYER_HEIGHT_PIXELS + 1; // 向下探一点
+        float foot_y = p->y + PLAYER_HEIGHT_PIXELS + 1; // 多探一点点
+
         int tile = get_tile_at_pixel(center_x, foot_y);
 
         if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
         {
-            p->on_ground = true; // 允许跳跃
+            p->on_ground = true;
             p->vy = 0;
         }
     }
