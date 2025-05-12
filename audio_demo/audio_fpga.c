@@ -7,6 +7,7 @@
  #include <linux/miscdevice.h>
  #include <linux/io.h>
  #include <linux/of_address.h>
+ #include <stdint.h>  
  #include "audio_fpga.h"
  
  #define DRIVER_NAME "fpga_audio"
