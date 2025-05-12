@@ -131,8 +131,7 @@ void player_update_physics(player_t *p)
             break;
         }
     }
-
-    if (on_slope)
+    if (on_slope && p->vy >= 0)
     {
         p->x = new_x;
         adjust_to_slope_y(p);
