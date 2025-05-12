@@ -320,7 +320,7 @@ module soc_system_top(
    assign PS2_DAT = SW[1] ? SW[0] : 1'bZ;
    assign PS2_DAT2 = SW[1] ? SW[0] : 1'bZ;
 
-   assign TD_RESET_N = SW[0];
+   // assign TD_RESET_N = SW[0];
 
 
 

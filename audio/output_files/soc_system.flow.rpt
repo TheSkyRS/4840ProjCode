@@ -1,5 +1,5 @@
 Flow report for soc_system
-Mon May 12 00:19:41 2025
+Mon May 12 01:10:42 2025
 Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 
 
@@ -41,7 +41,7 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------------------------------------+
 ; Flow Summary                                                              ;
 +-----------------------------+---------------------------------------------+
-; Flow Status                 ; Flow Failed - Mon May 12 00:19:40 2025      ;
+; Flow Status                 ; Flow Failed - Mon May 12 01:10:42 2025      ;
 ; Quartus Prime Version       ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
 ; Revision Name               ; soc_system                                  ;
 ; Top-level Entity Name       ; soc_system_top                              ;
@@ -63,7 +63,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 05/12/2025 00:18:55 ;
+; Start date & time ; 05/12/2025 01:10:20 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; soc_system          ;
 +-------------------+---------------------+
@@ -74,7 +74,7 @@ https://fpgasoftware.intel.com/eula.
 +--------------------------+--------------------------------------------------------------------------+---------------+--------------------------------+------------+
 ; Assignment Name          ; Value                                                                    ; Default Value ; Entity Name                    ; Section Id ;
 +--------------------------+--------------------------------------------------------------------------+---------------+--------------------------------+------------+
-; COMPILER_SIGNATURE_ID    ; 193853668666094.174702353546385                                          ; --            ; --                             ; --         ;
+; COMPILER_SIGNATURE_ID    ; 193853668666094.174702661957654                                          ; --            ; --                             ; --         ;
 ; HPS_ISW_FILE             ; soc_system/synthesis/submodules/sequencer/sdram_io.pre.h                 ; --            ; soc_system_hps_0_hps_io_border ; --         ;
 ; HPS_ISW_FILE             ; soc_system/synthesis/submodules/sequencer/alt_types.pre.h                ; --            ; soc_system_hps_0_hps_io_border ; --         ;
 ; HPS_ISW_FILE             ; soc_system/synthesis/submodules/sequencer/system.pre.h                   ; --            ; soc_system_hps_0_hps_io_border ; --         ;
@@ -121,8 +121,8 @@ https://fpgasoftware.intel.com/eula.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:49     ; 1.0                     ; 869 MB              ; 00:00:30                           ;
-; Total                ; 00:00:49     ; --                      ; --                  ; 00:00:30                           ;
+; Analysis & Synthesis ; 00:00:26     ; 1.0                     ; 897 MB              ; 00:00:33                           ;
+; Total                ; 00:00:26     ; --                      ; --                  ; 00:00:33                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -138,7 +138,7 @@ https://fpgasoftware.intel.com/eula.
 ------------
 ; Flow Log ;
 ------------
-quartus_map soc_system
+quartus_map --read_settings_files=on --write_settings_files=off soc_system -c soc_system
 
 
 
