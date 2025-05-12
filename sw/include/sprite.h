@@ -52,7 +52,7 @@ typedef enum
     ITEM_WATERGIRL_ONLY
 } item_owner_t;
 
-typedef struct
+typedef struct item_t
 {
     float x, y;
     float width, height;
