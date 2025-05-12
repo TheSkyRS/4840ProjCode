@@ -89,7 +89,7 @@ int main()
     unsigned col = 0, row = 0;
     while (1)
     {
-        clock_t start = clock();
+        // clock_t start = clock();
         frame_counter++;
         // === 帧同步：只在每帧顶部 row==0 时执行一次 ===
         do
@@ -154,9 +154,9 @@ int main()
         {
             box_update_sprite(&boxes[i]);
         }
-        clock_t end = clock();
-        float duration = (float)(end - start) / CLOCKS_PER_SEC * 1000;
-        printf("[FRAME] duration = %.2f ms\n", duration);
+        // clock_t end = clock();
+        // float duration = (float)(end - start) / CLOCKS_PER_SEC * 1000;
+        // printf("[FRAME] duration = %.2f ms\n", duration);
     }
 
     // 不会到达，若后续有退出条件，可释放资源：
