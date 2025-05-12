@@ -6,7 +6,7 @@
 #include "player.h"
 #include "tilemap.h"
 #include "type.h"
-extern box_t boxes[NUM_BOXES]; // ✅ 告诉编译器 boxes[] 是 main.c 提供的全局定义
+extern box_t boxes[NUM_BOXES]; //  告诉编译器 boxes[] 是 main.c 提供的全局定义
 
 // 红钻石
 #define RED_GEM_FRAME ((uint8_t)44) // 0x2C00 >> 8 = 44
