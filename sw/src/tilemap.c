@@ -3,6 +3,8 @@
 
 #include "tilemap.h"
 #include <math.h> // 用于 floor()
+#include "player.h"
+#include "sprite.h" // 若没有可添加包含 item_t 定义
 
 // === 示例地图数据 ===
 // 0: 空地  1: 墙壁  2: 火池  3: 水池  4: 终点
@@ -45,7 +47,7 @@ bool is_tile_blocked(float x, float y, float width, float height)
 {
     float center_x = x + width / 2.0f;
 
-    for (int i = 4; i < (int)height; ++i)
+    for (int i = PLAYER_HITBOX_OFFSET_Y; i < (int)height; ++i)
     {
         float sx = center_x;
         float sy = y + i + COLLISION_MARGIN;
@@ -108,4 +110,13 @@ int get_tile_at_pixel(float x, float y)
         return TILE_WALL; // 越界当作墙体
 
     return tilemap[ty][tx];
+}
+
+void item_place_on_tile(item_t *item, int tile_x, int tile_y)
+{
+    item->x = tile_x * TILE_SIZE + (TILE_SIZE - item->width) / 2.0f;
+    item->y = tile_y * TILE_SIZE + (TILE_SIZE - item->height) / 2.0f;
+
+    item->sprite.x = (uint16_t)item->x;
+    item->sprite.y = (uint16_t)item->y;
 }

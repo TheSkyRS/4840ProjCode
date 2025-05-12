@@ -31,5 +31,7 @@ extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 // 检查给定区域是否碰到 "墙壁" tile
 bool is_tile_blocked(float x, float y, float width, float height);
 
+void item_place_on_tile(item_t *item, int tile_x, int tile_y);
+
 int get_tile_at_pixel(float x, float y);
 #endif // TILEMAP_H

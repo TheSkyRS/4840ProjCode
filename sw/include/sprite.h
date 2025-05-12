@@ -41,12 +41,20 @@ typedef struct
     uint8_t frame_start; // 起始帧 ID（默认 0）
 } sprite_t;
 
+typedef enum
+{
+    ITEM_ANY = 0,
+    ITEM_FIREBOY_ONLY,
+    ITEM_WATERGIRL_ONLY
+} item_owner_t;
+
 typedef struct
 {
     float x, y;
     float width, height;
     bool active;
-    sprite_t sprite; // 封装已有 sprite 信息
+    sprite_t sprite;
+    item_owner_t owner_type; // 🔺新增
 } item_t;
 
 bool check_overlap(float x1, float y1, float w1, float h1,

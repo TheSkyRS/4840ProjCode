@@ -4,7 +4,7 @@
 #include "hw_interact.h"
 #include "player.h"
 #include "joypad_input.h"
-#include "sprite.h" // ĞÂÔö
+#include "sprite.h" // æ–°å¢
 
 #define NUM_PLAYERS 2
 #define NUM_ITEMS 2
@@ -18,10 +18,10 @@ int main()
         return -1;
     }
 
-    write_ctrl(0x00000001); // Æô¶¯ VGA ¿ØÖÆÆ÷
+    write_ctrl(0x00000001); // å¯åŠ¨ VGA æ§åˆ¶å™¨
     for (int i = 0; i < 32; i++)
     {
-        write_sprite(i, 0, 0, 0, 0, 0); // disable=0£¬Î»ÖÃ0£¬Ö¡0
+        write_sprite(i, 0, 0, 0, 0, 0); // disable=0ï¼Œä½ç½®0ï¼Œå¸§0
     }
     input_handler_init();
 
@@ -30,25 +30,29 @@ int main()
     player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
 
     item_t items[NUM_ITEMS];
-    item_init(&items[0], 464, 416, 10, RED_GEM_FRAME);
+    item_init(&items[0], 0, 0, 10, RED_GEM_FRAME);
+    item_place_on_tile(&items[0], 29, 26); // çº¢é’»ä½äº tilemap[26][29]
     items[0].sprite.frame_count = 1;
     items[0].sprite.frame_start = RED_GEM_FRAME;
+    items[0].owner_type = ITEM_FIREBOY_ONLY;
 
-    item_init(&items[1], 176, 96, 11, BLUE_GEM_FRAME);
+    item_init(&items[1], 0, 0, 11, BLUE_GEM_FRAME);
+    item_place_on_tile(&items[1], 21, 26); // è“é’»ä½äºçº¢é’»å·¦ç§»8æ ¼ï¼Œå³ tilemap[26][21]
     items[1].sprite.frame_count = 1;
     items[1].sprite.frame_start = BLUE_GEM_FRAME;
+    items[1].owner_type = ITEM_WATERGIRL_ONLY;
 
     unsigned col = 0, row = 0;
 
     while (1)
     {
-        // === Ö¡Í¬²½£ºÖ»ÔÚÃ¿Ö¡¶¥²¿ row==0 Ê±Ö´ĞĞÒ»´Î ===
+        // === å¸§åŒæ­¥ï¼šåªåœ¨æ¯å¸§é¡¶éƒ¨ row==0 æ—¶æ‰§è¡Œä¸€æ¬¡ ===
         do
         {
             read_status(&col, &row);
         } while (row != 0);
 
-        // === 1. Âß¼­¸üĞÂ½×¶Î ===
+        // === 1. é€»è¾‘æ›´æ–°é˜¶æ®µ ===
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_handle_input(&players[i], i);
@@ -59,10 +63,19 @@ int main()
                 if (!items[j].active)
                     continue;
 
-                float pw = SPRITE_W_PIXELS;
-                float ph = SPRITE_H_PIXELS;
+                // åˆ¤æ–­æ˜¯å¦å…è®¸è¯¥è§’è‰²æ”¶é›†
+                if ((items[j].owner_type == ITEM_FIREBOY_ONLY && players[i].type != PLAYER_FIREBOY) ||
+                    (items[j].owner_type == ITEM_WATERGIRL_ONLY && players[i].type != PLAYER_WATERGIRL))
+                {
+                    continue;
+                }
 
-                if (check_overlap(players[i].x, players[i].y, pw, ph,
+                float pw = SPRITE_W_PIXELS;      // å®½åº¦ä¿æŒ 16
+                float ph = PLAYER_HITBOX_HEIGHT; // å®é™…å‚ä¸ç¢°æ’çš„é«˜åº¦
+                float px = players[i].x;
+                float py = players[i].y + PLAYER_HITBOX_OFFSET_Y; // è·³è¿‡ä¸Šæ–¹é€æ˜åƒç´ åŒºåŸŸ
+
+                if (check_overlap(px, py, pw, ph,
                                   items[j].x, items[j].y, items[j].width, items[j].height))
                 {
                     items[j].active = false;
@@ -70,13 +83,13 @@ int main()
             }
         }
 
-        // === 2. µÈ´ıÏûÒşÇø ===
+        // === 2. ç­‰å¾…æ¶ˆéšåŒº ===
         do
         {
             read_status(&col, &row);
         } while (row < VACTIVE);
 
-        // === 3. Ğ´Èë sprite µ½ VGA ===
+        // === 3. å†™å…¥ sprite åˆ° VGA ===
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_update_sprite(&players[i]);
@@ -87,7 +100,7 @@ int main()
         }
     }
 
-    // ²»»áµ½´ï£¬ÈôºóĞøÓĞÍË³öÌõ¼ş£¬¿ÉÊÍ·Å×ÊÔ´£º
+    // ä¸ä¼šåˆ°è¾¾ï¼Œè‹¥åç»­æœ‰é€€å‡ºæ¡ä»¶ï¼Œå¯é‡Šæ”¾èµ„æºï¼š
     input_handler_cleanup();
     close(vga_top_fd);
     return 0;

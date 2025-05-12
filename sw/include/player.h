@@ -4,6 +4,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "sprite.h"
+// #define MOVE_SPEED 1.5f
+#define GRAVITY 0.2f
+#define JUMP_VELOCITY -10.0f
+#define MOVE_SPEED 1.0f
+#define MAX_FRAME_TIMER 6 // 控制动画切换速度
+#define PLAYER_HEIGHT_PIXELS 28
+#define PLAYER_HITBOX_HEIGHT 24
+#define PLAYER_HITBOX_OFFSET_Y 4
 
 typedef enum
 {
