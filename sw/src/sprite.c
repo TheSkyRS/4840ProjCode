@@ -126,46 +126,18 @@ void box_try_push(box_t *box, const player_t *p)
     float bx = box->x;
     float by = box->y;
 
-    // 只输出水女孩的调试信息
-    bool is_watergirl = (p->type == PLAYER_WATERGIRL);
-
     // 垂直方向有交集才考虑推动
     bool vertical_overlap = (py + ph > by) && (py < by + bh);
     if (!vertical_overlap)
-    {
-        if (is_watergirl)
-        {
-            printf("[PUSH] Watergirl Y=%.1f~%.1f not overlapping box Y=%.1f~%.1f\n",
-                   py, py + ph, by, by + bh);
-        }
         return;
-    }
 
     if ((px + pw >= bx - 4 && px + pw <= bx + 8) && p->vx > 0)
     {
-        if (is_watergirl)
-        {
-            printf("[PUSH] Watergirl %.1f~%.1f pushing RIGHT into box %.1f~%.1f\n",
-                   px, px + pw, bx, bx + bw);
-        }
         box->vx = BOX_PUSH_SPEED;
     }
     else if ((px <= bx + bw + 4 && px >= bx + bw - 8) && p->vx < 0)
     {
-        if (is_watergirl)
-        {
-            printf("[PUSH] Watergirl %.1f~%.1f pushing LEFT into box %.1f~%.1f\n",
-                   px, px + pw, bx, bx + bw);
-        }
         box->vx = -BOX_PUSH_SPEED;
-    }
-    else
-    {
-        if (is_watergirl)
-        {
-            printf("[PUSH] Watergirl %.1f~%.1f near box %.1f~%.1f but not pushing\n",
-                   px, px + pw, bx, bx + bw);
-        }
     }
 }
 
@@ -173,25 +145,14 @@ void box_update_position(box_t *box, player_t *players)
 {
     float next_x = box->x + box->vx;
 
-    // tile 检查：检查箱子左右两列是否有阻挡
+    // 检查 tile 阻挡
     bool blocked = false;
     if (box->vx > 0)
-    {
-        blocked |= is_tile_blocked(next_x + 31, box->y, 1, 32); // 右侧边缘
-    }
+        blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
-    {
-        blocked |= is_tile_blocked(next_x, box->y, 1, 32); // 左侧边缘
-    }
-    // 摩擦力使其减速
-    if (box->vx > 0)
-        box->vx -= BOX_FRICTION;
-    else if (box->vx < 0)
-        box->vx += BOX_FRICTION;
+        blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
 
-    // 静止处理
-    if (fabsf(box->vx) < BOX_FRICTION)
-        box->vx = 0;
+    // 检查是否撞上 player
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
@@ -206,10 +167,20 @@ void box_update_position(box_t *box, player_t *players)
             break;
         }
     }
+
+    // 如果不阻挡，则移动
     if (!blocked && !collides_with_player)
     {
         box->x = next_x;
     }
+
+    // 最后再衰减速度
+    if (box->vx > 0)
+        box->vx -= BOX_FRICTION;
+    else if (box->vx < 0)
+        box->vx += BOX_FRICTION;
+    if (fabsf(box->vx) < BOX_FRICTION)
+        box->vx = 0;
 }
 
 bool is_box_blocked(float x, float y, float w, float h)
