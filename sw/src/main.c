@@ -9,14 +9,6 @@
 #define NUM_PLAYERS 2
 #define NUM_ITEMS 2
 #define VACTIVE 480
-extern const uint8_t RED_GEM_FRAME;       // 44
-extern const uint8_t BLUE_GEM_FRAME;      // 45
-extern const uint8_t LEVER_BASE_FRAME;    // 46
-extern const uint8_t LEVER_ANIM_FRAME;    // 48
-extern const uint8_t LIFT_YELLOW_FRAME;   // 51
-extern const uint8_t BUTTON_PURPLE_FRAME; // 55
-extern const uint8_t LIFT_PURPLE_FRAME;   // 57
-extern const uint8_t BOX_FRAME;           // 61
 
 int main()
 {
