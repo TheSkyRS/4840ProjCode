@@ -29,7 +29,7 @@ typedef enum
     STATE_DEAD
 } player_state_t;
 
-typedef struct
+typedef struct player_t
 {
     float x, y;
     float vx, vy;
