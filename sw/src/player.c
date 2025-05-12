@@ -260,7 +260,7 @@ void adjust_to_platform_y(player_t *p)
     float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
     float base_foot_y = p->y + PLAYER_HEIGHT_PIXELS;
 
-    for (int dy = -8; dy <= 6; ++dy) // 经验偏移量
+    for (int dy = -8; dy <= 8; ++dy) // 经验偏移量
     {
         float foot_y = base_foot_y + dy;
         int tile = get_tile_at_pixel(center_x, foot_y);
