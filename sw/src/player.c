@@ -194,7 +194,7 @@ void adjust_to_slope_y(player_t *p)
 
     // 开始在脚底附近做上下小范围搜索，找出脚底是否正好踩在坡道上
     // 搜索 dy 从 -4 到 +2，可以捕捉到上下微小误差（如浮空或压入）
-    for (int dy = -4; dy <= 2; ++dy)
+    for (int dy = -4; dy <= 2; ++dy) // 经验偏移量
     {
         float foot_y = base_foot_y + dy; // 当前搜索点在 y 方向的位置
 
@@ -235,7 +235,7 @@ void adjust_to_slope_y(player_t *p)
             float old_y = p->y;
 
             // 计算吸附目标 y
-            float new_y = tile_top_y + min_y - PLAYER_HEIGHT_PIXELS - 3;
+            float new_y = tile_top_y + min_y - PLAYER_HEIGHT_PIXELS - 3; // 经验偏移量
 
             // 若前后 y 差距很小，就保留原 vy，避免动画判定被破坏
             if (fabsf(new_y - old_y) < 0.2f)
@@ -268,7 +268,7 @@ void adjust_to_platform_y(player_t *p)
         if (tile == 1) // 平台 tile
         {
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
-            float new_y = tile_top_y - PLAYER_HEIGHT_PIXELS;
+            float new_y = tile_top_y - PLAYER_HEIGHT_PIXELS - 6; // 经验偏移量
 
             float old_y = p->y;
 
