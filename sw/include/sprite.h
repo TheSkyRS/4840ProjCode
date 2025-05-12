@@ -72,7 +72,7 @@ typedef struct
 
 void box_init(box_t *b, int tile_x, int tile_y, int sprite_base_index, uint8_t frame_id);
 void box_try_push(box_t *box, const player_t *player);
-void box_update_position(box_t *box, player_t *players, int num_players);
+void box_update_position(box_t *box, player_t *players);
 
 bool check_overlap(float x1, float y1, float w1, float h1,
                    float x2, float y2, float w2, float h2);
@@ -82,6 +82,8 @@ void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count);
 
 // 帧循环更新（frame_id++)
 void sprite_animate(sprite_t *s);
+
+void item_update_sprite(item_t *item);
 
 // 写入 VGA
 void sprite_update(sprite_t *s);
