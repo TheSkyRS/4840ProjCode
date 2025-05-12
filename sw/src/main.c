@@ -6,7 +6,8 @@
 #include "joypad_input.h"
 #include "sprite.h" // 新增
 #include "type.h"
-#include <ctime>
+#include <time.h>
+
 player_t players[NUM_PLAYERS];
 item_t items[NUM_ITEMS];
 box_t boxes[NUM_BOXES];
