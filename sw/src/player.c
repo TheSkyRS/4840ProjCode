@@ -79,7 +79,7 @@ void player_update_physics(player_t *p)
     // 垂直运动
     float new_y = p->y + p->vy;
 
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) && !is_box_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) && !is_box_blocked(p->x + 8, new_y + PLAYER_HITBOX_OFFSET_Y, SPRITE_W_PIXELS, PLAYER_HITBOX_HEIGHT))
     {
         p->y = new_y;
         p->on_ground = false;
@@ -119,7 +119,7 @@ void player_update_physics(player_t *p)
         adjust_to_slope_y(p);
     }
     else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) &&
-             !is_box_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+             !is_box_blocked(new_x + SPRITE_W_PIXELS / 2.0f, p->y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT))
     {
         p->x = new_x;
     }
