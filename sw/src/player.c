@@ -359,20 +359,13 @@ int get_frame_count(player_t *p, bool is_upper)
 
 void player_update_sprite(player_t *p)
 {
-    // 处理帧动画切换（只在行走时更新）
-    if (p->state == STATE_RUNNING)
+
+    p->frame_timer++;
+    if (p->frame_timer >= MAX_FRAME_TIMER)
     {
-        p->frame_timer++;
-        if (p->frame_timer >= MAX_FRAME_TIMER)
-        {
-            p->frame_timer = 0;
-            int frame_count = get_frame_count(p, false); // 下半身帧数为准
-            p->frame_index = (p->frame_index + 1) % frame_count;
-        }
-    }
-    else
-    {
-        p->frame_index = 0;
+        p->frame_timer = 0;
+        int frame_count = get_frame_count(p, false); // 下半身帧数为准
+        p->frame_index = (p->frame_index + 1) % frame_count;
     }
 
     if (p->type == PLAYER_FIREBOY)
