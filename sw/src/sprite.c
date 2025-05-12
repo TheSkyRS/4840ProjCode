@@ -203,7 +203,7 @@ void box_update_position(box_t *box, player_t *players)
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
     printf("[BOX] box->vx=%.2f, next_x=%.1f\n", box->vx, next_x);
-    printf("       blocked=%d, collides_with_player=%d\n", blocked, collides_with_player);
+
     // 检查是否撞上 player
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
@@ -219,7 +219,7 @@ void box_update_position(box_t *box, player_t *players)
             break;
         }
     }
-
+    printf("       blocked=%d, collides_with_player=%d\n", blocked, collides_with_player);
     // 如果不阻挡，则移动
     if (!blocked && !collides_with_player)
     {
