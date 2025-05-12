@@ -110,13 +110,13 @@ void player_update_physics(player_t *p)
     else
     {
         // 垂直方向碰撞输出调试信息
-        if (p->vy < 0)
+        if (p->vy < 0 && (p->type == PLAYER_WATERGIRL))
         {
             printf("[%s] HEAD HIT: vy=%.2f y=%.2f\n",
                    p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
                    p->vy, p->y);
         }
-        else if (p->vy > 0)
+        else if (p->vy > 0 && (p->type == PLAYER_WATERGIRL))
         {
             printf("[%s] FOOT LAND: vy=%.2f y=%.2f\n",
                    p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
@@ -189,8 +189,8 @@ void player_update_physics(player_t *p)
             p->vy = 0;
         }
     }
-    if (p->type == PLAYER_WATERGIRL)
-        debug_print_player_state(p, p->type == "WATERGIRL");
+    // if (p->type == PLAYER_WATERGIRL)
+    //     debug_print_player_state(p, p->type == "WATERGIRL");
 }
 void adjust_to_slope_y(player_t *p)
 {
