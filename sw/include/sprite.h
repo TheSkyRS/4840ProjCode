@@ -55,4 +55,5 @@ void sprite_clear(sprite_t *s);
 
 void item_init(item_t *item, float x, float y, uint8_t sprite_index, uint8_t frame_id);
 bool is_box_blocked(float x, float y, float w, float h);
+void box_try_push(box_t *box, const player_t *p);
 #endif
