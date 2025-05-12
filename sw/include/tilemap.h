@@ -7,7 +7,6 @@
 typedef struct item_t item_t;
 
 // === 外部地图数组（只读）===
-extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 
 // === Tile 碰撞检测函数 ===
 // 检查给定区域是否碰到 "墙壁" tile

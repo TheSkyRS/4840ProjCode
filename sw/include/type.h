@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-
+////////////////////////////////////结构体///////////////////////////////////////////////////////
 // === sprite_t ===
 typedef struct
 {
@@ -95,6 +95,8 @@ typedef enum
     TILE_CEIL_L = 8  // 天花板：左低右高（/）
 } tile_type_t;
 
+//////////////////////////////////////定量/////////////////////////////////////////////////////
+
 #define NUM_ITEMS 6
 #define VACTIVE 480
 #define NUM_BOXES 1
@@ -121,4 +123,13 @@ typedef enum
 #define MAP_HEIGHT 30 // tile 纵向数量
 #define TILE_SIZE 16  // 每个 tile 像素大小（单位：px）
 
+///////////////////////////////////////数组////////////////////////////////////////////////////
+
+extern player_t players[NUM_PLAYERS];
+extern item_t items[NUM_ITEMS];
+extern box_t boxes[NUM_BOXES];
+extern unsigned frame_counter; // 引入主循环中定义的帧计数器
+extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
+
+///////////////////////////////////////////////////////////////////////////////////////////
 #endif // TYPEDEFS_H

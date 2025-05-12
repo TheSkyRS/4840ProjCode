@@ -2,7 +2,6 @@
 #include "hw_interact.h"
 #include <math.h> // 为 sinf 提供声明
 
-extern unsigned frame_counter; // 引入主循环中定义的帧计数器
 // 初始化 sprite 索引和帧数
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
 {
@@ -182,6 +181,18 @@ void box_update_position(box_t *box, player_t *players)
     {
         box->x = next_x;
     }
+}
+
+bool is_box_blocked(float x, float y, float w, float h)
+{
+    for (int i = 0; i < NUM_BOXES; i++)
+    {
+        if (check_overlap(x, y, w, h, boxes[i].x, boxes[i].y, 32, 32))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool check_overlap(float x1, float y1, float w1, float h1,

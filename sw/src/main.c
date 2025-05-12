@@ -23,11 +23,8 @@ int main()
     }
     input_handler_init();
 
-    player_t players[NUM_PLAYERS];
     player_init(&players[0], 64, 360, 0, 1, PLAYER_FIREBOY);
     player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
-
-    item_t items[NUM_ITEMS];
 
     item_init(&items[0], 0, 0, 4, BLUE_GEM_FRAME);
     item_place_on_tile(&items[0], 21, 26);
@@ -83,7 +80,6 @@ int main()
     items[5].width = 12;  // 碰撞箱宽度
     items[5].height = 12; // 碰撞箱高度
 
-    box_t boxes[NUM_BOXES];
     box_init(&boxes[0], 17, 10, 20, BOX_FRAME);
 
     unsigned col = 0, row = 0;
