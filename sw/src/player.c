@@ -124,7 +124,7 @@ void player_update_physics(player_t *p)
     // 水平运动
     float new_x = p->x + p->vx;
 
-    // 计算当前位置和目标位置的脚底中心点
+        // 计算当前位置和目标位置的脚底中心点
     float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + PLAYER_HEIGHT_PIXELS;
