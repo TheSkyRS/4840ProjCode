@@ -87,29 +87,14 @@ void player_update_physics(player_t *p)
     p->vy += GRAVITY;
 
     // 垂直运动
-    // float new_y = p->y + p->vy;
-    // if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
-    // {
-    //     p->y = new_y;
-    //     p->on_ground = false;
-    // }
-    // else
-    // {
-    //     if (p->vy > 0)
-    //         p->on_ground = true;
-    //     p->vy = 0;
-    // }
-
     float new_y = p->y + p->vy;
-
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
     {
         p->y = new_y;
         p->on_ground = false;
     }
     else
     {
-        // 垂直方向碰撞输出调试信息
         if (p->vy < 0 && (p->type == PLAYER_WATERGIRL))
         {
             printf("[%s] HEAD HIT: vy=%.2f y=%.2f\n",
@@ -121,9 +106,9 @@ void player_update_physics(player_t *p)
             printf("[%s] FOOT LAND: vy=%.2f y=%.2f\n",
                    p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
                    p->vy, p->y);
-            p->on_ground = true;
         }
-
+        if (p->vy > 0)
+            p->on_ground = true;
         p->vy = 0;
     }
 
@@ -175,19 +160,6 @@ void player_update_physics(player_t *p)
     else
     {
         p->state = STATE_IDLE;
-    }
-    // 不论是否处于on_ground，检查是否脚下为坡道 tile
-    {
-        float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
-        float foot_y = p->y + PLAYER_HEIGHT_PIXELS + 1; // 多探一点点
-
-        int tile = get_tile_at_pixel(center_x, foot_y);
-
-        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
-        {
-            p->on_ground = true;
-            p->vy = 0;
-        }
     }
     // if (p->type == PLAYER_WATERGIRL)
     //     debug_print_player_state(p, p->type == "WATERGIRL");
