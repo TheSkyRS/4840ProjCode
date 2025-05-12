@@ -126,33 +126,46 @@ void box_try_push(box_t *box, const player_t *p)
     float bx = box->x;
     float by = box->y;
 
+    // 只输出水女孩的调试信息
+    bool is_watergirl = (p->type == PLAYER_WATERGIRL);
+
     // 垂直方向有交集才考虑推动
     bool vertical_overlap = (py + ph > by) && (py < by + bh);
     if (!vertical_overlap)
     {
-        printf("[PUSH] Player Y=%.1f~%.1f not overlapping box Y=%.1f~%.1f\n",
-               py, py + ph, by, by + bh);
+        if (is_watergirl)
+        {
+            printf("[PUSH] Watergirl Y=%.1f~%.1f not overlapping box Y=%.1f~%.1f\n",
+                   py, py + ph, by, by + bh);
+        }
         return;
     }
 
-    // 玩家靠近箱子左边并向右推动
     if ((px + pw >= bx - 4 && px + pw <= bx + 8) && p->vx > 0)
     {
-        printf("[PUSH] Player %.1f~%.1f pushing RIGHT into box %.1f~%.1f\n",
-               px, px + pw, bx, bx + bw);
+        if (is_watergirl)
+        {
+            printf("[PUSH] Watergirl %.1f~%.1f pushing RIGHT into box %.1f~%.1f\n",
+                   px, px + pw, bx, bx + bw);
+        }
         box->vx = BOX_PUSH_SPEED;
     }
-    // 玩家靠近箱子右边并向左推动
     else if ((px <= bx + bw + 4 && px >= bx + bw - 8) && p->vx < 0)
     {
-        printf("[PUSH] Player %.1f~%.1f pushing LEFT into box %.1f~%.1f\n",
-               px, px + pw, bx, bx + bw);
+        if (is_watergirl)
+        {
+            printf("[PUSH] Watergirl %.1f~%.1f pushing LEFT into box %.1f~%.1f\n",
+                   px, px + pw, bx, bx + bw);
+        }
         box->vx = -BOX_PUSH_SPEED;
     }
     else
     {
-        printf("[PUSH] Player %.1f~%.1f near box %.1f~%.1f but not pushing\n",
-               px, px + pw, bx, bx + bw);
+        if (is_watergirl)
+        {
+            printf("[PUSH] Watergirl %.1f~%.1f near box %.1f~%.1f but not pushing\n",
+                   px, px + pw, bx, bx + bw);
+        }
     }
 }
 
