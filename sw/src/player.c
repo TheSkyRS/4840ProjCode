@@ -148,10 +148,12 @@ void player_update_physics(player_t *p)
     // 状态切换
     if (!p->on_ground)
     {
-        if (p->vy < 0)
+        if (p->vy < -0.1f)
             p->state = STATE_JUMPING;
-        else
+        else if (p->vy > 0.1f)
             p->state = STATE_FALLING;
+        else
+            p->state = STATE_IDLE; // 空中静止（很少见）
     }
     else if (p->vx != 0)
     {
@@ -161,8 +163,8 @@ void player_update_physics(player_t *p)
     {
         p->state = STATE_IDLE;
     }
-    // if (p->type == PLAYER_WATERGIRL)
-    //     debug_print_player_state(p, p->type == "WATERGIRL");
+    if (p->type == PLAYER_WATERGIRL)
+        debug_print_player_state(p, p->type == "WATERGIRL");
 }
 void adjust_to_slope_y(player_t *p)
 {
@@ -198,18 +200,38 @@ void adjust_to_slope_y(player_t *p)
             // 计算该 tile 的顶部 y 坐标（tile 是 16×16，找出 tile 所在行的起始 y）
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
 
-            // 设置角色的 y 坐标：
-            // - tile_top_y + min_y：得到坡面的 y 高度
-            // - 减去 PLAYER_HEIGHT_PIXELS：让角色站在坡面上
-            // - 再减 3：一个经验偏移，用于微调贴合（可调试）
-            p->y = tile_top_y + min_y - PLAYER_HEIGHT_PIXELS - 3;
+            // // 设置角色的 y 坐标：
+            // // - tile_top_y + min_y：得到坡面的 y 高度
+            // // - 减去 PLAYER_HEIGHT_PIXELS：让角色站在坡面上
+            // // - 再减 3：一个经验偏移，用于微调贴合（可调试）
+            // p->y = tile_top_y + min_y - PLAYER_HEIGHT_PIXELS - 3;
 
-            // 设置角色落地状态
+            // // 设置角色落地状态
+            // p->on_ground = true;
+            // // 停止垂直速度（不会继续下落或上升）
+            // p->vy = 0;
+
+            // // 成功处理后退出搜索
+            // break;
+            // 记录旧 y
+            float old_y = p->y;
+
+            // 计算吸附目标 y
+            float new_y = tile_top_y + min_y - PLAYER_HEIGHT_PIXELS - 3;
+
+            // 若前后 y 差距很小，就保留原 vy，避免动画判定被破坏
+            if (fabsf(new_y - old_y) < 0.2f)
+            {
+                p->y = new_y;
+                // 保留 vy，不强制设为 0
+            }
+            else
+            {
+                p->y = new_y;
+                p->vy = 0; // 只有明显吸附时才归零
+            }
+
             p->on_ground = true;
-            // 停止垂直速度（不会继续下落或上升）
-            p->vy = 0;
-
-            // 成功处理后退出搜索
             break;
         }
     }
