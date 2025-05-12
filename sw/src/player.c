@@ -2,7 +2,7 @@
 #include "joypad_input.h"
 #include "tilemap.h"
 #include <math.h> // 用于 floor()
-
+#include "type.h"
 #include <stdio.h> // 顶部加这个
 
 void debug_print_player_state(player_t *p, const char *tag)

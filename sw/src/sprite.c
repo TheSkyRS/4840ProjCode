@@ -1,7 +1,8 @@
 #include "sprite.h"
 #include "hw_interact.h"
 #include <math.h> // 为 sinf 提供声明
-
+#include "type.h"
+extern box_t boxes[NUM_BOXES];
 // 初始化 sprite 索引和帧数
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
 {
