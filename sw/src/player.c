@@ -12,6 +12,19 @@
 #define MAX_FRAME_TIMER 6 // 控制动画切换速度
 #define PLAYER_HEIGHT_PIXELS 28
 
+#include <stdio.h> // 顶部加这个
+
+void debug_print_player_state(player_t *p, const char *tag)
+{
+    float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
+    float foot_y = p->y + PLAYER_HEIGHT_PIXELS + 1;
+    int tile = get_tile_at_pixel(center_x, foot_y);
+    int tx = (int)(center_x / TILE_SIZE);
+    int ty = (int)(foot_y / TILE_SIZE);
+
+    printf("[%s] x=%.1f y=%.1f vx=%.2f vy=%.2f on_ground=%d foot_tile=%d (%d,%d)\n",
+           tag, p->x, p->y, p->vx, p->vy, p->on_ground, tile, tx, ty);
+}
 void player_init(player_t *p, int x, int y,
                  uint8_t upper_index, uint8_t lower_index,
                  player_type_t type)
@@ -149,33 +162,55 @@ void player_update_physics(player_t *p)
             p->vy = 0;
         }
     }
+    if (p->type == PLAYER_WATERGIRL)
+        debug_print_player_state(p, p->type == "WATERGIRL");
 }
-
 void adjust_to_slope_y(player_t *p)
 {
+    // 计算角色脚底中心的水平位置
     float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
+
+    // 计算角色当前脚底的 y 坐标（28 高度）
     float base_foot_y = p->y + PLAYER_HEIGHT_PIXELS;
 
-    // 搜索范围扩大，防止斜坡边缘未对齐
+    // 开始在脚底附近做上下小范围搜索，找出脚底是否正好踩在坡道上
+    // 搜索 dy 从 -4 到 +2，可以捕捉到上下微小误差（如浮空或压入）
     for (int dy = -4; dy <= 2; ++dy)
     {
-        float foot_y = base_foot_y + dy;
+        float foot_y = base_foot_y + dy; // 当前搜索点在 y 方向的位置
+
+        // 获取该位置所处的 tile 类型
         int tile = get_tile_at_pixel(center_x, foot_y);
 
+        // 如果检测到是斜坡 tile，才进行对齐处理
         if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
         {
+            // 计算当前点在 tile 内部的 x 偏移（即左上角为(0,0)，当前 x 在 tile 内多少像素）
             float x_in_tile = fmod(center_x, TILE_SIZE);
             int x_local = (int)x_in_tile;
 
+            // 计算此 x 偏移在当前坡 tile 中应对应的 y 高度
+            // 左坡是从左下升到右上：越靠右越高 → y = x
+            // 右坡是从右下升到左上：越靠左越高 → y = TILE_SIZE - 1 - x
             int min_y = (tile == TILE_SLOPE_L_UP)
                             ? x_local
                             : TILE_SIZE - 1 - x_local;
 
+            // 计算该 tile 的顶部 y 坐标（tile 是 16×16，找出 tile 所在行的起始 y）
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
 
+            // 设置角色的 y 坐标：
+            // - tile_top_y + min_y：得到坡面的 y 高度
+            // - 减去 PLAYER_HEIGHT_PIXELS：让角色站在坡面上
+            // - 再减 3：一个经验偏移，用于微调贴合（可调试）
             p->y = tile_top_y + min_y - PLAYER_HEIGHT_PIXELS - 3;
+
+            // 设置角色落地状态
             p->on_ground = true;
+            // 停止垂直速度（不会继续下落或上升）
             p->vy = 0;
+
+            // 成功处理后退出搜索
             break;
         }
     }

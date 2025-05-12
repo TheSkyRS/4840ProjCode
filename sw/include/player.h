@@ -50,5 +50,5 @@ void player_update_physics(player_t *p);
 void player_check_collision(player_t *p);
 void player_update_sprite(player_t *p);
 void adjust_to_slope_y(player_t *p);
-
+void debug_print_player_state(player_t *p, const char *tag);
 #endif // PLAYER_H
