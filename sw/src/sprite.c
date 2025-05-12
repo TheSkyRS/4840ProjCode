@@ -173,25 +173,14 @@ void box_update_position(box_t *box, player_t *players)
 {
     float next_x = box->x + box->vx;
 
-    // tile 检查：检查箱子左右两列是否有阻挡
+    // 检查 tile 阻挡
     bool blocked = false;
     if (box->vx > 0)
-    {
-        blocked |= is_tile_blocked(next_x + 31, box->y, 1, 32); // 右侧边缘
-    }
+        blocked |= is_tile_blocked(next_x + 31, box->y, 1, 32);
     else if (box->vx < 0)
-    {
-        blocked |= is_tile_blocked(next_x, box->y, 1, 32); // 左侧边缘
-    }
-    // 摩擦力使其减速
-    if (box->vx > 0)
-        box->vx -= BOX_FRICTION;
-    else if (box->vx < 0)
-        box->vx += BOX_FRICTION;
+        blocked |= is_tile_blocked(next_x, box->y, 1, 32);
 
-    // 静止处理
-    if (fabsf(box->vx) < BOX_FRICTION)
-        box->vx = 0;
+    // 检查是否撞上 player
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
@@ -206,10 +195,20 @@ void box_update_position(box_t *box, player_t *players)
             break;
         }
     }
+
+    // 如果不阻挡，则移动
     if (!blocked && !collides_with_player)
     {
         box->x = next_x;
     }
+
+    // 最后再衰减速度
+    if (box->vx > 0)
+        box->vx -= BOX_FRICTION;
+    else if (box->vx < 0)
+        box->vx += BOX_FRICTION;
+    if (fabsf(box->vx) < BOX_FRICTION)
+        box->vx = 0;
 }
 
 bool is_box_blocked(float x, float y, float w, float h)
