@@ -45,7 +45,7 @@ bool is_tile_blocked(float x, float y, float width, float height)
 {
     float center_x = x + width / 2.0f;
 
-    for (int i = 0; i < (int)height; ++i)
+    for (int i = 4; i < (int)height; ++i)
     {
         float sx = center_x;
         float sy = y + i + COLLISION_MARGIN;
