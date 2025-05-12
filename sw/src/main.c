@@ -133,7 +133,7 @@ int main()
                 {
                     box_try_push(&boxes[i], &players[j]);
                 }
-                box_update_position(&boxes[i]);
+                box_update_position(&boxes[i], players);
             }
         }
         // === 2. 等待消隐区 ===
