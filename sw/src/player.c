@@ -131,33 +131,18 @@ void player_update_physics(player_t *p)
             break;
         }
     }
-
     if (on_slope && p->vy >= 0)
     {
-        // 移动或不移动都允许贴坡
         p->x = new_x;
-
-        // 连续两帧都在坡道才吸附
-        if (p->was_on_slope_last_frame)
-        {
-            adjust_to_slope_y(p);
-        }
-
-        p->was_on_slope_last_frame = true;
+        adjust_to_slope_y(p);
+    }
+    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    {
+        p->x = new_x;
     }
     else
     {
-        p->was_on_slope_last_frame = false;
-
-        // 不是坡道：正常阻挡检测
-        if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
-        {
-            p->x = new_x;
-        }
-        else
-        {
-            p->vx = 0;
-        }
+        p->vx = 0;
     }
 
     // 状态切换
