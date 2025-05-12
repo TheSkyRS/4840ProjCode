@@ -145,7 +145,8 @@ void player_update_physics(player_t *p)
         p->x = new_x;
         adjust_to_slope_y(p);
     }
-    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) &&
+             !is_box_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
     {
         p->x = new_x;
     }
