@@ -141,7 +141,7 @@ void box_try_push(box_t *box, const player_t *p)
     }
 }
 
-void box_update_position(box_t *box, player_t *players, int num_players)
+void box_update_position(box_t *box, player_t *players)
 {
     float next_x = box->x + box->vx;
 

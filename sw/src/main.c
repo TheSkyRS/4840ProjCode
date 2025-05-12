@@ -5,10 +5,8 @@
 #include "player.h"
 #include "joypad_input.h"
 #include "sprite.h" // 新增
+#include "type.h"
 
-#define NUM_ITEMS 6
-#define VACTIVE 480
-#define NUM_BOXES 1
 unsigned frame_counter = 0; // 全局变量，每帧 ++
 int main()
 {

@@ -3,9 +3,6 @@
 #include "tilemap.h"
 #include <math.h> // 用于 floor()
 
-// #define GRAVITY 0.4f
-// #define JUMP_VELOCITY -5.0f
-
 #include <stdio.h> // 顶部加这个
 
 void debug_print_player_state(player_t *p, const char *tag)

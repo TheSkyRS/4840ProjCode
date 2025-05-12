@@ -5,7 +5,9 @@
         "math.h": "c",
         "stdio.h": "c",
         "tilemap.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "hw_interact.h": "c",
+        "player.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

@@ -95,4 +95,30 @@ typedef enum
     TILE_CEIL_L = 8  // 天花板：左低右高（/）
 } tile_type_t;
 
+#define NUM_ITEMS 6
+#define VACTIVE 480
+#define NUM_BOXES 1
+
+#define SPRITE_H_PIXELS 16
+#define SPRITE_W_PIXELS 16
+#define BOX_PUSH_SPEED 1.0f
+#define BOX_FRICTION 0.2f
+
+// #define GRAVITY 0.4f
+// #define JUMP_VELOCITY -5.0f
+// #define MOVE_SPEED 1.5f
+#define GRAVITY 0.2f
+#define JUMP_VELOCITY -10.0f
+#define MOVE_SPEED 1.0f
+#define MAX_FRAME_TIMER 6 // 控制动画切换速度
+#define PLAYER_HEIGHT_PIXELS 28
+#define PLAYER_HITBOX_HEIGHT 24
+#define PLAYER_HITBOX_OFFSET_Y 4
+#define NUM_PLAYERS 2
+
+// === 地图常量 ===
+#define MAP_WIDTH 40  // tile 横向数量
+#define MAP_HEIGHT 30 // tile 纵向数量
+#define TILE_SIZE 16  // 每个 tile 像素大小（单位：px）
+
 #endif // TYPEDEFS_H

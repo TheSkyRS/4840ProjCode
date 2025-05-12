@@ -7,10 +7,7 @@
 #include "tilemap.h"
 #include "type.h"
 typedef struct player_t player_t;
-#define SPRITE_H_PIXELS 16
-#define SPRITE_W_PIXELS 16
-#define BOX_PUSH_SPEED 1.0f
-#define BOX_FRICTION 0.2f
+
 // 红钻石
 #define RED_GEM_FRAME ((uint8_t)44) // 0x2C00 >> 8 = 44
 
