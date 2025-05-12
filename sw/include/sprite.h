@@ -53,8 +53,9 @@ typedef struct
     float x, y;
     float width, height;
     bool active;
+    bool float_anim;
     sprite_t sprite;
-    item_owner_t owner_type; //
+    item_owner_t owner_type;
 } item_t;
 
 bool check_overlap(float x1, float y1, float w1, float h1,

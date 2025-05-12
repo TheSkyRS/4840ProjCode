@@ -9,7 +9,7 @@
 #define NUM_PLAYERS 2
 #define NUM_ITEMS 6
 #define VACTIVE 480
-
+static unsigned frame_counter = 0;
 int main()
 {
     if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
@@ -36,41 +36,48 @@ int main()
     items[0].sprite.frame_count = 1;
     items[0].sprite.frame_start = BLUE_GEM_FRAME;
     items[0].owner_type = ITEM_WATERGIRL_ONLY;
+    items[0].float_anim = true;
 
     item_init(&items[1], 0, 0, 5, RED_GEM_FRAME);
     item_place_on_tile(&items[1], 29, 26);
     items[1].sprite.frame_count = 1;
     items[1].sprite.frame_start = RED_GEM_FRAME;
     items[1].owner_type = ITEM_FIREBOY_ONLY;
+    items[1].float_anim = true;
 
     item_init(&items[2], 0, 0, 6, RED_GEM_FRAME);
     item_place_on_tile(&items[2], 6, 14);
     items[2].sprite.frame_count = 1;
     items[2].sprite.frame_start = RED_GEM_FRAME;
     items[2].owner_type = ITEM_FIREBOY_ONLY;
+    items[2].float_anim = true;
 
     item_init(&items[3], 0, 0, 7, BLUE_GEM_FRAME);
     item_place_on_tile(&items[3], 23, 14);
     items[3].sprite.frame_count = 1;
     items[3].sprite.frame_start = BLUE_GEM_FRAME;
     items[3].owner_type = ITEM_WATERGIRL_ONLY;
+    items[3].float_anim = true;
 
     item_init(&items[4], 0, 0, 8, BLUE_GEM_FRAME);
     item_place_on_tile(&items[4], 11, 7);
     items[4].sprite.frame_count = 1;
     items[4].sprite.frame_start = BLUE_GEM_FRAME;
     items[4].owner_type = ITEM_WATERGIRL_ONLY;
+    items[4].float_anim = true;
 
     item_init(&items[5], 0, 0, 9, RED_GEM_FRAME);
     item_place_on_tile(&items[5], 1, 4);
     items[5].sprite.frame_count = 1;
     items[5].sprite.frame_start = RED_GEM_FRAME;
     items[5].owner_type = ITEM_FIREBOY_ONLY;
+    items[5].float_anim = true;
 
     unsigned col = 0, row = 0;
 
     while (1)
     {
+        frame_counter++;
         // === 帧同步：只在每帧顶部 row==0 时执行一次 ===
         do
         {

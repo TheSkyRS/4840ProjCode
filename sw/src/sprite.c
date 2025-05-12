@@ -1,6 +1,6 @@
 #include "sprite.h"
 #include "hw_interact.h"
-
+extern unsigned frame_counter;
 // 初始化 sprite 索引和帧数
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
 {
@@ -54,8 +54,14 @@ void item_update_sprite(item_t *item)
 {
     if (item->active)
     {
+        float offset = 0.0f;
+        if (item->float_anim)
+        {
+            offset = 2.0f * sinf((float)item->sprite.index + (float)frame_counter * 0.2f);
+        }
+
         item->sprite.x = (uint16_t)item->x;
-        item->sprite.y = (uint16_t)item->y;
+        item->sprite.y = (uint16_t)(item->y + offset);
         item->sprite.enable = true;
         sprite_update(&item->sprite);
     }
