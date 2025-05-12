@@ -8,7 +8,7 @@
 // #define MOVE_SPEED 1.5f
 #define GRAVITY 0.2f
 #define JUMP_VELOCITY -10.0f
-#define MOVE_SPEED 1.5f
+#define MOVE_SPEED 1.0f
 #define MAX_FRAME_TIMER 6 // 控制动画切换速度
 #define PLAYER_HEIGHT_PIXELS 28
 
@@ -88,30 +88,18 @@ void player_update_physics(player_t *p)
 
     // 垂直运动
     float new_y = p->y + p->vy;
-
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
     {
         p->y = new_y;
         p->on_ground = false;
     }
     else
     {
-        // 垂直方向碰撞输出调试信息
-        if (p->vy < 0 && (p->type == PLAYER_WATERGIRL))
-        {
-            printf("[%s] HEAD HIT: vy=%.2f y=%.2f\n",
-                   p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
-                   p->vy, p->y);
-        }
-        else if (p->vy > 0 && (p->type == PLAYER_WATERGIRL))
-        {
-            printf("[%s] FOOT LAND: vy=%.2f y=%.2f\n",
-                   p->type == PLAYER_FIREBOY ? "FIREBOY" : "WATERGIRL",
-                   p->vy, p->y);
+        if (p->vy > 0)
             p->on_ground = true;
-        }
         p->vy = 0;
     }
+
     // 水平运动
     float new_x = p->x + p->vx;
 
@@ -174,8 +162,8 @@ void player_update_physics(player_t *p)
             p->vy = 0;
         }
     }
-    // if (p->type == PLAYER_WATERGIRL)
-    //     debug_print_player_state(p, p->type == "WATERGIRL");
+    if (p->type == PLAYER_WATERGIRL)
+        debug_print_player_state(p, p->type == "WATERGIRL");
 }
 void adjust_to_slope_y(player_t *p)
 {
