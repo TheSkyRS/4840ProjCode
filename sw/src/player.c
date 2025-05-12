@@ -148,6 +148,11 @@ void player_update_physics(player_t *p)
     else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) &&
              !is_box_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
     {
+        printf("[DEBUG] is_box_blocked input: x=%.1f y=%.1f w=%.1f h=%.1f\n",
+               new_x,
+               p->y + PLAYER_HITBOX_OFFSET_Y,
+               SPRITE_W_PIXELS,
+               PLAYER_HITBOX_HEIGHT);
         p->x = new_x;
     }
     else
