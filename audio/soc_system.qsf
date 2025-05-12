@@ -99,8 +99,8 @@ set_location_assignment PIN_AH13 -to DRAM_ADDR[11]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DRAM_ADDR[11]
 set_location_assignment PIN_AJ14 -to DRAM_ADDR[12]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DRAM_ADDR[12]
-set_location_assignment PIN_AF13 -to DRAM_BA[0]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DRAM_BA[0]
+# set_location_assignment PIN_AF13 -to DRAM_BA[0]
+# set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DRAM_BA[0]
 set_location_assignment PIN_AJ12 -to DRAM_BA[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DRAM_BA[1]
 set_location_assignment PIN_AF11 -to DRAM_CAS_N
@@ -521,7 +521,7 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_USB_NXT
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_USB_STP
 
 set_location_assignment PIN_AF14 -to AUD_XCK      
-set_location_assignment PIN_AB14 -to AUD_BCLK      
+set_location_assignment PIN_AF13 -to AUD_BCLK      
 set_location_assignment PIN_AE14 -to AUD_DACLRCK   
 set_location_assignment PIN_AD13 -to AUD_DACDAT    
 set_location_assignment PIN_AB21 -to FPGA_I2C_SCLK 
@@ -533,8 +533,6 @@ set_location_assignment PIN_AC22 -to FPGA_I2C_SDAT
 # set_location_assignment PIN_G7 -to AUD_XCK
 # set_location_assignment PIN_J12 -to FPGA_I2C_SCLK
 # set_location_assignment PIN_K12 -to FPGA_I2C_SDAT
-
-
 
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {AUD_XCK}
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to {AUD_BCLK}

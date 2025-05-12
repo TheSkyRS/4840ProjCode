@@ -1,5 +1,5 @@
 Fitter report for soc_system
-Mon May 12 03:51:18 2025
+Mon May 12 04:26:38 2025
 Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
 
 
@@ -52,7 +52,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------------------------------------+
 ; Fitter Summary                                                                ;
 +---------------------------------+---------------------------------------------+
-; Fitter Status                   ; Failed - Mon May 12 03:51:18 2025           ;
+; Fitter Status                   ; Failed - Mon May 12 04:26:38 2025           ;
 ; Quartus Prime Version           ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
 ; Revision Name                   ; soc_system                                  ;
 ; Top-level Entity Name           ; soc_system_top                              ;
@@ -325,7 +325,7 @@ https://fpgasoftware.intel.com/eula.
 ; DRAM_ADDR[7]        ; Unassigned ; --       ; no              ; no                     ; no        ; no              ; no         ; no            ; no       ; Off          ; None         ; Default          ; Off         ; --                                                                                                                                                                                ; no                         ; no                          ; 0                   ; Off                         ; User                 ; -                    ; -                   ;
 ; DRAM_ADDR[8]        ; Unassigned ; --       ; no              ; no                     ; no        ; no              ; no         ; no            ; no       ; Off          ; None         ; Default          ; Off         ; --                                                                                                                                                                                ; no                         ; no                          ; 0                   ; Off                         ; User                 ; -                    ; -                   ;
 ; DRAM_ADDR[9]        ; Unassigned ; --       ; no              ; no                     ; no        ; no              ; no         ; no            ; no       ; Off          ; None         ; Default          ; Off         ; --                                                                                                                                                                                ; no                         ; no                          ; 0                   ; Off                         ; User                 ; -                    ; -                   ;
-; DRAM_BA[0]          ; Unassigned ; --       ; no              ; no                     ; no        ; no              ; no         ; no            ; no       ; Off          ; None         ; Default          ; Off         ; --                                                                                                                                                                                ; no                         ; no                          ; 0                   ; Off                         ; User                 ; -                    ; -                   ;
+; DRAM_BA[0]          ; Unassigned ; --       ; no              ; no                     ; no        ; no              ; no         ; no            ; no       ; Off          ; None         ; Default          ; Off         ; --                                                                                                                                                                                ; no                         ; no                          ; 0                   ; Off                         ; Fitter               ; -                    ; -                   ;
 ; DRAM_BA[1]          ; Unassigned ; --       ; no              ; no                     ; no        ; no              ; no         ; no            ; no       ; Off          ; None         ; Default          ; Off         ; --                                                                                                                                                                                ; no                         ; no                          ; 0                   ; Off                         ; User                 ; -                    ; -                   ;
 ; DRAM_CAS_N          ; Unassigned ; --       ; no              ; no                     ; no        ; no              ; no         ; no            ; no       ; Off          ; None         ; Default          ; Off         ; --                                                                                                                                                                                ; no                         ; no                          ; 0                   ; Off                         ; User                 ; -                    ; -                   ;
 ; DRAM_CKE            ; Unassigned ; --       ; no              ; no                     ; no        ; no              ; no         ; no            ; no       ; Off          ; None         ; Default          ; Off         ; --                                                                                                                                                                                ; no                         ; no                          ; 0                   ; Off                         ; User                 ; -                    ; -                   ;
@@ -2478,12 +2478,11 @@ Warning (21300): LOCKED port on the PLL is not properly connected on instance "s
 Info (171003): Fitter is performing an Auto Fit compilation, which may decrease Fitter effort to reduce compilation time
 Warning (292013): Feature LogicLock is only available with a valid subscription license. You can purchase a software subscription to gain full access to this feature.
 Error (171016): Can't place node "AUD_DACDAT" -- illegal location assignment PIN_AD13 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 45
-Error (171016): Can't place node "AUD_BCLK" -- illegal location assignment PIN_AB14 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 44
 Info (11798): Fitter preparation operations ending: elapsed time is 00:00:00
 Error (11802): Can't fit design in device. Modify your design to reduce resources, or choose a larger device. The Intel FPGA Knowledge Database contains many articles with specific details on how to resolve this error. Visit the Knowledge Database at https://www.altera.com/support/support-resources/knowledge-base/search.html and search for this specific error message number.
-Error: Quartus Prime Fitter was unsuccessful. 3 errors, 3 warnings
+Error: Quartus Prime Fitter was unsuccessful. 2 errors, 3 warnings
     Error: Peak virtual memory: 872 megabytes
-    Error: Processing ended: Mon May 12 03:51:18 2025
+    Error: Processing ended: Mon May 12 04:26:39 2025
     Error: Elapsed time: 00:00:09
     Error: Total CPU time (on all processors): 00:00:07
 
