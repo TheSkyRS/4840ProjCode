@@ -43,13 +43,13 @@ int main()
     items[0].sprite.frame_start = RED_GEM_FRAME;
     items[0].owner_type = ITEM_FIREBOY_ONLY;
 
-    item_init(&items[3], 0, 0, 10, RED_GEM_FRAME);
+    item_init(&items[2], 0, 0, 10, RED_GEM_FRAME);
     item_place_on_tile(&items[2], 6, 14);
     items[0].sprite.frame_count = 1;
     items[0].sprite.frame_start = RED_GEM_FRAME;
     items[0].owner_type = ITEM_FIREBOY_ONLY;
 
-    item_init(&items[4], 0, 0, 11, BLUE_GEM_FRAME);
+    item_init(&items[3], 0, 0, 11, BLUE_GEM_FRAME);
     item_place_on_tile(&items[3], 23, 14);
     items[1].sprite.frame_count = 1;
     items[1].sprite.frame_start = BLUE_GEM_FRAME;
@@ -61,7 +61,7 @@ int main()
     items[1].sprite.frame_start = BLUE_GEM_FRAME;
     items[1].owner_type = ITEM_WATERGIRL_ONLY;
 
-    item_init(&items[3], 0, 0, 10, RED_GEM_FRAME);
+    item_init(&items[5], 0, 0, 10, RED_GEM_FRAME);
     item_place_on_tile(&items[5], 1, 4);
     items[0].sprite.frame_count = 1;
     items[0].sprite.frame_start = RED_GEM_FRAME;
