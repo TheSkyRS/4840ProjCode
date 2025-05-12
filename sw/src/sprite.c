@@ -141,67 +141,16 @@ void box_try_push(box_t *box, const player_t *p)
     }
 }
 
-// void box_update_position(box_t *box, player_t *players)
-// {
-//     float next_x = box->x + box->vx;
-
-//     // 检查 tile 阻挡
-//     bool blocked = false;
-//     if (box->vx > 0)
-//         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
-//     else if (box->vx < 0)
-//         blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
-
-//     // 检查是否撞上 player
-//     bool collides_with_player = false;
-//     for (int i = 0; i < NUM_PLAYERS; i++)
-//     {
-//         float px = players[i].x;
-//         float py = players[i].y + PLAYER_HITBOX_OFFSET_Y;
-//         float pw = SPRITE_W_PIXELS;
-//         float ph = PLAYER_HITBOX_HEIGHT;
-
-//         if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
-//         {
-//             collides_with_player = true;
-//             break;
-//         }
-//     }
-
-//     // 如果不阻挡，则移动
-//     if (!blocked && !collides_with_player)
-//     {
-//         box->x = next_x;
-//     }
-
-//     // 最后再衰减速度
-//     if (box->vx > 0)
-//         box->vx -= BOX_FRICTION;
-//     else if (box->vx < 0)
-//         box->vx += BOX_FRICTION;
-//     if (fabsf(box->vx) < BOX_FRICTION)
-//         box->vx = 0;
-// }
 void box_update_position(box_t *box, player_t *players)
 {
     float next_x = box->x + box->vx;
 
-    printf("[BOX] vx=%.2f, current_x=%.1f, next_x=%.1f\n", box->vx, box->x, next_x);
-
     // 检查 tile 阻挡
     bool blocked = false;
     if (box->vx > 0)
-    {
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
-        if (blocked)
-            printf("  [BLOCK] Right side blocked by tile\n");
-    }
     else if (box->vx < 0)
-    {
         blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
-        if (blocked)
-            printf("  [BLOCK] Left side blocked by tile\n");
-    }
 
     // 检查是否撞上 player
     bool collides_with_player = false;
@@ -214,7 +163,6 @@ void box_update_position(box_t *box, player_t *players)
 
         if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
         {
-            printf("  [BLOCK] Collides with player[%d] at (%.1f, %.1f)\n", i, px, py);
             collides_with_player = true;
             break;
         }
@@ -224,11 +172,6 @@ void box_update_position(box_t *box, player_t *players)
     if (!blocked && !collides_with_player)
     {
         box->x = next_x;
-        printf("  [MOVE] Box moved to x=%.1f\n", box->x);
-    }
-    else
-    {
-        printf("  [STOP] Box not moved due to obstacle\n");
     }
 
     // 最后再衰减速度
@@ -238,8 +181,6 @@ void box_update_position(box_t *box, player_t *players)
         box->vx += BOX_FRICTION;
     if (fabsf(box->vx) < BOX_FRICTION)
         box->vx = 0;
-
-    printf("  [VX] Box vx updated to %.2f\n", box->vx);
 }
 
 bool is_box_blocked(float x, float y, float w, float h)
