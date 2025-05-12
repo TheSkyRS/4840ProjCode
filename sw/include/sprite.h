@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "player.h"
 #include "tilemap.h"
+#include "type.h"
 typedef struct player_t player_t;
 #define SPRITE_H_PIXELS 16
 #define SPRITE_W_PIXELS 16
@@ -33,42 +34,6 @@ typedef struct player_t player_t;
 
 // 箱子（4帧）
 #define BOX_FRAME ((uint8_t)61) // 0x3D00 >> 8 = 61
-
-typedef struct
-{
-    uint8_t index;
-    uint8_t frame_id;
-    uint8_t flip;
-    uint16_t x, y;
-    bool enable;
-    uint8_t frame_count; // 总帧数
-    uint8_t frame_start; // 起始帧 ID（默认 0）
-} sprite_t;
-
-typedef enum
-{
-    ITEM_ANY = 0,
-    ITEM_FIREBOY_ONLY,
-    ITEM_WATERGIRL_ONLY
-} item_owner_t;
-
-typedef struct item_t
-{
-    float x, y;
-    float width, height;
-    bool active;
-    bool float_anim;
-    sprite_t sprite;
-    item_owner_t owner_type;
-} item_t;
-
-typedef struct
-{
-    float x, y; // 左上角坐标（对齐 tile）
-    float vx;   // 当前水平速度
-    bool active;
-    sprite_t sprites[4]; // 4 个子 sprite，顺序：左上、右上、左下、右下
-} box_t;
 
 void box_init(box_t *b, int tile_x, int tile_y, int sprite_base_index, uint8_t frame_id);
 void box_try_push(box_t *box, const player_t *player);
