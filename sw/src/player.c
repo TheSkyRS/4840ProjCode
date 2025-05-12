@@ -10,6 +10,7 @@
 #define JUMP_VELOCITY -10.0f
 #define MOVE_SPEED 1.5f
 #define MAX_FRAME_TIMER 6 // 控制动画切换速度
+#define PLAYER_HEIGHT_PIXELS 28
 
 void player_init(player_t *p, int x, int y,
                  uint8_t upper_index, uint8_t lower_index,
@@ -74,7 +75,7 @@ void player_update_physics(player_t *p)
 
     // 垂直运动
     float new_y = p->y + p->vy;
-    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, 28)) // 一步之遥。
+    if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS)) // 一步之遥。
     {
         p->y = new_y;
         p->on_ground = false;
@@ -91,7 +92,7 @@ void player_update_physics(player_t *p)
     // 计算当前位置和目标位置的脚底中心点
     float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
-    float foot_y = p->y + SPRITE_H_PIXELS * 2;
+    float foot_y = p->y + PLAYER_HEIGHT_PIXELS;
 
     // 判断当前位置脚底左右邻近是否在斜坡范围
     bool on_slope = false;
@@ -110,7 +111,7 @@ void player_update_physics(player_t *p)
         p->x = new_x;
         adjust_to_slope_y(p);
     }
-    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, 28))
+    else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
     {
         p->x = new_x;
     }
@@ -138,7 +139,7 @@ void player_update_physics(player_t *p)
     if (!p->on_ground)
     {
         float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
-        float foot_y = p->y + SPRITE_H_PIXELS * 2 + 1; // 向下探一点
+        float foot_y = p->y + PLAYER_HEIGHT_PIXELS + 1; // 向下探一点
         int tile = get_tile_at_pixel(center_x, foot_y);
 
         if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
@@ -152,7 +153,7 @@ void player_update_physics(player_t *p)
 void adjust_to_slope_y(player_t *p)
 {
     float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
-    float base_foot_y = p->y + SPRITE_H_PIXELS * 2;
+    float base_foot_y = p->y + PLAYER_HEIGHT_PIXELS;
 
     // 搜索范围扩大，防止斜坡边缘未对齐
     for (int dy = -4; dy <= 2; ++dy)
@@ -171,7 +172,7 @@ void adjust_to_slope_y(player_t *p)
 
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
 
-            p->y = tile_top_y + min_y - SPRITE_H_PIXELS * 2 - 3;
+            p->y = tile_top_y + min_y - PLAYER_HEIGHT_PIXELS - 3;
             p->on_ground = true;
             p->vy = 0;
             break;
