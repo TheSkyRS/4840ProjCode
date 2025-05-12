@@ -2,7 +2,7 @@
 #define TILEMAP_H
 
 #include <stdbool.h>
-
+#include "sprite.h" // 若没有可添加包含 item_t 定义
 // === 地图常量 ===
 #define MAP_WIDTH 40  // tile 横向数量
 #define MAP_HEIGHT 30 // tile 纵向数量
