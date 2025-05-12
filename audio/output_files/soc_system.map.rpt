@@ -1,0 +1,603 @@
+Analysis & Synthesis report for soc_system
+Mon May 12 00:19:40 2025
+Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis IP Cores Summary
+  6. Analysis & Synthesis Messages
+  7. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2021  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+
+
+
++---------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                              ;
++-----------------------------+---------------------------------------------+
+; Analysis & Synthesis Status ; Failed - Mon May 12 00:19:40 2025           ;
+; Quartus Prime Version       ; 21.1.0 Build 842 10/21/2021 SJ Lite Edition ;
+; Revision Name               ; soc_system                                  ;
+; Top-level Entity Name       ; soc_system_top                              ;
+; Family                      ; Cyclone V                                   ;
+; Logic utilization (in ALMs) ; N/A until Partition Merge                   ;
+; Total registers             ; N/A until Partition Merge                   ;
+; Total pins                  ; N/A until Partition Merge                   ;
+; Total virtual pins          ; N/A until Partition Merge                   ;
+; Total block memory bits     ; N/A until Partition Merge                   ;
+; Total PLLs                  ; N/A until Partition Merge                   ;
+; Total DLLs                  ; N/A until Partition Merge                   ;
++-----------------------------+---------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                             ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 5CSEMA5F31C6       ;                    ;
+; Top-level entity name                                                           ; soc_system_top     ; soc_system         ;
+; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
+; Maximum processors allowed for parallel compilation                             ; 4                  ;                    ;
+; Use smart compilation                                                           ; Off                ; Off                ;
+; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                                             ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                                   ; Enable             ; Enable             ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Off                ; Off                ;
+; Extract Verilog State Machines                                                  ; On                 ; On                 ;
+; Extract VHDL State Machines                                                     ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                               ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                         ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; Parallel Synthesis                                                              ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                            ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                          ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                       ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                                  ; Off                ; Off                ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                              ; 70                 ; 70                 ;
+; Auto Carry Chains                                                               ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                             ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Report Connectivity Checks                                                      ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; Power Optimization During Synthesis                                             ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                                 ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                            ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
+; Partial Reconfiguration Bitstream ID                                            ; Off                ; Off                ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 16          ;
+; Maximum allowed            ; 4           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 1           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
++----------------------------+-------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis IP Cores Summary                                                                                                                                                                                                                                                                                                     ;
++--------+--------------------------------+---------+--------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+; Vendor ; IP Core Name                   ; Version ; Release Date ; License Type ; Entity Instance                                                                                                                                                                                                                       ; IP Include File ;
++--------+--------------------------------+---------+--------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+; N/A    ; Qsys                           ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0                                                                                                                                                                                                ; soc_system.qsys ;
+; Altera ; altera_pll                     ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_audio_pll_0:audio_pll_0|soc_system_audio_pll_0_audio_pll:audio_pll                                                                                                                  ; soc_system.qsys ;
+; Altera ; altera_hps                     ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_hps_0:hps_0                                                                                                                                                                         ; soc_system.qsys ;
+; Altera ; altera_hps_io                  ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io                                                                                                                                          ; soc_system.qsys ;
+; Altera ; altera_mm_interconnect         ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0                                                                                                                                                 ; soc_system.qsys ;
+; Altera ; altera_avalon_st_adapter       ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_avalon_st_adapter:avalon_st_adapter                                                                                ; soc_system.qsys ;
+; Altera ; error_adapter                  ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_avalon_st_adapter:avalon_st_adapter|soc_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0:error_adapter_0 ; soc_system.qsys ;
+; Altera ; altera_merlin_demultiplexer    ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_cmd_demux:cmd_demux                                                                                                ; soc_system.qsys ;
+; Altera ; altera_merlin_demultiplexer    ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_cmd_demux:cmd_demux_001                                                                                            ; soc_system.qsys ;
+; Altera ; altera_merlin_multiplexer      ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_cmd_mux:cmd_mux                                                                                                    ; soc_system.qsys ;
+; Altera ; altera_merlin_slave_agent      ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_slave_agent:fgpa_audio_0_avalon_slave_0_agent                                                                                     ; soc_system.qsys ;
+; Altera ; altera_avalon_sc_fifo          ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_avalon_sc_fifo:fgpa_audio_0_avalon_slave_0_agent_rdata_fifo                                                                              ; soc_system.qsys ;
+; Altera ; altera_avalon_sc_fifo          ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_avalon_sc_fifo:fgpa_audio_0_avalon_slave_0_agent_rsp_fifo                                                                                ; soc_system.qsys ;
+; Altera ; altera_merlin_burst_adapter    ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_burst_adapter:fgpa_audio_0_avalon_slave_0_burst_adapter                                                                           ; soc_system.qsys ;
+; Altera ; altera_merlin_width_adapter    ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_width_adapter:fgpa_audio_0_avalon_slave_0_cmd_width_adapter                                                                       ; soc_system.qsys ;
+; Altera ; altera_merlin_width_adapter    ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_width_adapter:fgpa_audio_0_avalon_slave_0_rsp_width_adapter                                                                       ; soc_system.qsys ;
+; Altera ; altera_merlin_slave_translator ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_slave_translator:fgpa_audio_0_avalon_slave_0_translator                                                                           ; soc_system.qsys ;
+; Altera ; altera_merlin_axi_master_ni    ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_axi_master_ni:hps_0_h2f_lw_axi_master_agent                                                                                       ; soc_system.qsys ;
+; Altera ; altera_merlin_router           ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_router:router                                                                                                      ; soc_system.qsys ;
+; Altera ; altera_merlin_router           ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_router:router_001                                                                                                  ; soc_system.qsys ;
+; Altera ; altera_merlin_router           ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_router_002:router_002                                                                                              ; soc_system.qsys ;
+; Altera ; altera_merlin_demultiplexer    ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_rsp_demux:rsp_demux                                                                                                ; soc_system.qsys ;
+; Altera ; altera_merlin_multiplexer      ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_rsp_mux:rsp_mux                                                                                                    ; soc_system.qsys ;
+; Altera ; altera_merlin_multiplexer      ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_rsp_mux:rsp_mux_001                                                                                                ; soc_system.qsys ;
+; Altera ; altera_reset_controller        ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|altera_reset_controller:rst_controller                                                                                                                                                         ; soc_system.qsys ;
+; Altera ; altera_reset_controller        ; 21.1    ; N/A          ; N/A          ; |soc_system_top|soc_system:soc_system0|altera_reset_controller:rst_controller_001                                                                                                                                                     ; soc_system.qsys ;
++--------+--------------------------------+---------+--------------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
+    Info: Copyright (C) 2021  Intel Corporation. All rights reserved.
+    Info: Your use of Intel Corporation's design tools, logic functions 
+    Info: and other software and tools, and any partner logic 
+    Info: functions, and any output files from any of the foregoing 
+    Info: (including device programming or simulation files), and any 
+    Info: associated documentation or information are expressly subject 
+    Info: to the terms and conditions of the Intel Program License 
+    Info: Subscription Agreement, the Intel Quartus Prime License Agreement,
+    Info: the Intel FPGA IP License Agreement, or other applicable license
+    Info: agreement, including, without limitation, that your use is for
+    Info: the sole purpose of programming logic devices manufactured by
+    Info: Intel and sold by Intel or its authorized distributors.  Please
+    Info: refer to the applicable agreement for further details, at
+    Info: https://fpgasoftware.intel.com/eula.
+    Info: Processing started: Mon May 12 00:18:51 2025
+Info: Command: quartus_map soc_system
+Info (20032): Parallel compilation is enabled and will use up to 4 processors
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system_top.sv
+    Info (12023): Found entity 1: soc_system_top File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 33
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/soc_system.v
+    Info (12023): Found entity 1: soc_system File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/soc_system.v Line: 6
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_reset_controller.v
+    Info (12023): Found entity 1: altera_reset_controller File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_reset_controller.v Line: 42
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_reset_synchronizer.v
+    Info (12023): Found entity 1: altera_reset_synchronizer File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_reset_synchronizer.v Line: 24
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 9
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0_avalon_st_adapter.v
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0_avalon_st_adapter File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_avalon_st_adapter.v Line: 9
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0.sv
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0.sv Line: 66
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_width_adapter.sv
+    Info (12023): Found entity 1: altera_merlin_width_adapter File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_width_adapter.sv Line: 25
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_address_alignment.sv
+    Info (12023): Found entity 1: altera_merlin_address_alignment File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_address_alignment.sv Line: 26
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_burst_uncompressor.sv
+    Info (12023): Found entity 1: altera_merlin_burst_uncompressor File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_uncompressor.sv Line: 40
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0_rsp_mux.sv
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0_rsp_mux File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_rsp_mux.sv Line: 51
+Info (12021): Found 2 design units, including 2 entities, in source file soc_system/synthesis/submodules/altera_merlin_arbitrator.sv
+    Info (12023): Found entity 1: altera_merlin_arbitrator File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_arbitrator.sv Line: 103
+    Info (12023): Found entity 2: altera_merlin_arb_adder File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_arbitrator.sv Line: 228
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0_rsp_demux.sv
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0_rsp_demux File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_rsp_demux.sv Line: 43
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0_cmd_mux.sv
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0_cmd_mux File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_cmd_mux.sv Line: 51
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0_cmd_demux.sv
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0_cmd_demux File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_cmd_demux.sv Line: 43
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_burst_adapter.sv
+    Info (12023): Found entity 1: altera_merlin_burst_adapter File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter.sv Line: 21
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_burst_adapter_uncmpr.sv
+    Info (12023): Found entity 1: altera_merlin_burst_adapter_uncompressed_only File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_uncmpr.sv Line: 39
+Info (12021): Found 5 design units, including 5 entities, in source file soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv
+    Info (12023): Found entity 1: altera_merlin_burst_adapter_burstwrap_increment File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 40
+    Info (12023): Found entity 2: altera_merlin_burst_adapter_adder File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 55
+    Info (12023): Found entity 3: altera_merlin_burst_adapter_subtractor File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 77
+    Info (12023): Found entity 4: altera_merlin_burst_adapter_min File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 98
+    Info (12023): Found entity 5: altera_merlin_burst_adapter_13_1 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 264
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_burst_adapter_new.sv
+    Info (12023): Found entity 1: altera_merlin_burst_adapter_new File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_new.sv Line: 25
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_incr_burst_converter.sv
+    Info (12023): Found entity 1: altera_incr_burst_converter File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_incr_burst_converter.sv Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_wrap_burst_converter.sv
+    Info (12023): Found entity 1: altera_wrap_burst_converter File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_wrap_burst_converter.sv Line: 27
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_default_burst_converter.sv
+    Info (12023): Found entity 1: altera_default_burst_converter File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_default_burst_converter.sv Line: 30
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_avalon_st_pipeline_stage.sv
+    Info (12023): Found entity 1: altera_avalon_st_pipeline_stage File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_avalon_st_pipeline_stage.sv Line: 22
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_avalon_st_pipeline_base.v
+    Info (12023): Found entity 1: altera_avalon_st_pipeline_base File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_avalon_st_pipeline_base.v Line: 22
+Info (12021): Found 2 design units, including 2 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0_router_002.sv
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0_router_002_default_decode File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_router_002.sv Line: 45
+    Info (12023): Found entity 2: soc_system_mm_interconnect_0_router_002 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_router_002.sv Line: 84
+Info (12021): Found 2 design units, including 2 entities, in source file soc_system/synthesis/submodules/soc_system_mm_interconnect_0_router.sv
+    Info (12023): Found entity 1: soc_system_mm_interconnect_0_router_default_decode File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_router.sv Line: 45
+    Info (12023): Found entity 2: soc_system_mm_interconnect_0_router File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_router.sv Line: 84
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_avalon_sc_fifo.v
+    Info (12023): Found entity 1: altera_avalon_sc_fifo File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_avalon_sc_fifo.v Line: 21
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_slave_agent.sv
+    Info (12023): Found entity 1: altera_merlin_slave_agent File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_slave_agent.sv Line: 34
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_axi_master_ni.sv
+    Info (12023): Found entity 1: altera_merlin_axi_master_ni File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_axi_master_ni.sv Line: 27
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_merlin_slave_translator.sv
+    Info (12023): Found entity 1: altera_merlin_slave_translator File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_slave_translator.sv Line: 35
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_hps_0.v
+    Info (12023): Found entity 1: soc_system_hps_0 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_hps_0.v Line: 9
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_hps_0_hps_io.v
+    Info (12023): Found entity 1: soc_system_hps_0_hps_io File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_hps_0_hps_io.v Line: 9
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram.v
+    Info (12023): Found entity 1: hps_sdram File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram.v Line: 9
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_mem_if_dll_cyclonev.sv
+    Info (12023): Found entity 1: altera_mem_if_dll_cyclonev File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_mem_if_dll_cyclonev.sv Line: 23
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_mem_if_oct_cyclonev.sv
+    Info (12023): Found entity 1: altera_mem_if_oct_cyclonev File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_mem_if_oct_cyclonev.sv Line: 23
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_mem_if_hard_memory_controller_top_cyclonev.sv
+    Info (12023): Found entity 1: altera_mem_if_hard_memory_controller_top_cyclonev File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_mem_if_hard_memory_controller_top_cyclonev.sv Line: 18
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_mem_if_hhp_qseq_synth_top.v
+    Info (12023): Found entity 1: altera_mem_if_hhp_qseq_synth_top File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_mem_if_hhp_qseq_synth_top.v Line: 15
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altdq_dqs2_acv_connect_to_hard_phy_cyclonev.sv
+    Info (12023): Found entity 1: altdq_dqs2_acv_connect_to_hard_phy_cyclonev File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altdq_dqs2_acv_connect_to_hard_phy_cyclonev.sv Line: 19
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_altdqdqs.v
+    Info (12023): Found entity 1: hps_sdram_p0_altdqdqs File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_altdqdqs.v Line: 17
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0.sv
+    Info (12023): Found entity 1: hps_sdram_p0 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0.sv Line: 18
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_iss_probe.v
+    Info (12023): Found entity 1: hps_sdram_p0_iss_probe File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_iss_probe.v Line: 17
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_phy_csr.sv
+    Info (12023): Found entity 1: hps_sdram_p0_phy_csr File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_phy_csr.sv Line: 31
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_reset_sync.v
+    Info (12023): Found entity 1: hps_sdram_p0_reset_sync File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_reset_sync.v Line: 17
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_reset.v
+    Info (12023): Found entity 1: hps_sdram_p0_reset File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_reset.v Line: 18
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_generic_ddio.v
+    Info (12023): Found entity 1: hps_sdram_p0_generic_ddio File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_generic_ddio.v Line: 17
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_io_pads.v
+    Info (12023): Found entity 1: hps_sdram_p0_acv_hard_io_pads File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_io_pads.v Line: 17
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_acv_ldc.v
+    Info (12023): Found entity 1: hps_sdram_p0_acv_ldc File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_ldc.v Line: 17
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_memphy.v
+    Info (12023): Found entity 1: hps_sdram_p0_acv_hard_memphy File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_memphy.v Line: 21
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v
+    Info (12023): Found entity 1: hps_sdram_p0_acv_hard_addr_cmd_pads File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 17
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_p0_clock_pair_generator.v
+    Info (12023): Found entity 1: hps_sdram_p0_clock_pair_generator File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_clock_pair_generator.v Line: 29
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/hps_sdram_pll.sv
+    Info (12023): Found entity 1: hps_sdram_pll File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_pll.sv Line: 25
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_hps_0_hps_io_border.sv
+    Info (12023): Found entity 1: soc_system_hps_0_hps_io_border File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_hps_0_hps_io_border.sv Line: 14
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_hps_0_fpga_interfaces.sv
+    Info (12023): Found entity 1: soc_system_hps_0_fpga_interfaces File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_hps_0_fpga_interfaces.sv Line: 14
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/fpga_audio.sv
+    Info (12023): Found entity 1: fpga_audio File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 3
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_audio_pll_0.v
+    Info (12023): Found entity 1: soc_system_audio_pll_0 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_pll_0.v Line: 9
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_avalon_reset_from_locked_signal.v
+    Info (12023): Found entity 1: altera_up_avalon_reset_from_locked_signal File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_avalon_reset_from_locked_signal.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_audio_pll_0_audio_pll.v
+    Info (12023): Found entity 1: soc_system_audio_pll_0_audio_pll File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_pll_0_audio_pll.v Line: 2
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_serial_bus_controller.v
+    Info (12023): Found entity 1: altera_up_av_config_serial_bus_controller File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_serial_bus_controller.v Line: 29
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_slow_clock_generator.v
+    Info (12023): Found entity 1: altera_up_slow_clock_generator File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_slow_clock_generator.v Line: 34
+Warning (10238): Verilog Module Declaration warning at altera_up_av_config_auto_init.v(51): ignored anonymous port(s) indicated by duplicate or dangling comma(s) in the port list for module "altera_up_av_config_auto_init" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init.v Line: 51
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init.v Line: 29
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_dc2.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_dc2 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_dc2.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_d5m.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_d5m File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_d5m.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_lcm.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_lcm File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_lcm.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_ltm.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_ltm File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ltm.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de1_soc.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_ob_de1_soc File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de1_soc.v Line: 29
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de2_115.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_ob_de2_115 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de2_115.v Line: 29
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de2i_150.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_ob_de2i_150 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de2i_150.v Line: 29
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de10_standard.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_ob_de10_standard File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de10_standard.v Line: 29
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_audio.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_ob_audio File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_audio.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_adv7180.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_ob_adv7180 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_adv7180.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_adv7181.v
+    Info (12023): Found entity 1: altera_up_av_config_auto_init_ob_adv7181 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_adv7181.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_audio_and_video_config_0.v
+    Info (12023): Found entity 1: soc_system_audio_and_video_config_0 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_and_video_config_0.v Line: 35
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_audio_bit_counter.v
+    Info (12023): Found entity 1: altera_up_audio_bit_counter File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_audio_bit_counter.v Line: 30
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_audio_in_deserializer.v
+    Info (12023): Found entity 1: altera_up_audio_in_deserializer File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_audio_in_deserializer.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_audio_out_serializer.v
+    Info (12023): Found entity 1: altera_up_audio_out_serializer File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_audio_out_serializer.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_clock_edge.v
+    Info (12023): Found entity 1: altera_up_clock_edge File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_clock_edge.v Line: 29
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/altera_up_sync_fifo.v
+    Info (12023): Found entity 1: altera_up_sync_fifo File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_sync_fifo.v Line: 28
+Info (12021): Found 1 design units, including 1 entities, in source file soc_system/synthesis/submodules/soc_system_audio_0.v
+    Info (12023): Found entity 1: soc_system_audio_0 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_0.v Line: 30
+Critical Warning (10846): Verilog HDL Instantiation warning at fpga_audio.sv(38): instance has no name File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 38
+Info (12127): Elaborating entity "soc_system_top" for the top level hierarchy
+Warning (10034): Output port "VGA_B" at soc_system_top.sv(182) has no driver File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 182
+Warning (10034): Output port "VGA_G" at soc_system_top.sv(185) has no driver File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 185
+Warning (10034): Output port "VGA_R" at soc_system_top.sv(187) has no driver File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 187
+Warning (10034): Output port "VGA_BLANK_N" at soc_system_top.sv(183) has no driver File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 183
+Warning (10034): Output port "VGA_CLK" at soc_system_top.sv(184) has no driver File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 184
+Warning (10034): Output port "VGA_HS" at soc_system_top.sv(186) has no driver File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 186
+Warning (10034): Output port "VGA_SYNC_N" at soc_system_top.sv(188) has no driver File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 188
+Warning (10034): Output port "VGA_VS" at soc_system_top.sv(190) has no driver File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 190
+Info (12128): Elaborating entity "soc_system" for hierarchy "soc_system:soc_system0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system_top.sv Line: 278
+Info (12128): Elaborating entity "soc_system_audio_0" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/soc_system.v Line: 156
+Info (12128): Elaborating entity "altera_up_clock_edge" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_clock_edge:Bit_Clock_Edges" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_0.v Line: 159
+Info (12128): Elaborating entity "altera_up_audio_out_serializer" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_0.v Line: 200
+Info (12128): Elaborating entity "altera_up_sync_fifo" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_audio_out_serializer.v Line: 210
+Info (12128): Elaborating entity "scfifo" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_sync_fifo.v Line: 138
+Info (12130): Elaborated megafunction instantiation "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_sync_fifo.v Line: 138
+Info (12133): Instantiated megafunction "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO" with the following parameter: File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_sync_fifo.v Line: 138
+    Info (12134): Parameter "add_ram_output_register" = "OFF"
+    Info (12134): Parameter "intended_device_family" = "Cyclone II"
+    Info (12134): Parameter "lpm_numwords" = "128"
+    Info (12134): Parameter "lpm_showahead" = "ON"
+    Info (12134): Parameter "lpm_type" = "scfifo"
+    Info (12134): Parameter "lpm_width" = "16"
+    Info (12134): Parameter "lpm_widthu" = "7"
+    Info (12134): Parameter "overflow_checking" = "OFF"
+    Info (12134): Parameter "underflow_checking" = "OFF"
+    Info (12134): Parameter "use_eab" = "ON"
+Info (12021): Found 1 design units, including 1 entities, in source file db/scfifo_9ba1.tdf
+    Info (12023): Found entity 1: scfifo_9ba1 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/scfifo_9ba1.tdf Line: 25
+Info (12128): Elaborating entity "scfifo_9ba1" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO|scfifo_9ba1:auto_generated" File: /tools/intel/intelFPGA/21.1/quartus/libraries/megafunctions/scfifo.tdf Line: 300
+Info (12021): Found 1 design units, including 1 entities, in source file db/a_dpfifo_s2a1.tdf
+    Info (12023): Found entity 1: a_dpfifo_s2a1 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/a_dpfifo_s2a1.tdf Line: 33
+Info (12128): Elaborating entity "a_dpfifo_s2a1" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO|scfifo_9ba1:auto_generated|a_dpfifo_s2a1:dpfifo" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/scfifo_9ba1.tdf Line: 38
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_r3i1.tdf
+    Info (12023): Found entity 1: altsyncram_r3i1 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/altsyncram_r3i1.tdf Line: 28
+Info (12128): Elaborating entity "altsyncram_r3i1" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO|scfifo_9ba1:auto_generated|a_dpfifo_s2a1:dpfifo|altsyncram_r3i1:FIFOram" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/a_dpfifo_s2a1.tdf Line: 46
+Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_6l8.tdf
+    Info (12023): Found entity 1: cmpr_6l8 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/cmpr_6l8.tdf Line: 23
+Info (12128): Elaborating entity "cmpr_6l8" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO|scfifo_9ba1:auto_generated|a_dpfifo_s2a1:dpfifo|cmpr_6l8:almost_full_comparer" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/a_dpfifo_s2a1.tdf Line: 55
+Info (12128): Elaborating entity "cmpr_6l8" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO|scfifo_9ba1:auto_generated|a_dpfifo_s2a1:dpfifo|cmpr_6l8:three_comparison" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/a_dpfifo_s2a1.tdf Line: 56
+Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_h2b.tdf
+    Info (12023): Found entity 1: cntr_h2b File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/cntr_h2b.tdf Line: 26
+Info (12128): Elaborating entity "cntr_h2b" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO|scfifo_9ba1:auto_generated|a_dpfifo_s2a1:dpfifo|cntr_h2b:rd_ptr_msb" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/a_dpfifo_s2a1.tdf Line: 57
+Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_u27.tdf
+    Info (12023): Found entity 1: cntr_u27 File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/cntr_u27.tdf Line: 26
+Info (12128): Elaborating entity "cntr_u27" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO|scfifo_9ba1:auto_generated|a_dpfifo_s2a1:dpfifo|cntr_u27:usedw_counter" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/a_dpfifo_s2a1.tdf Line: 58
+Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_i2b.tdf
+    Info (12023): Found entity 1: cntr_i2b File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/cntr_i2b.tdf Line: 26
+Info (12128): Elaborating entity "cntr_i2b" for hierarchy "soc_system:soc_system0|soc_system_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|altera_up_sync_fifo:Audio_Out_Left_Channel_FIFO|scfifo:Sync_FIFO|scfifo_9ba1:auto_generated|a_dpfifo_s2a1:dpfifo|cntr_i2b:wr_ptr" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/a_dpfifo_s2a1.tdf Line: 59
+Info (12128): Elaborating entity "soc_system_audio_and_video_config_0" for hierarchy "soc_system:soc_system0|soc_system_audio_and_video_config_0:audio_and_video_config_0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/soc_system.v Line: 170
+Info (12128): Elaborating entity "altera_up_av_config_auto_init" for hierarchy "soc_system:soc_system0|soc_system_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_auto_init:AV_Config_Auto_Init" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_and_video_config_0.v Line: 412
+Warning (10230): Verilog HDL assignment warning at altera_up_av_config_auto_init.v(137): truncated value with size 32 to match size of target (6) File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init.v Line: 137
+Info (12128): Elaborating entity "altera_up_av_config_auto_init_ob_de1_soc" for hierarchy "soc_system:soc_system0|soc_system_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_auto_init_ob_de1_soc:Auto_Init_OB_Devices_ROM" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_and_video_config_0.v Line: 427
+Info (12128): Elaborating entity "altera_up_av_config_auto_init_ob_audio" for hierarchy "soc_system:soc_system0|soc_system_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_auto_init_ob_de1_soc:Auto_Init_OB_Devices_ROM|altera_up_av_config_auto_init_ob_audio:Auto_Init_Audio_ROM" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de1_soc.v Line: 116
+Info (12128): Elaborating entity "altera_up_av_config_auto_init_ob_adv7180" for hierarchy "soc_system:soc_system0|soc_system_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_auto_init_ob_de1_soc:Auto_Init_OB_Devices_ROM|altera_up_av_config_auto_init_ob_adv7180:Auto_Init_Video_ROM" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_auto_init_ob_de1_soc.v Line: 137
+Info (12128): Elaborating entity "altera_up_av_config_serial_bus_controller" for hierarchy "soc_system:soc_system0|soc_system_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_and_video_config_0.v Line: 464
+Warning (10230): Verilog HDL assignment warning at altera_up_av_config_serial_bus_controller.v(241): truncated value with size 32 to match size of target (5) File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_serial_bus_controller.v Line: 241
+Info (12128): Elaborating entity "altera_up_slow_clock_generator" for hierarchy "soc_system:soc_system0|soc_system_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|altera_up_slow_clock_generator:Serial_Config_Clock_Generator" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_av_config_serial_bus_controller.v Line: 294
+Warning (10230): Verilog HDL assignment warning at altera_up_slow_clock_generator.v(109): truncated value with size 32 to match size of target (11) File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_up_slow_clock_generator.v Line: 109
+Info (12128): Elaborating entity "soc_system_audio_pll_0" for hierarchy "soc_system:soc_system0|soc_system_audio_pll_0:audio_pll_0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/soc_system.v Line: 177
+Info (12128): Elaborating entity "soc_system_audio_pll_0_audio_pll" for hierarchy "soc_system:soc_system0|soc_system_audio_pll_0:audio_pll_0|soc_system_audio_pll_0_audio_pll:audio_pll" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_pll_0.v Line: 23
+Info (12128): Elaborating entity "altera_pll" for hierarchy "soc_system:soc_system0|soc_system_audio_pll_0:audio_pll_0|soc_system_audio_pll_0_audio_pll:audio_pll|altera_pll:altera_pll_i" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_pll_0_audio_pll.v Line: 85
+Info (10008): Verilog HDL or VHDL information: EDA Netlist Writer cannot regroup multidimensional array "wire_to_nowhere_64" into its bus
+Info (12130): Elaborated megafunction instantiation "soc_system:soc_system0|soc_system_audio_pll_0:audio_pll_0|soc_system_audio_pll_0_audio_pll:audio_pll|altera_pll:altera_pll_i" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_pll_0_audio_pll.v Line: 85
+Info (12133): Instantiated megafunction "soc_system:soc_system0|soc_system_audio_pll_0:audio_pll_0|soc_system_audio_pll_0_audio_pll:audio_pll|altera_pll:altera_pll_i" with the following parameter: File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_pll_0_audio_pll.v Line: 85
+    Info (12134): Parameter "fractional_vco_multiplier" = "false"
+    Info (12134): Parameter "reference_clock_frequency" = "50.0 MHz"
+    Info (12134): Parameter "operation_mode" = "direct"
+    Info (12134): Parameter "number_of_clocks" = "1"
+    Info (12134): Parameter "output_clock_frequency0" = "12.288135 MHz"
+    Info (12134): Parameter "phase_shift0" = "0 ps"
+    Info (12134): Parameter "duty_cycle0" = "50"
+    Info (12134): Parameter "output_clock_frequency1" = "0 MHz"
+    Info (12134): Parameter "phase_shift1" = "0 ps"
+    Info (12134): Parameter "duty_cycle1" = "50"
+    Info (12134): Parameter "output_clock_frequency2" = "0 MHz"
+    Info (12134): Parameter "phase_shift2" = "0 ps"
+    Info (12134): Parameter "duty_cycle2" = "50"
+    Info (12134): Parameter "output_clock_frequency3" = "0 MHz"
+    Info (12134): Parameter "phase_shift3" = "0 ps"
+    Info (12134): Parameter "duty_cycle3" = "50"
+    Info (12134): Parameter "output_clock_frequency4" = "0 MHz"
+    Info (12134): Parameter "phase_shift4" = "0 ps"
+    Info (12134): Parameter "duty_cycle4" = "50"
+    Info (12134): Parameter "output_clock_frequency5" = "0 MHz"
+    Info (12134): Parameter "phase_shift5" = "0 ps"
+    Info (12134): Parameter "duty_cycle5" = "50"
+    Info (12134): Parameter "output_clock_frequency6" = "0 MHz"
+    Info (12134): Parameter "phase_shift6" = "0 ps"
+    Info (12134): Parameter "duty_cycle6" = "50"
+    Info (12134): Parameter "output_clock_frequency7" = "0 MHz"
+    Info (12134): Parameter "phase_shift7" = "0 ps"
+    Info (12134): Parameter "duty_cycle7" = "50"
+    Info (12134): Parameter "output_clock_frequency8" = "0 MHz"
+    Info (12134): Parameter "phase_shift8" = "0 ps"
+    Info (12134): Parameter "duty_cycle8" = "50"
+    Info (12134): Parameter "output_clock_frequency9" = "0 MHz"
+    Info (12134): Parameter "phase_shift9" = "0 ps"
+    Info (12134): Parameter "duty_cycle9" = "50"
+    Info (12134): Parameter "output_clock_frequency10" = "0 MHz"
+    Info (12134): Parameter "phase_shift10" = "0 ps"
+    Info (12134): Parameter "duty_cycle10" = "50"
+    Info (12134): Parameter "output_clock_frequency11" = "0 MHz"
+    Info (12134): Parameter "phase_shift11" = "0 ps"
+    Info (12134): Parameter "duty_cycle11" = "50"
+    Info (12134): Parameter "output_clock_frequency12" = "0 MHz"
+    Info (12134): Parameter "phase_shift12" = "0 ps"
+    Info (12134): Parameter "duty_cycle12" = "50"
+    Info (12134): Parameter "output_clock_frequency13" = "0 MHz"
+    Info (12134): Parameter "phase_shift13" = "0 ps"
+    Info (12134): Parameter "duty_cycle13" = "50"
+    Info (12134): Parameter "output_clock_frequency14" = "0 MHz"
+    Info (12134): Parameter "phase_shift14" = "0 ps"
+    Info (12134): Parameter "duty_cycle14" = "50"
+    Info (12134): Parameter "output_clock_frequency15" = "0 MHz"
+    Info (12134): Parameter "phase_shift15" = "0 ps"
+    Info (12134): Parameter "duty_cycle15" = "50"
+    Info (12134): Parameter "output_clock_frequency16" = "0 MHz"
+    Info (12134): Parameter "phase_shift16" = "0 ps"
+    Info (12134): Parameter "duty_cycle16" = "50"
+    Info (12134): Parameter "output_clock_frequency17" = "0 MHz"
+    Info (12134): Parameter "phase_shift17" = "0 ps"
+    Info (12134): Parameter "duty_cycle17" = "50"
+    Info (12134): Parameter "pll_type" = "General"
+    Info (12134): Parameter "pll_subtype" = "General"
+Info (12128): Elaborating entity "altera_up_avalon_reset_from_locked_signal" for hierarchy "soc_system:soc_system0|soc_system_audio_pll_0:audio_pll_0|altera_up_avalon_reset_from_locked_signal:reset_from_locked" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_audio_pll_0.v Line: 28
+Info (12128): Elaborating entity "fpga_audio" for hierarchy "soc_system:soc_system0|fpga_audio:fgpa_audio_0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/soc_system.v Line: 192
+Warning (10230): Verilog HDL assignment warning at fpga_audio.sv(58): truncated value with size 8 to match size of target (1) File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 58
+Warning (10230): Verilog HDL assignment warning at fpga_audio.sv(90): truncated value with size 32 to match size of target (18) File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 90
+Warning (10230): Verilog HDL assignment warning at fpga_audio.sv(92): truncated value with size 32 to match size of target (18) File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 92
+Warning (10030): Net "sound_begin_addresses.data_a" at fpga_audio.sv(21) has no driver or initial value, using a default initial value '0' File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 21
+Warning (10030): Net "sound_begin_addresses.waddr_a" at fpga_audio.sv(21) has no driver or initial value, using a default initial value '0' File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 21
+Warning (10030): Net "sound_end_addresses.data_a" at fpga_audio.sv(22) has no driver or initial value, using a default initial value '0' File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 22
+Warning (10030): Net "sound_end_addresses.waddr_a" at fpga_audio.sv(22) has no driver or initial value, using a default initial value '0' File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 22
+Warning (10030): Net "sound_begin_addresses.we_a" at fpga_audio.sv(21) has no driver or initial value, using a default initial value '0' File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 21
+Warning (10030): Net "sound_end_addresses.we_a" at fpga_audio.sv(22) has no driver or initial value, using a default initial value '0' File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 22
+Info (12128): Elaborating entity "soc_system_hps_0" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/soc_system.v Line: 378
+Info (12128): Elaborating entity "soc_system_hps_0_fpga_interfaces" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_fpga_interfaces:fpga_interfaces" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_hps_0.v Line: 337
+Info (12128): Elaborating entity "soc_system_hps_0_hps_io" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_hps_0.v Line: 405
+Info (12128): Elaborating entity "soc_system_hps_0_hps_io_border" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_hps_0_hps_io.v Line: 143
+Info (12128): Elaborating entity "hps_sdram" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_hps_0_hps_io_border.sv Line: 406
+Info (12128): Elaborating entity "hps_sdram_pll" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_pll:pll" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram.v Line: 105
+Info (12128): Elaborating entity "hps_sdram_p0" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram.v Line: 230
+Info (10648): Verilog HDL Display System Task info at hps_sdram_p0.sv(405): Using Regular core emif simulation models File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0.sv Line: 405
+Info (12128): Elaborating entity "hps_sdram_p0_acv_ldc" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_ldc:memphy_ldc" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_memphy.v Line: 554
+Info (12128): Elaborating entity "hps_sdram_p0_acv_hard_io_pads" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_memphy.v Line: 780
+Info (12128): Elaborating entity "hps_sdram_p0_acv_hard_addr_cmd_pads" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_io_pads.v Line: 244
+Info (12128): Elaborating entity "hps_sdram_p0_generic_ddio" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|hps_sdram_p0_generic_ddio:uaddress_pad" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 157
+Info (12128): Elaborating entity "hps_sdram_p0_generic_ddio" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|hps_sdram_p0_generic_ddio:ubank_pad" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 166
+Info (12128): Elaborating entity "hps_sdram_p0_generic_ddio" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|hps_sdram_p0_generic_ddio:ucmd_pad" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 189
+Info (12128): Elaborating entity "hps_sdram_p0_generic_ddio" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|hps_sdram_p0_generic_ddio:ureset_n_pad" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 198
+Info (12128): Elaborating entity "altddio_out" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|altddio_out:clock_gen[0].umem_ck_pad" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 317
+Info (12130): Elaborated megafunction instantiation "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|altddio_out:clock_gen[0].umem_ck_pad" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 317
+Info (12133): Instantiated megafunction "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|altddio_out:clock_gen[0].umem_ck_pad" with the following parameter: File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 317
+    Info (12134): Parameter "extend_oe_disable" = "UNUSED"
+    Info (12134): Parameter "intended_device_family" = "Cyclone V"
+    Info (12134): Parameter "invert_output" = "OFF"
+    Info (12134): Parameter "lpm_hint" = "UNUSED"
+    Info (12134): Parameter "lpm_type" = "altddio_out"
+    Info (12134): Parameter "oe_reg" = "UNUSED"
+    Info (12134): Parameter "power_up_high" = "OFF"
+    Info (12134): Parameter "width" = "1"
+Info (12021): Found 1 design units, including 1 entities, in source file db/ddio_out_uqe.tdf
+    Info (12023): Found entity 1: ddio_out_uqe File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/db/ddio_out_uqe.tdf Line: 28
+Info (12128): Elaborating entity "ddio_out_uqe" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|altddio_out:clock_gen[0].umem_ck_pad|ddio_out_uqe:auto_generated" File: /tools/intel/intelFPGA/21.1/quartus/libraries/megafunctions/altddio_out.tdf Line: 101
+Info (12128): Elaborating entity "hps_sdram_p0_clock_pair_generator" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_acv_hard_addr_cmd_pads:uaddr_cmd_pads|hps_sdram_p0_clock_pair_generator:clock_gen[0].uclk_generator" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_addr_cmd_pads.v Line: 337
+Info (12128): Elaborating entity "hps_sdram_p0_altdqdqs" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_altdqdqs:dq_ddio[0].ubidir_dq_dqs" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_acv_hard_io_pads.v Line: 317
+Info (12128): Elaborating entity "altdq_dqs2_acv_connect_to_hard_phy_cyclonev" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|hps_sdram_p0:p0|hps_sdram_p0_acv_hard_memphy:umemphy|hps_sdram_p0_acv_hard_io_pads:uio_pads|hps_sdram_p0_altdqdqs:dq_ddio[0].ubidir_dq_dqs|altdq_dqs2_acv_connect_to_hard_phy_cyclonev:altdq_dqs2_inst" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram_p0_altdqdqs.v Line: 146
+Info (12128): Elaborating entity "altera_mem_if_hhp_qseq_synth_top" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|altera_mem_if_hhp_qseq_synth_top:seq" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram.v Line: 238
+Warning (12158): Entity "altera_mem_if_hhp_qseq_synth_top" contains only dangling pins File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram.v Line: 238
+Info (12128): Elaborating entity "altera_mem_if_hard_memory_controller_top_cyclonev" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|altera_mem_if_hard_memory_controller_top_cyclonev:c0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram.v Line: 794
+Info (12128): Elaborating entity "altera_mem_if_oct_cyclonev" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|altera_mem_if_oct_cyclonev:oct" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram.v Line: 802
+Info (12128): Elaborating entity "altera_mem_if_dll_cyclonev" for hierarchy "soc_system:soc_system0|soc_system_hps_0:hps_0|soc_system_hps_0_hps_io:hps_io|soc_system_hps_0_hps_io_border:border|hps_sdram:hps_sdram_inst|altera_mem_if_dll_cyclonev:dll" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/hps_sdram.v Line: 814
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/soc_system.v Line: 424
+Info (12128): Elaborating entity "altera_merlin_slave_translator" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_slave_translator:fgpa_audio_0_avalon_slave_0_translator" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 242
+Info (12128): Elaborating entity "altera_merlin_axi_master_ni" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_axi_master_ni:hps_0_h2f_lw_axi_master_agent" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 370
+Info (12128): Elaborating entity "altera_merlin_address_alignment" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_axi_master_ni:hps_0_h2f_lw_axi_master_agent|altera_merlin_address_alignment:align_address_to_size" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_axi_master_ni.sv Line: 485
+Info (12128): Elaborating entity "altera_merlin_slave_agent" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_slave_agent:fgpa_audio_0_avalon_slave_0_agent" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 454
+Info (12128): Elaborating entity "altera_merlin_burst_uncompressor" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_slave_agent:fgpa_audio_0_avalon_slave_0_agent|altera_merlin_burst_uncompressor:uncompressor" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_slave_agent.sv Line: 608
+Info (12128): Elaborating entity "altera_avalon_sc_fifo" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_avalon_sc_fifo:fgpa_audio_0_avalon_slave_0_agent_rsp_fifo" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 495
+Info (12128): Elaborating entity "altera_avalon_sc_fifo" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_avalon_sc_fifo:fgpa_audio_0_avalon_slave_0_agent_rdata_fifo" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 536
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_router" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_router:router" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 552
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_router_default_decode" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_router:router|soc_system_mm_interconnect_0_router_default_decode:the_default_decode" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_router.sv Line: 179
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_router_002" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_router_002:router_002" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 584
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_router_002_default_decode" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_router_002:router_002|soc_system_mm_interconnect_0_router_002_default_decode:the_default_decode" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_router_002.sv Line: 181
+Info (12128): Elaborating entity "altera_merlin_burst_adapter" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_burst_adapter:fgpa_audio_0_avalon_slave_0_burst_adapter" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 634
+Info (12128): Elaborating entity "altera_merlin_burst_adapter_13_1" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_burst_adapter:fgpa_audio_0_avalon_slave_0_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter.sv Line: 181
+Info (12128): Elaborating entity "altera_merlin_address_alignment" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_burst_adapter:fgpa_audio_0_avalon_slave_0_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|altera_merlin_address_alignment:align_address_to_size" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 778
+Info (12128): Elaborating entity "altera_merlin_burst_adapter_burstwrap_increment" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_burst_adapter:fgpa_audio_0_avalon_slave_0_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|altera_merlin_burst_adapter_burstwrap_increment:the_burstwrap_increment" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 979
+Info (12128): Elaborating entity "altera_merlin_burst_adapter_min" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_burst_adapter:fgpa_audio_0_avalon_slave_0_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|altera_merlin_burst_adapter_min:the_min" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 1004
+Info (12128): Elaborating entity "altera_merlin_burst_adapter_subtractor" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_burst_adapter:fgpa_audio_0_avalon_slave_0_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|altera_merlin_burst_adapter_min:the_min|altera_merlin_burst_adapter_subtractor:ab_sub" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 157
+Info (12128): Elaborating entity "altera_merlin_burst_adapter_adder" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_burst_adapter:fgpa_audio_0_avalon_slave_0_burst_adapter|altera_merlin_burst_adapter_13_1:altera_merlin_burst_adapter_13_1.burst_adapter|altera_merlin_burst_adapter_min:the_min|altera_merlin_burst_adapter_subtractor:ab_sub|altera_merlin_burst_adapter_adder:subtract" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_burst_adapter_13_1.sv Line: 88
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_cmd_demux" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_cmd_demux:cmd_demux" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 651
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_cmd_mux" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_cmd_mux:cmd_mux" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 691
+Info (12128): Elaborating entity "altera_merlin_arbitrator" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_cmd_mux:cmd_mux|altera_merlin_arbitrator:arb" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_cmd_mux.sv Line: 287
+Info (12128): Elaborating entity "altera_merlin_arb_adder" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_cmd_mux:cmd_mux|altera_merlin_arbitrator:arb|altera_merlin_arb_adder:adder" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_arbitrator.sv Line: 169
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_rsp_demux" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_rsp_demux:rsp_demux" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 714
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_rsp_mux" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_rsp_mux:rsp_mux" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 731
+Info (12128): Elaborating entity "altera_merlin_width_adapter" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_width_adapter:fgpa_audio_0_avalon_slave_0_rsp_width_adapter" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 814
+Info (12128): Elaborating entity "altera_merlin_width_adapter" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_width_adapter:fgpa_audio_0_avalon_slave_0_cmd_width_adapter" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 880
+Info (12128): Elaborating entity "altera_merlin_address_alignment" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|altera_merlin_width_adapter:fgpa_audio_0_avalon_slave_0_cmd_width_adapter|altera_merlin_address_alignment:check_and_align_address_to_size" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_merlin_width_adapter.sv Line: 388
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_avalon_st_adapter" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_avalon_st_adapter:avalon_st_adapter" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0.v Line: 909
+Info (12128): Elaborating entity "soc_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0" for hierarchy "soc_system:soc_system0|soc_system_mm_interconnect_0:mm_interconnect_0|soc_system_mm_interconnect_0_avalon_st_adapter:avalon_st_adapter|soc_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0:error_adapter_0" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/soc_system_mm_interconnect_0_avalon_st_adapter.v Line: 200
+Info (12128): Elaborating entity "altera_reset_controller" for hierarchy "soc_system:soc_system0|altera_reset_controller:rst_controller" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/soc_system.v Line: 487
+Info (12128): Elaborating entity "altera_reset_synchronizer" for hierarchy "soc_system:soc_system0|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_reset_controller.v Line: 208
+Info (12128): Elaborating entity "altera_reset_synchronizer" for hierarchy "soc_system:soc_system0|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_req_sync_uq1" File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/altera_reset_controller.v Line: 220
+Error (12006): Node instance "comb_5" instantiates undefined entity "audio_rom". Ensure that required library paths are specified correctly, define the specified entity, or change the instantiation. If this entity represents Intel FPGA or third-party IP, generate the synthesis files for the IP. File: /homes/user/stud/spring25/ym3064/4840ProjCode/audio/soc_system/synthesis/submodules/fpga_audio.sv Line: 38
+Info (144001): Generated suppressed messages file /homes/user/stud/spring25/ym3064/4840ProjCode/audio/output_files/soc_system.map.smsg
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 1 error, 23 warnings
+    Error: Peak virtual memory: 869 megabytes
+    Error: Processing ended: Mon May 12 00:22:37 2025
+    Error: Elapsed time: 00:03:46
+    Error: Total CPU time (on all processors): 00:03:25
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in /homes/user/stud/spring25/ym3064/4840ProjCode/audio/output_files/soc_system.map.smsg.
+
+
