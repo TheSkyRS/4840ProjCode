@@ -271,7 +271,7 @@ void lever_update(lever_t *lvr, const player_t *players)
             continue;
 
         // 切换为右置（玩家从左进）
-        if (!lvr->activated && px >= lvr->x + 24 && px <= lvr->x + 32)
+        if (lvr->activated && px >= lvr->x + 24 && px <= lvr->x + 32)
         {
             lvr->activated = false;
             lvr->handle_sprite_left.enable = false;
@@ -282,7 +282,7 @@ void lever_update(lever_t *lvr, const player_t *players)
         }
 
         // 切换为左置（玩家从右进）
-        if (lvr->activated && px >= lvr->x && px <= lvr->x + 8)
+        if (!lvr->activated && px >= lvr->x && px <= lvr->x + 8)
         {
             lvr->activated = true;
             lvr->handle_sprite_left.enable = true;
