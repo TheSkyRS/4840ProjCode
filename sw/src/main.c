@@ -162,10 +162,10 @@ int main()
                     /* code */
                 }
             }
-            // for (int i = 0; i < NUM_BUTTONS; i++)
-            // {
-            //     button_update(&buttons[i], players);
-            // }
+            for (int i = 0; i < NUM_BUTTONS; i++)
+            {
+                button_update(&buttons[i], players);
+            }
         }
         // === 2. 等待消隐区 ===
         do
