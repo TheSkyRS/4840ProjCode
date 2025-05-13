@@ -259,8 +259,10 @@ void lever_update(lever_t *lvr, const player_t *players)
     {
         const player_t *p = &players[i];
         float px = p->x + SPRITE_W_PIXELS / 2.0f;
-        float py = p->y + PLAYER_HEIGHT_PIXELS / 2.0f;
-
+        float py = p->y + 32;
+        if (p->type == PLAYER_WATERGIRL)
+            printf("Player[%d] foot=(%.1f, %.1f), Lever=(%.1f, %.1f), Activated=%d\n",
+                   i, px, py, lvr->x, lvr->y, lvr->activated);
         if (fabsf(py - lvr->y) > 12.0f)
             continue;
 
