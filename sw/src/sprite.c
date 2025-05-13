@@ -204,7 +204,7 @@ void box_update_position(box_t *box, player_t *players)
         //         break;
         //     }
         // }
-        if (is_box_blocked(px2 + SPRITE_W_PIXELS / 2.0f, py2, 1.0f, PLAYER_HITBOX_HEIGHT))
+        if (is_box_blocked(px2 + SPRITE_W_PIXELS / 2.0f - 2.0f, py2, 4.0f, PLAYER_HITBOX_HEIGHT))
         {
             c = i;
             overlaps_any_player = true;
