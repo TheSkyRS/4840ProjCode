@@ -271,13 +271,13 @@ void lever_update(lever_t *lvr, const player_t *players)
             continue;
 
         // 进入左侧检测区（记录）
-        if (px >= lvr->x && px <= lvr->x + 8)
+        if (px >= lvr->x + 8 && px <= lvr->x + 16)
         {
             lvr->left_entered[i] = true;
         }
 
         // 进入右侧检测区（记录）
-        if (px >= lvr->x + 24 && px <= lvr->x + 32)
+        if (px >= lvr->x + 17 && px <= lvr->x + 24)
         {
             lvr->right_entered[i] = true;
         }
