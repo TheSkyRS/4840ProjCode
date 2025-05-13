@@ -191,7 +191,7 @@ void box_update_position(box_t *box, player_t *players)
         if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
             printf("3\n");
-            if (players[i].type = PLAYER_WATERGIRL)
+            if (players[i].type == PLAYER_WATERGIRL)
                 c = 2;
             else
                 c = 1;
