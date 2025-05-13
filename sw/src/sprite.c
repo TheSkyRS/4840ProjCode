@@ -516,6 +516,6 @@ void button_update(button_t *btn, const player_t *players)
     btn->press_offset = max_depth;
 
     // sprite视觉下移
-    btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
+    btn->top_sprite.y = (uint16_t)(btn->y + 2 + btn->press_offset);
     sprite_update(&btn->top_sprite);
 }
