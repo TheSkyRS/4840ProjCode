@@ -134,7 +134,7 @@ bool is_death(float x, float y, float width, float height, player_type_t p)
         int ty = (int)(sy / TILE_SIZE);
 
         if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
-            return true;
+            return false;
 
         int tile = tilemap[ty][tx];
         if (p == PLAYER_WATERGIRL)
