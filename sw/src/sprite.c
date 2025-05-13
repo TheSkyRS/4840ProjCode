@@ -270,25 +270,41 @@ void lever_update(lever_t *lvr, const player_t *players)
         if (fabsf(py - lvr->y) > 12.0f)
             continue;
 
-        // 切换为右置（玩家从左进）
-        if (lvr->activated && px >= lvr->x + 24 && px <= lvr->x + 32)
+        // 进入左侧检测区（记录）
+        if (px >= lvr->x && px <= lvr->x + 8)
         {
-            lvr->activated = false;
-            lvr->handle_sprite_left.enable = false;
-            lvr->handle_sprite_right.enable = true;
-            sprite_update(&lvr->handle_sprite_left);
-            sprite_update(&lvr->handle_sprite_right);
-            break;
+            lvr->left_entered[i] = true;
         }
 
-        // 切换为左置（玩家从右进）
-        if (!lvr->activated && px >= lvr->x && px <= lvr->x + 8)
+        // 进入右侧检测区（记录）
+        if (px >= lvr->x + 24 && px <= lvr->x + 32)
+        {
+            lvr->right_entered[i] = true;
+        }
+
+        // 尝试由左→右切换（必须先在左边记录）
+        if (!lvr->activated && lvr->left_entered[i] && px >= lvr->x + 24 && px <= lvr->x + 32)
         {
             lvr->activated = true;
             lvr->handle_sprite_left.enable = true;
             lvr->handle_sprite_right.enable = false;
             sprite_update(&lvr->handle_sprite_left);
             sprite_update(&lvr->handle_sprite_right);
+            lvr->left_entered[i] = false;
+            lvr->right_entered[i] = false;
+            break;
+        }
+
+        // 尝试由右→左切换（必须先在右边记录）
+        if (lvr->activated && lvr->right_entered[i] && px >= lvr->x && px <= lvr->x + 8)
+        {
+            lvr->activated = false;
+            lvr->handle_sprite_left.enable = false;
+            lvr->handle_sprite_right.enable = true;
+            sprite_update(&lvr->handle_sprite_left);
+            sprite_update(&lvr->handle_sprite_right);
+            lvr->left_entered[i] = false;
+            lvr->right_entered[i] = false;
             break;
         }
     }

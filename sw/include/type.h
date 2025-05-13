@@ -3,6 +3,40 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+
+//////////////////////////////////////定量/////////////////////////////////////////////////////
+
+#define NUM_ITEMS 6
+#define VACTIVE 480
+#define NUM_BOXES 1
+#define NUM_LEVERS 1
+#define NUM_ELEVATORS 2
+
+#define SPRITE_H_PIXELS 16
+#define SPRITE_W_PIXELS 16
+#define BOX_PUSH_SPEED 1.0f
+#define BOX_FRICTION 0.2f
+
+// #define GRAVITY 0.4f
+// #define JUMP_VELOCITY -5.0f
+// #define MOVE_SPEED 1.5f
+#define GRAVITY 0.2f
+#define JUMP_VELOCITY -10.0f
+#define MOVE_SPEED 5.0f
+
+#define MAX_FRAME_TIMER 6 // 控制动画切换速度
+#define PLAYER_HEIGHT_PIXELS 28
+#define PLAYER_HITBOX_HEIGHT 24
+#define PLAYER_HITBOX_OFFSET_Y 4
+#define NUM_PLAYERS 2
+
+// === 地图常量 ===
+#define MAP_WIDTH 40  // tile 横向数量
+#define MAP_HEIGHT 30 // tile 纵向数量
+#define TILE_SIZE 16  // 每个 tile 像素大小（单位：px）
+
+#define PLAYER_NONE -1
+
 ////////////////////////////////////结构体///////////////////////////////////////////////////////
 // === sprite_t ===
 typedef struct
@@ -106,7 +140,9 @@ typedef struct
     // sprite_t handle_sprite;   // 拉杆主体
     sprite_t handle_sprite_left;
     sprite_t handle_sprite_right;
-    int sprite_base_index; // 精灵 index 起点（需初始化分配）
+    int sprite_base_index;           // 精灵 index 起点（需初始化分配）
+    bool left_entered[NUM_PLAYERS];  // 记录每个角色是否在左侧进入
+    bool right_entered[NUM_PLAYERS]; // 记录每个角色是否在右侧进入
 } lever_t;
 
 typedef struct
@@ -119,39 +155,6 @@ typedef struct
     sprite_t sprites[4];   // 横向电梯的4个 tile
     int sprite_base_index; // 精灵 index 起点
 } elevator_t;
-
-//////////////////////////////////////定量/////////////////////////////////////////////////////
-
-#define NUM_ITEMS 6
-#define VACTIVE 480
-#define NUM_BOXES 1
-#define NUM_LEVERS 1
-#define NUM_ELEVATORS 2
-
-#define SPRITE_H_PIXELS 16
-#define SPRITE_W_PIXELS 16
-#define BOX_PUSH_SPEED 1.0f
-#define BOX_FRICTION 0.2f
-
-// #define GRAVITY 0.4f
-// #define JUMP_VELOCITY -5.0f
-// #define MOVE_SPEED 1.5f
-#define GRAVITY 0.2f
-#define JUMP_VELOCITY -10.0f
-#define MOVE_SPEED 5.0f
-
-#define MAX_FRAME_TIMER 6 // 控制动画切换速度
-#define PLAYER_HEIGHT_PIXELS 28
-#define PLAYER_HITBOX_HEIGHT 24
-#define PLAYER_HITBOX_OFFSET_Y 4
-#define NUM_PLAYERS 2
-
-// === 地图常量 ===
-#define MAP_WIDTH 40  // tile 横向数量
-#define MAP_HEIGHT 30 // tile 纵向数量
-#define TILE_SIZE 16  // 每个 tile 像素大小（单位：px）
-
-#define PLAYER_NONE -1
 
 ///////////////////////////////////////数组////////////////////////////////////////////////////
 
