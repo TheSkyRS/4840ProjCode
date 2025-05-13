@@ -461,7 +461,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     // 上部按钮
     sprite_set(&btn->top_sprite, sprite_index_base + 0, 0);
     btn->top_sprite.x = (uint16_t)x;
-    btn->top_sprite.y = (uint16_t)y;
+    btn->top_sprite.y = (uint16_t)y + 2;
     btn->top_sprite.frame_id = btn->frame_top;
     btn->top_sprite.enable = true;
     sprite_update(&btn->top_sprite);
@@ -469,7 +469,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     // 左基座
     sprite_set(&btn->base_left_sprite, sprite_index_base + 1, 0);
     btn->base_left_sprite.x = (uint16_t)x - 8;
-    btn->base_left_sprite.y = (uint16_t)(y + 12);
+    btn->base_left_sprite.y = (uint16_t)(y + 13);
     btn->base_left_sprite.frame_id = btn->frame_base_left;
     btn->base_left_sprite.enable = true;
     sprite_update(&btn->base_left_sprite);
@@ -477,7 +477,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     // 右基座
     sprite_set(&btn->base_right_sprite, sprite_index_base + 2, 0);
     btn->base_right_sprite.x = (uint16_t)(x + 8);
-    btn->base_right_sprite.y = (uint16_t)(y + 12);
+    btn->base_right_sprite.y = (uint16_t)(y + 13);
     btn->base_right_sprite.frame_id = btn->frame_base_right;
     btn->base_right_sprite.enable = true;
     sprite_update(&btn->base_right_sprite);
