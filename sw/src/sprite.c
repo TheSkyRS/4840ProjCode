@@ -393,30 +393,32 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
     }
 
     // ⚠️ 在运动前预测下一位置是否会撞玩家
-    float next_y = elv->y + elv->vy;
-    bool will_collide_with_player = false;
-
-    for (int i = 0; i < NUM_PLAYERS; ++i)
+    if (elv->vy > 0.0f)
     {
-        const player_t *p = &players[i];
-        float px = p->x + SPRITE_W_PIXELS / 2.0f;
-        float py = p->y + PLAYER_HITBOX_OFFSET_Y;
+        float next_y = elv->y + elv->vy;
+        bool will_collide_with_player = false;
 
-        if (px >= elv->x && px <= elv->x + 64 &&
-            check_overlap(px, py, 1.0f, PLAYER_HITBOX_HEIGHT,
-                          elv->x, next_y, 64.0f, 16.0f))
+        for (int i = 0; i < NUM_PLAYERS; ++i)
         {
-            will_collide_with_player = true;
-            break;
+            const player_t *p = &players[i];
+            float px = p->x + SPRITE_W_PIXELS / 2.0f;
+            float py = p->y + PLAYER_HITBOX_OFFSET_Y;
+
+            if (px >= elv->x && px <= elv->x + 64 &&
+                check_overlap(px, py, 1.0f, PLAYER_HITBOX_HEIGHT,
+                              elv->x, next_y, 64.0f, 16.0f))
+            {
+                will_collide_with_player = true;
+                break;
+            }
+        }
+
+        if (will_collide_with_player)
+        {
+            elv->vy = 0;
+            return;
         }
     }
-
-    if (will_collide_with_player)
-    {
-        elv->vy = 0;
-        return;
-    }
-
     // 应用运动
     elv->y += elv->vy;
 
