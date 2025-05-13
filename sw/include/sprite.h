@@ -51,6 +51,8 @@ void item_init(item_t *item, float x, float y, uint8_t sprite_index, uint8_t fra
 void box_init(box_t *b, int tile_x, int tile_y, int sprite_base_index, uint8_t frame_id);
 void box_try_push(box_t *box, const player_t *player);
 void box_update_position(box_t *box, player_t *players);
+void box_update_sprite(box_t *b);
+
 bool is_box_blocked(float x, float y, float w, float h);
 bool check_overlap(float x1, float y1, float w1, float h1,
                    float x2, float y2, float w2, float h2);

@@ -310,7 +310,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
 
     // 左一块
     sprite_set(&elv->sprites[0], sprite_index_base + 0, 0);
-    elv->sprites[0].x = (uint16_t)(x + 1);
+    elv->sprites[0].x = (uint16_t)(x + 0);
     elv->sprites[0].y = (uint16_t)(y);
     elv->sprites[0].frame_id = LIFT_YELLOW_FRAME + 0;
     elv->sprites[0].enable = true;
@@ -318,7 +318,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
 
     // 左中块
     sprite_set(&elv->sprites[1], sprite_index_base + 1, 0);
-    elv->sprites[1].x = (uint16_t)(x + 16);
+    elv->sprites[1].x = (uint16_t)(x + 15);
     elv->sprites[1].y = (uint16_t)(y);
     elv->sprites[1].frame_id = LIFT_YELLOW_FRAME + 1;
     elv->sprites[1].enable = true;
