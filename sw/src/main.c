@@ -100,6 +100,7 @@ int main()
     }
 
     elevator_init(&elevators[0], 1, 16, 16, 19, 14);
+    elevator_init(&elevators[1], 35, 12, 12, 16, 14);
 
     unsigned col = 0, row = 0;
     while (1)
@@ -155,7 +156,12 @@ int main()
             }
             for (int i = 0; i < 1; i++)
             {
-                elevator_update(&elevators[i], levers[0].activated, players);
+                if (i = 0)
+                    elevator_update(&elevators[i], levers[0].activated, players);
+                if (i = 1)
+                {
+                    /* code */
+                }
             }
         }
         // === 2. 等待消隐区 ===
