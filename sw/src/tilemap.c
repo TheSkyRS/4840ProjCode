@@ -122,7 +122,6 @@ void item_place_on_tile(item_t *item, int tile_x, int tile_y)
 
 bool is_death(float x, float y, float width, float height, player_type_t p)
 {
-    printf("3");
 
     float center_x = x + width / 2.0f;
     for (int i = PLAYER_HITBOX_OFFSET_Y; i < (int)height; ++i)
