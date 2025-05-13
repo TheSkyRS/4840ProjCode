@@ -220,37 +220,34 @@ bool check_overlap(float x1, float y1, float w1, float h1,
 }
 void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_base)
 {
-    float x = tile_x * 16;
-    float y = tile_y * 16;
-
-    lvr->x = x;
-    lvr->y = y;
+    lvr->x = tile_x * 16;
+    lvr->y = tile_y * 16;
     lvr->activated = false;
     lvr->sprite_base_index = sprite_index_base;
 
-    // 帧号赋值
+    // 帧定义
     lvr->base_frame[0] = LEVER_BASE_FRAME + 0;
     lvr->base_frame[1] = LEVER_BASE_FRAME + 1;
-    lvr->handle_frames[0] = LEVER_ANIM_FRAME + 0; // ←左
+    lvr->handle_frames[0] = LEVER_ANIM_FRAME + 0; // ←
     lvr->handle_frames[1] = LEVER_ANIM_FRAME + 1; // 中
-    lvr->handle_frames[2] = LEVER_ANIM_FRAME + 2; // →右
+    lvr->handle_frames[2] = LEVER_ANIM_FRAME + 2; // →
 
-    // 设置底座精灵（3 tile）
-    for (int i = 0; i < 3; ++i)
+    // 设置底座精灵（2 tile）
+    for (int i = 0; i < 2; ++i)
     {
         sprite_set(&lvr->base_sprites[i], sprite_index_base + i, 0);
-        lvr->base_sprites[i].x = (uint16_t)(x + i * 16);
-        lvr->base_sprites[i].y = (uint16_t)y;
-        lvr->base_sprites[i].frame_id = lvr->base_frame[i % 2]; // 交替
+        lvr->base_sprites[i].x = (uint16_t)(lvr->x + i * 16);
+        lvr->base_sprites[i].y = (uint16_t)(lvr->y);
+        lvr->base_sprites[i].frame_id = lvr->base_frame[i];
         lvr->base_sprites[i].enable = true;
         sprite_update(&lvr->base_sprites[i]);
     }
 
-    // 设置拉杆柄 sprite（1 tile，居中上移）
-    sprite_set(&lvr->handle_sprite, sprite_index_base + 3, 0);
-    lvr->handle_sprite.x = (uint16_t)(x + 16);
-    lvr->handle_sprite.y = (uint16_t)(y - 12);
-    lvr->handle_sprite.frame_id = lvr->handle_frames[1]; // 初始为中间帧
+    // 设置拉杆柄
+    sprite_set(&lvr->handle_sprite, sprite_index_base + 2, 0);
+    lvr->handle_sprite.x = (uint16_t)(lvr->x + 8);       // 居中偏左
+    lvr->handle_sprite.y = (uint16_t)(lvr->y - 12);      // 上抬
+    lvr->handle_sprite.frame_id = lvr->handle_frames[1]; // 中间帧
     lvr->handle_sprite.enable = true;
     sprite_update(&lvr->handle_sprite);
 }
