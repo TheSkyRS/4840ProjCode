@@ -155,6 +155,7 @@ void box_update_position(box_t *box, player_t *players)
         blocked |= is_tile_blocked(next_x + 1, box->y + 2, 1, 28);
 
     bool collides_with_player = false;
+    bool overlaps_any_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
         float px = players[i].x;
@@ -187,9 +188,14 @@ void box_update_position(box_t *box, player_t *players)
                 break;
             }
         }
+        if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
+        {
+            overlaps_any_player = true;
+            break;
+        }
     }
 
-    if (!blocked && !collides_with_player)
+    if (!blocked && !collides_with_player && !overlaps_any_player)
     {
         box->x = next_x;
     }
