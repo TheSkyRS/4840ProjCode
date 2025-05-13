@@ -133,8 +133,8 @@ void box_try_push(box_t *box, const player_t *p)
     }
 
     float p_center_x = px + pw / 2.0f;
-    float b_left = bx;
-    float b_right = bx + bw;
+    float b_left = bx + 2;
+    float b_right = bx + 30;
 
     if ((fabsf(p_center_x - b_left) <= 2.0f) && p->vx > 0)
     {
@@ -179,7 +179,6 @@ void box_update_position(box_t *box, player_t *players)
             float block_x = box->x + 2;
             if (p_center_x >= block_x && p_center_x <= box->x + 16)
             {
-                printf("[COLLISION-RIGHT] Player[%d] center %.1f hit box edge %.1f\n", i, p_center_x, block_x);
                 collides_with_player = true;
                 break;
             }
@@ -189,7 +188,6 @@ void box_update_position(box_t *box, player_t *players)
             float block_x = box->x + 30;
             if (p_center_x <= block_x && p_center_x >= box->x + 16)
             {
-                printf("[COLLISION-LEFT] Player[%d] center %.1f hit box edge %.1f\n", i, p_center_x, block_x);
                 collides_with_player = true;
                 break;
             }
@@ -200,8 +198,8 @@ void box_update_position(box_t *box, player_t *players)
     {
         box->x = next_x;
     }
-    printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | player_block=%d | player[0]->vx=%.2f\n",
-           box->vx, blocked, collides_with_player, players[0].vx);
+    // printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | player_block=%d | player[0]->vx=%.2f\n",
+    //        box->vx, blocked, collides_with_player, players[0].vx);
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
     else if (box->vx < 0)
