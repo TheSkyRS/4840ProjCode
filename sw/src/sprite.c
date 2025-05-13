@@ -173,8 +173,8 @@ void box_update_position(box_t *box, player_t *players)
         float box_center_x = box->x + 16;
 
         // 角色在箱子“后方”的情况应忽略
-        if ((box->vx > 0 && player_center_x < box_center_x - 8) ||
-            (box->vx < 0 && player_center_x > box_center_x + 8))
+        if ((box->vx > 0 && player_center_x < box_center_x - 2) ||
+            (box->vx < 0 && player_center_x > box_center_x + 2))
         {
             continue;
         }
