@@ -295,7 +295,7 @@ void lever_update(lever_t *lvr, const player_t *players)
     }
 }
 
-void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y, float max_tile_y, uint8_t sprite_index_base)
+void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y, float max_tile_y, uint8_t sprite_index_base, uint8_t frame_index)
 {
     float x = tile_x * 16;
     float y = tile_y * 16;
@@ -313,7 +313,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     sprite_set(&elv->sprites[0], sprite_index_base + 0, 0);
     elv->sprites[0].x = (uint16_t)(x + 1);
     elv->sprites[0].y = (uint16_t)(y);
-    elv->sprites[0].frame_id = LIFT_YELLOW_FRAME + 0;
+    elv->sprites[0].frame_id = frame_index + 0;
     elv->sprites[0].enable = true;
     sprite_update(&elv->sprites[0]);
 
@@ -321,7 +321,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     sprite_set(&elv->sprites[1], sprite_index_base + 1, 0);
     elv->sprites[1].x = (uint16_t)(x + 16);
     elv->sprites[1].y = (uint16_t)(y);
-    elv->sprites[1].frame_id = LIFT_YELLOW_FRAME + 1;
+    elv->sprites[1].frame_id = frame_index + 1;
     elv->sprites[1].enable = true;
     sprite_update(&elv->sprites[1]);
 
@@ -329,7 +329,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     sprite_set(&elv->sprites[2], sprite_index_base + 2, 0);
     elv->sprites[2].x = (uint16_t)(x + 32);
     elv->sprites[2].y = (uint16_t)(y);
-    elv->sprites[2].frame_id = LIFT_YELLOW_FRAME + 2;
+    elv->sprites[2].frame_id = frame_index + 2;
     elv->sprites[2].enable = true;
     sprite_update(&elv->sprites[2]);
 
@@ -337,11 +337,10 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     sprite_set(&elv->sprites[3], sprite_index_base + 3, 0);
     elv->sprites[3].x = (uint16_t)(x + 47);
     elv->sprites[3].y = (uint16_t)(y);
-    elv->sprites[3].frame_id = LIFT_YELLOW_FRAME + 3;
+    elv->sprites[3].frame_id = frame_index + 3;
     elv->sprites[3].enable = true;
     sprite_update(&elv->sprites[3]);
 }
-
 bool is_elevator_blocked(float x, float y, float w, float h, float *vy_out)
 {
     for (int i = 0; i < NUM_ELEVATORS; i++)

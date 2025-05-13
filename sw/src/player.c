@@ -7,7 +7,7 @@
 
 #define GRAVITY 0.2f
 #define JUMP_VELOCITY -4.0f
-#define MOVE_SPEED 1.5f
+#define MOVE_SPEED 2.0f
 
 extern box_t boxes[NUM_BOXES];
 void debug_print_player_state(player_t *p, const char *tag)

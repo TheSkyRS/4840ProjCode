@@ -99,8 +99,8 @@ int main()
         levers[0].right_entered[i] = false;
     }
 
-    elevator_init(&elevators[0], 1, 16, 16, 19, 14);
-    elevator_init(&elevators[1], 35, 12, 12, 16, 18);
+    elevator_init(&elevators[0], 1, 16, 16, 19, 14, 51);
+    elevator_init(&elevators[1], 35, 12, 12, 16, 18, 57);
 
     unsigned col = 0, row = 0;
     while (1)

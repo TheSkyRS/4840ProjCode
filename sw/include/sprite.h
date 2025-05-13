@@ -60,7 +60,7 @@ bool check_overlap(float x1, float y1, float w1, float h1,
 void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_base);
 void lever_update(lever_t *lvr, const player_t *players);
 
-void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y, float max_tile_y, uint8_t sprite_index_base);
+void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y, float max_tile_y, uint8_t sprite_index_base, uint8_t frame_index);
 bool is_elevator_blocked(float x, float y, float w, float h, float *vy_out);
 void elevator_update(elevator_t *elv, bool go_up, player_t *players);
 #endif
