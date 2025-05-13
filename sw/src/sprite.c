@@ -190,10 +190,10 @@ void box_update_position(box_t *box, player_t *players)
         }
         if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
-            if (i = 0)
-                c = 1;
-            else
+            if (players[i].type = PLAYER_WATERGIRL)
                 c = 2;
+            else
+                c = 1;
             overlaps_any_player = true;
             break;
         }
