@@ -167,17 +167,19 @@ void box_update_position(box_t *box, player_t *players)
         float pw = SPRITE_W_PIXELS;
         float ph = PLAYER_HITBOX_HEIGHT;
 
+        // 玩家纵向必须和箱子有重叠才考虑
         bool vertical_overlap = (py + ph > box->y) && (py < box->y + 32);
-
         if (!vertical_overlap)
             continue;
+
+        float p_center_x = px + pw / 2.0f; // 即 px + 8.0f
 
         if (box->vx > 0)
         {
             float block_x = box->x + 2;
-            if ((px + pw) >= block_x && px < block_x)
+            if (p_center_x >= block_x && p_center_x <= box->x + 16)
             {
-                printf("[COLLISION-RIGHT] Player[%d] right edge %.1f hit box edge %.1f\n", i, px + pw, block_x);
+                printf("[COLLISION-RIGHT] Player[%d] center %.1f hit box edge %.1f\n", i, p_center_x, block_x);
                 collides_with_player = true;
                 break;
             }
@@ -185,9 +187,9 @@ void box_update_position(box_t *box, player_t *players)
         else if (box->vx < 0)
         {
             float block_x = box->x + 30;
-            if (px <= block_x && (px + pw) > block_x)
+            if (p_center_x <= block_x && p_center_x >= box->x + 16)
             {
-                printf("[COLLISION-LEFT] Player[%d] left edge %.1f hit box edge %.1f\n", i, px, block_x);
+                printf("[COLLISION-LEFT] Player[%d] center %.1f hit box edge %.1f\n", i, p_center_x, block_x);
                 collides_with_player = true;
                 break;
             }
