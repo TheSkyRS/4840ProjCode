@@ -166,8 +166,8 @@ typedef struct
     uint8_t frame_top;
     uint8_t frame_base_left;
     uint8_t frame_base_right;
-
-    bool pressed; // 后续可用于功能判断
+    float press_offset; // 当前压下深度，单位像素（0~8）
+    bool pressed;       // 后续可用于功能判断
 } button_t;
 
 ///////////////////////////////////////数组////////////////////////////////////////////////////

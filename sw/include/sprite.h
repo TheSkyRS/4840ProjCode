@@ -66,4 +66,6 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players);
 
 void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index_base);
 
+void button_update(button_t *btn, const player_t *players);
+
 #endif
