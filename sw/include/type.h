@@ -42,6 +42,7 @@ typedef struct
     float vx;
     bool active;
     sprite_t sprites[4];
+    int pushing_player_type; // -1 表示没有玩家正在推动
 } box_t;
 
 // === player_type_t ===
