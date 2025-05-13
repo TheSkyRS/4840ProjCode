@@ -248,12 +248,12 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
     sprite_set(&lvr->handle_sprite_left, sprite_index_base + 2, 0);
     lvr->handle_sprite_left.x = (uint16_t)(lvr->x + 5);
     lvr->handle_sprite_left.y = (uint16_t)(lvr->y - 16);
-    lvr->handle_sprite_left.frame_id = lvr->handle_frames[0]; // 中间帧
+    lvr->handle_sprite_left.frame_id = lvr->handle_frames[1]; // 中间帧
     lvr->handle_sprite_left.enable = true;
     sprite_update(&lvr->handle_sprite_left);
     // 设置拉杆柄
     sprite_set(&lvr->handle_sprite_right, sprite_index_base + 3, 0);
-    lvr->handle_sprite_right.x = (uint16_t)(lvr->x + 21);
+    lvr->handle_sprite_right.x = (uint16_t)(lvr->x + 13);
     lvr->handle_sprite_right.y = (uint16_t)(lvr->y - 16);
     lvr->handle_sprite_right.frame_id = lvr->handle_frames[2]; // 中间帧
     lvr->handle_sprite_right.enable = true;
