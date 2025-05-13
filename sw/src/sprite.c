@@ -485,13 +485,13 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
 
 void button_update(button_t *btn, const player_t *players)
 {
-    printf("[1]TOP Got %d, L Got %d, R Got %d\n", btn->top_sprite.index, btn->base_right_sprite.index, btn->base_right_sprite.index);
+
     btn->pressed = false;
     float max_depth = 0.0f;
 
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
-        printf("[2]TOP Got %d, L Got %d, R Got %d\n", btn->top_sprite.index, btn->base_right_sprite.index, btn->base_right_sprite.index);
+
         float px_center = players[i].x + SPRITE_W_PIXELS / 2.0f;
 
         // 判断是否横向站在按钮上
@@ -509,7 +509,6 @@ void button_update(button_t *btn, const player_t *players)
                 btn->pressed = true;
         }
     }
-    printf("[3]TOP Got %d, L Got %d, R Got %d\n", btn->top_sprite.index, btn->base_left_sprite.index, btn->base_right_sprite.index);
     btn->press_offset = max_depth;
 
     // 视觉：下移 sprite 做出按钮压下效果

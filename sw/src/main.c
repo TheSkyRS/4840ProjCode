@@ -99,7 +99,7 @@ int main()
     elevator_init(&elevators[1], 35, 12, 12, 16, 18, 57);
 
     button_init(&buttons[0], 32, 12, 26);
-    button_init(&buttons[0], 32, 17, 29);
+    button_init(&buttons[1], 32, 17, 29);
 
     unsigned col = 0, row = 0;
     while (1)
@@ -159,7 +159,7 @@ int main()
                     elevator_update(&elevators[i], levers[0].activated, players);
                 if (i == 1)
                 {
-                    /* code */
+                    elevator_update(&elevators[i], buttons[0].pressed || buttons[1].pressed, players);
                 }
             }
             for (int i = 0; i < NUM_BUTTONS; i++)
