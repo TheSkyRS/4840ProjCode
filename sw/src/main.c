@@ -156,9 +156,9 @@ int main()
             }
             for (int i = 0; i < 1; i++)
             {
-                if (i = 0)
+                if (i == 0)
                     elevator_update(&elevators[i], levers[0].activated, players);
-                if (i = 1)
+                if (i == 1)
                 {
                     /* code */
                 }
