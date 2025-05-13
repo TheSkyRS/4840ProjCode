@@ -1,11 +1,11 @@
 #include "sprite.h"
 #include "hw_interact.h"
-#include <math.h> // Ϊ sinf �ṩ����
+#include <math.h> //
 #include "type.h"
 #include <stdio.h>
 
 extern box_t boxes[NUM_BOXES];
-// ��ʼ�� sprite ������֡��
+
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
 {
     s->index = index;
@@ -16,7 +16,6 @@ void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
     s->frame_count = frame_count;
 }
 
-// ����֡������ѭ����
 void sprite_animate(sprite_t *s)
 {
     if (s->frame_count > 0)
@@ -26,13 +25,11 @@ void sprite_animate(sprite_t *s)
     }
 }
 
-// ���� sprite ��Ӳ��
 void sprite_update(sprite_t *s)
 {
     write_sprite(s->index, s->enable, s->flip, s->x, s->y, s->frame_id);
 }
 
-// �ر� sprite ��ʾ
 void sprite_clear(sprite_t *s)
 {
     s->enable = false;
@@ -116,8 +113,8 @@ void box_update_sprite(box_t *b)
 
 void box_try_push(box_t *box, const player_t *p)
 {
-    if (p->type != PLAYER_WATERGIRL)
-        return; // ֻ��ӡˮŮ���ĵ�����Ϣ
+    if (p->type != PLAYER_FIREBOY)
+        return;
 
     float pw = SPRITE_W_PIXELS;
     float ph = PLAYER_HITBOX_HEIGHT;
@@ -132,8 +129,6 @@ void box_try_push(box_t *box, const player_t *p)
     bool vertical_overlap = (py + ph > by) && (py < by + bh);
     if (!vertical_overlap)
     {
-        printf("[PUSH] No vertical overlap: py=%.1f~%.1f  box_y=%.1f~%.1f\n",
-               py, py + ph, by, by + bh);
         return;
     }
 
@@ -141,24 +136,16 @@ void box_try_push(box_t *box, const player_t *p)
     float b_left = bx;
     float b_right = bx + bw;
 
-    printf("[PUSH] Watergirl center x=%.1f, vx=%.1f | Box left=%.1f, right=%.1f\n",
-           p_center_x, p->vx, b_left, b_right);
-
     if ((fabsf(p_center_x - b_left) <= 2.0f) && p->vx > 0)
     {
-        printf("  [PUSH RIGHT] Triggered push: center %.1f close to box_left %.1f\n",
-               p_center_x, b_left);
         box->vx = BOX_PUSH_SPEED;
     }
     else if ((fabsf(p_center_x - b_right) <= 2.0f) && p->vx < 0)
     {
-        printf("  [PUSH LEFT] Triggered push: center %.1f close to box_right %.1f\n",
-               p_center_x, b_right);
         box->vx = -BOX_PUSH_SPEED;
     }
     else
     {
-        printf("  [NO PUSH] No proximity or wrong direction\n");
     }
 }
 
@@ -170,8 +157,7 @@ void box_update_position(box_t *box, player_t *players)
     if (box->vx > 0)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
-        blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
-    printf("[BOX] box->vx=%.2f, next_x=%.1f\n", box->vx, next_x);
+        blocked |= is_tile_blocked(next_x + 1, box->y + 2, 1, 28);
 
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
@@ -181,22 +167,34 @@ void box_update_position(box_t *box, player_t *players)
         float pw = SPRITE_W_PIXELS;
         float ph = PLAYER_HITBOX_HEIGHT;
 
-        float player_center_x = px + pw / 2.0f;
-        float box_center_x = box->x + 16;
-
-        if ((box->vx > 0 && player_center_x < box_center_x) ||
-            (box->vx < 0 && player_center_x > box_center_x))
-        {
+        // 玩家纵向必须和箱子有重叠才考虑
+        bool vertical_overlap = (py + ph > box->y) && (py < box->y + 32);
+        if (!vertical_overlap)
             continue;
-        }
 
-        if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
+        float p_center_x = px + pw / 2.0f; // 即 px + 8.0f
+
+        if (box->vx > 0)
         {
-            collides_with_player = true;
-            break;
+            float block_x = box->x + 2;
+            if (p_center_x >= block_x && p_center_x <= box->x + 16)
+            {
+                printf("[COLLISION-RIGHT] Player[%d] center %.1f hit box edge %.1f\n", i, p_center_x, block_x);
+                collides_with_player = true;
+                break;
+            }
+        }
+        else if (box->vx < 0)
+        {
+            float block_x = box->x + 30;
+            if (p_center_x <= block_x && p_center_x >= box->x + 16)
+            {
+                printf("[COLLISION-LEFT] Player[%d] center %.1f hit box edge %.1f\n", i, p_center_x, block_x);
+                collides_with_player = true;
+                break;
+            }
         }
     }
-    printf("       blocked=%d, collides_with_player=%d\n", blocked, collides_with_player);
 
     if (!blocked && !collides_with_player)
     {
