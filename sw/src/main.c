@@ -37,6 +37,7 @@ Logo:
             game_action_t action = get_player_action(i);
             if (action != ACTION_NONE)
             {
+                goto Game;
             }
         }
     }
