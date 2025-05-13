@@ -9,7 +9,9 @@ module vga_top(input logic        clk,
                    output logic [7:0] VGA_R, VGA_G, VGA_B,
                    output logic 	   VGA_CLK, VGA_HS, VGA_VS,
                    VGA_BLANK_n,
-                   output logic 	   VGA_SYNC_n);
+                   output logic 	   VGA_SYNC_n,
+                   
+                   output logic [2:0] audio_ctrl);
 
     // current VGA pixel coord
     logic [10:0]	   hcount;
@@ -124,6 +126,8 @@ module vga_top(input logic        clk,
             wren_pixel_disp <= 0;
 
             switch <= 0;
+
+            audio_ctrl <= 0;
         end
         else begin
             if (vcount < 479 || vcount == 524) begin
@@ -153,7 +157,11 @@ module vga_top(input logic        clk,
             if (chipselect) begin
                 if (write) begin
                     case (address)
-                        6'h0: ctrl_reg <= writedata;
+                        6'h0: begin
+                            ctrl_reg <= writedata;
+                            // audio part
+                            audio_ctrl <= writedata[31:29];
+                        end
                     endcase
                 end
                 else begin // read
