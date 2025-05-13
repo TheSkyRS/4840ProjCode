@@ -465,6 +465,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->top_sprite.frame_id = btn->frame_top;
     btn->top_sprite.enable = true;
     sprite_update(&btn->top_sprite);
+    printf("TOP Got %d\n", btn->top_sprite.index);
 
     // 左基座
     sprite_set(&btn->base_left_sprite, sprite_index_base + 1, 0);
@@ -473,6 +474,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->base_left_sprite.frame_id = btn->frame_base_left;
     btn->base_left_sprite.enable = true;
     sprite_update(&btn->base_left_sprite);
+    printf("L Got %d\n", btn->base_left_sprite.index);
 
     // 右基座
     sprite_set(&btn->base_right_sprite, sprite_index_base + 2, 0);
@@ -481,6 +483,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->base_right_sprite.frame_id = btn->frame_base_right;
     btn->base_right_sprite.enable = true;
     sprite_update(&btn->base_right_sprite);
+    printf("R Got %d\n", btn->base_right_sprite);
 }
 
 void button_update(button_t *btn, const player_t *players)
@@ -510,8 +513,7 @@ void button_update(button_t *btn, const player_t *players)
 
     btn->press_offset = max_depth;
 
-    printf("[ERROR] Button sprite index overflow! Got %d\n", btn->top_sprite.index);
-    // 视觉：下移 sprite 做出按钮压下效果
-    btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
-    sprite_update(&btn->top_sprite);
+    // // 视觉：下移 sprite 做出按钮压下效果
+    // btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
+    // sprite_update(&btn->top_sprite);
 }
