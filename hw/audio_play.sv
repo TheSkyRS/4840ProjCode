@@ -20,8 +20,8 @@ module audio_play(input logic        clk,
                 output logic [15:0] sample_data_r,
                 output logic sample_valid_r);
 
-    logic [15:0] sound_begin_addresses [3:0] = {0 ,16'hAFEB, 16'hc555, 16'hcade};
-    logic [15:0] sound_end_addresses [3:0] = {0 ,16'hc554, 16'hcadd, 16'hd5be};
+    logic [15:0] sound_begin_addresses [3:0] = '{16'h0 ,16'hAFEB, 16'hc555, 16'hcade};
+    logic [15:0] sound_end_addresses [3:0] = '{16'h0 ,16'hc554, 16'hcadd, 16'hd5be};
 
     logic [15:0] sound_address;
     logic [15:0] sound_end_address;

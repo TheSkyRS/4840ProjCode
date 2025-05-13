@@ -275,7 +275,16 @@ module soc_system_top(
       .vga_hs (VGA_HS),
       .vga_vs (VGA_VS),
       .vga_blank_n (VGA_BLANK_N),
-      .vga_sync_n (VGA_SYNC_N)
+      .vga_sync_n (VGA_SYNC_N),
+
+      // connect the audio codec chip
+     .audio_0_external_interface_BCLK                  (AUD_BCLK),
+     .audio_0_external_interface_DACDAT                (AUD_DACDAT),
+     .audio_0_external_interface_DACLRCK               (AUD_DACLRCK),
+     .audio_pll_0_audio_clk_clk                        (AUD_XCK),
+      // connect the audio/video config
+     .audio_and_video_config_0_external_interface_SDAT (FPGA_I2C_SDAT),
+     .audio_and_video_config_0_external_interface_SCLK (FPGA_I2C_SCLK)
   );
 
    // The following quiet the "no driver" warnings for output
@@ -286,10 +295,10 @@ module soc_system_top(
    assign ADC_SCLK = SW[0];
    
    assign AUD_ADCLRCK = SW[1] ? SW[0] : 1'bZ;
-   assign AUD_BCLK = SW[1] ? SW[0] : 1'bZ;
-   assign AUD_DACDAT = SW[0];
-   assign AUD_DACLRCK = SW[1] ? SW[0] : 1'bZ;
-   assign AUD_XCK = SW[0];      
+   // assign AUD_BCLK = SW[1] ? SW[0] : 1'bZ;
+   // assign AUD_DACDAT = SW[0];
+   // assign AUD_DACLRCK = SW[1] ? SW[0] : 1'bZ;
+   // assign AUD_XCK = SW[0];      
 
    assign DRAM_ADDR = { 13{ SW[0] } };
    assign DRAM_BA = { 2{ SW[0] } };
@@ -299,8 +308,8 @@ module soc_system_top(
 
    assign FAN_CTRL = SW[0];
 
-   assign FPGA_I2C_SCLK = SW[0];
-   assign FPGA_I2C_SDAT = SW[1] ? SW[0] : 1'bZ;
+   // assign FPGA_I2C_SCLK = SW[0];
+   // assign FPGA_I2C_SDAT = SW[1] ? SW[0] : 1'bZ;
 
    assign GPIO_0 = SW[1] ? { 36{ SW[0] } } : { 36{ 1'bZ } };
    assign GPIO_1 = SW[1] ? { 36{ SW[0] } } : { 36{ 1'bZ } };   
