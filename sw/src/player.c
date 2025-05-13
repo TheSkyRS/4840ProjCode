@@ -1,6 +1,7 @@
 #include "player.h"
 #include "joypad_input.h"
 #include "tilemap.h"
+#include "hw_interact.h"
 #include <math.h> // 用于 floor()
 #include "type.h"
 #include <stdio.h> // 顶部加这个
@@ -54,6 +55,8 @@ void player_handle_input(player_t *p, int player_index)
     // 处理跳跃，必须放前面
     if (action == ACTION_JUMP && p->on_ground)
     {
+        set_map_and_audio(1, 1, 0);
+        set_map_and_audio(1, 1, 1);
         p->vy = JUMP_VELOCITY;
         p->on_ground = false;
         p->state = STATE_JUMPING;
