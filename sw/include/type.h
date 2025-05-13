@@ -125,7 +125,7 @@ typedef struct
 #define NUM_ITEMS 6
 #define VACTIVE 480
 #define NUM_BOXES 1
-#define NUM_LEVERS 2
+#define NUM_LEVERS 1
 #define NUM_ELEVATOR 2
 
 #define SPRITE_H_PIXELS 16
@@ -166,11 +166,12 @@ extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 ///////////////////////////////////////////////////////////////////////////////////////////
 #endif // TYPEDEFS_H
 
-// 火男01
-// 水女23
+// 火男0 1
+// 水女2 3
 // 钻石4 5 6 7 8 9
 // 箱子10 11 12 13
 // 电梯黄 14 15 16 17
 // 电梯紫 18 19 20 21
 // 拉杆黄 22 23 24 25
-// 按钮   26 27
+// 按钮   30 31
+//
