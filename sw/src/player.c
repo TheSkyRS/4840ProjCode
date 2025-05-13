@@ -138,7 +138,7 @@ void player_update_physics(player_t *p)
     }
     else if (!is_tile_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) &&
              !is_box_blocked(new_x + SPRITE_W_PIXELS / 2.0f, p->y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT) &&
-             !is_elevator_blocked(new_x + SPRITE_W_PIXELS / 2.0f, p->y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT - 4, &tempVy))
+             !is_elevator_blocked(new_x + SPRITE_W_PIXELS / 2.0f - 2, p->y + PLAYER_HITBOX_OFFSET_Y, 4.0f, PLAYER_HITBOX_HEIGHT - 4, &tempVy))
     {
         p->x = new_x;
     }
