@@ -42,7 +42,7 @@ const int tilemap[30][40] = {
 
 #define COLLISION_MARGIN 1.0f
 
-bool is_tile_blocked(float x, float y, float width, float height, player_type_t player)
+bool is_tile_blocked(float x, float y, float width, float height)
 {
     float center_x = x + width / 2.0f;
 
@@ -61,12 +61,6 @@ bool is_tile_blocked(float x, float y, float width, float height, player_type_t 
 
         // 普通墙壁
         if (tile == TILE_WALL)
-            return true;
-
-        // 危险地形判定（死亡）
-        if (player == PLAYER_FIREBOY && (tile == TILE_WATER || tile == TILE_POISON))
-            return true;
-        if (player == PLAYER_WATERGIRL && (tile == TILE_FIRE || tile == TILE_POISON))
             return true;
 
         // 斜天花板处理（角色头顶打到）
@@ -126,10 +120,9 @@ void item_place_on_tile(item_t *item, int tile_x, int tile_y)
     item->sprite.y = (uint16_t)item->y;
 }
 
-bool is_death(float x, float y, float width, float height, player_type_t player)
+bool is_death(float x, float y, float width, float height, player_type_t p)
 {
     float center_x = x + width / 2.0f;
-
     for (int i = PLAYER_HITBOX_OFFSET_Y; i < (int)height; ++i)
     {
         float sx = center_x;
@@ -142,11 +135,15 @@ bool is_death(float x, float y, float width, float height, player_type_t player)
             return true;
 
         int tile = tilemap[ty][tx];
+        if (p == PLAYER_WATERGIRL)
+        {
+            printf("%d + 1", tile);
+        }
 
         // 危险地形判定（死亡）
-        if (player == PLAYER_FIREBOY && (tile == TILE_WATER || tile == TILE_POISON))
+        if (p == PLAYER_FIREBOY && (tile == TILE_WATER || tile == TILE_POISON))
             return true;
-        if (player == PLAYER_WATERGIRL && (tile == TILE_FIRE || tile == TILE_POISON))
+        if (p == PLAYER_WATERGIRL && (tile == TILE_FIRE || tile == TILE_POISON))
             return true;
         return false;
     }
