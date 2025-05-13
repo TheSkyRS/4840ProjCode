@@ -24,7 +24,7 @@ int main()
         return -1;
     }
 
-    write_ctrl(0x00000001); // 启动 VGA 控制器
+    set_map_and_audio(0, 0, 0); // 启动 VGA 控制器
     for (int i = 0; i < 32; i++)
     {
         write_sprite(i, 0, 0, 0, 0, 0); // disable=0，位置0，帧0
