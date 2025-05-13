@@ -492,18 +492,18 @@ void button_update(button_t *btn, const player_t *players)
     {
         float px_center = players[i].x + SPRITE_W_PIXELS / 2.0f;
         float foot_y = players[i].y + PLAYER_HEIGHT_PIXELS - 10;
-
+        if (players[i].type == PLAYER_FIREBOY)
+        {
+            printf("[DEBUG] Fireboy foot_y=%.1f, button_y=%.1f → diff=%.1f\n",
+                   foot_y, btn->y, foot_y - btn->y);
+        }
         // 横向必须在按钮区域内
         if (px_center >= btn->x && px_center <= btn->x + 16)
         {
             // 垂直距离必须接近按钮顶部（贴地）
             if (fabsf(foot_y - btn->y) <= 4.0f)
             {
-                if (players[i].type == PLAYER_FIREBOY)
-                {
-                    printf("[DEBUG] Fireboy foot_y=%.1f, button_y=%.1f → diff=%.1f\n",
-                           foot_y, btn->y, foot_y - btn->y);
-                }
+
                 float dx = fabsf(px_center - (btn->x + 8.0f)); // 中心偏移
                 if (dx > 8.0f)
                     dx = 8.0f;
