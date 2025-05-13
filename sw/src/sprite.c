@@ -133,19 +133,17 @@ void box_try_push(box_t *box, const player_t *p)
     }
 
     float p_center_x = px + pw / 2.0f;
-    float b_left = bx + 2;
-    float b_right = bx + 30;
+    float b_left = bx;
+    float b_right = bx + bw;
+    const float PUSH_TOLERANCE = 5.0f; // 放宽至 5 像素范围
 
-    if ((fabsf(p_center_x - b_left) <= 2.0f) && p->vx > 0)
+    if ((fabsf(p_center_x - b_left) <= PUSH_TOLERANCE) && p->vx > 0)
     {
         box->vx = BOX_PUSH_SPEED;
     }
-    else if ((fabsf(p_center_x - b_right) <= 2.0f) && p->vx < 0)
+    else if ((fabsf(p_center_x - b_right) <= PUSH_TOLERANCE) && p->vx < 0)
     {
         box->vx = -BOX_PUSH_SPEED;
-    }
-    else
-    {
     }
 }
 
