@@ -134,7 +134,7 @@ void player_update_physics(player_t *p)
             if (boxes[0].vx != 0)
                 p->vx = boxes[0].vx;
             else
-                p->vx = 0.1f
+                p->vx = 0.1f;
         }
     }
 
