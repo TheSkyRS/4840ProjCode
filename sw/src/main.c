@@ -31,10 +31,10 @@ int main()
     // debug_draw_test_sprites();
     input_handler_init();
 
-    // player_init(&players[0], 64, 360, 0, 1, PLAYER_FIREBOY);
-    // player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
-    player_init(&players[0], 192, 152, 0, 1, PLAYER_FIREBOY);
-    player_init(&players[1], 320, 152, 2, 3, PLAYER_WATERGIRL);
+    player_init(&players[0], 64, 360, 0, 1, PLAYER_FIREBOY);
+    player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
+    // player_init(&players[0], 192, 152, 0, 1, PLAYER_FIREBOY);
+    // player_init(&players[1], 320, 152, 2, 3, PLAYER_WATERGIRL);
 
     item_init(&items[0], 0, 0, 4, BLUE_GEM_FRAME);
     item_place_on_tile(&items[0], 21, 26);
@@ -147,6 +147,10 @@ int main()
             for (int i = 0; i < NUM_LEVERS; i++)
             {
                 lever_update(&levers[0], players);
+            }
+            for (int i = 0; i < 1; i++)
+            {
+                elevator_update(&elevators[i], levers[0].activated, players);
             }
         }
         // === 2. 等待消隐区 ===

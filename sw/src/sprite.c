@@ -364,3 +364,48 @@ bool is_elevator_blocked(float x, float y, float w, float h, float *vy_out)
     }
     return false;
 }
+
+void elevator_update(elevator_t *elv, bool go_up, player_t *players)
+{
+    // 决定目标方向
+    if (go_up)
+    {
+        elv->vy = -0.5f;
+        if (elv->y <= elv->min_y)
+        {
+            elv->y = elv->min_y;
+            elv->vy = 0;
+        }
+    }
+    else
+    {
+        elv->vy = 0.5f;
+        if (elv->y >= elv->max_y)
+        {
+            elv->y = elv->max_y;
+            elv->vy = 0;
+        }
+    }
+
+    elv->y += elv->vy;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        elv->sprites[i].y = (uint16_t)(elv->y);
+        sprite_update(&elv->sprites[i]);
+    }
+
+    // 玩家随动
+    for (int i = 0; i < NUM_PLAYERS; ++i)
+    {
+        player_t *p = &players[i];
+        float px = p->x + SPRITE_W_PIXELS / 2.0f;
+        float foot_y = p->y + PLAYER_HEIGHT_PIXELS;
+
+        if (px >= elv->x && px <= elv->x + 64 &&
+            fabsf(foot_y - elv->y) < 4.0f)
+        {
+            p->y += elv->vy;
+        }
+    }
+}
