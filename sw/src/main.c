@@ -174,25 +174,25 @@ void debug_draw_test_sprites()
 
     // 拉杆底盘（2帧）
     for (int i = 0; i < 2; ++i)
-        write_sprite(index++, 1, 0, 16 * i, y, LEVER_BASE_FRAME + i);
+        write_sprite(index++, 1, 0, 16 * i + 200, y, LEVER_BASE_FRAME + i);
 
     y += 20;
     // 拉杆动画（3帧）
     for (int i = 0; i < 3; ++i)
-        write_sprite(index++, 1, 0, 16 * i, y, LEVER_ANIM_FRAME + i);
+        write_sprite(index++, 1, 0, 16 * i + 200, y, LEVER_ANIM_FRAME + i);
 
     y += 20;
     // 黄色升降机（4帧）
     for (int i = 0; i < 4; ++i)
-        write_sprite(index++, 1, 0, 16 * i, y, LIFT_YELLOW_FRAME + i);
+        write_sprite(index++, 1, 0, 16 * i + 200, y, LIFT_YELLOW_FRAME + i);
 
-    y += 20;
-    // 紫色按钮（2帧）
-    for (int i = 0; i < 2; ++i)
-        write_sprite(index++, 1, 0, 16 * i, y, BUTTON_PURPLE_FRAME + i);
+    // y += 20;
+    // // 紫色按钮（2帧）
+    // for (int i = 0; i < 2; ++i)
+    //     write_sprite(index++, 1, 0, 16 * i + 200, y, BUTTON_PURPLE_FRAME + i);
 
-    y += 20;
-    // 紫色升降机（4帧）
-    for (int i = 0; i < 4; ++i)
-        write_sprite(index++, 1, 0, 16 * i, y, LIFT_PURPLE_FRAME + i);
+    // y += 20;
+    // // 紫色升降机（4帧）
+    // for (int i = 0; i < 4; ++i)
+    //     write_sprite(index++, 1, 0, 16 * i + 200, y, LIFT_PURPLE_FRAME + i);
 }
