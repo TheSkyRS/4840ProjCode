@@ -139,7 +139,7 @@ bool is_death(float x, float y, float width, float height, player_type_t p)
         int tile = tilemap[ty][tx];
         if (p == PLAYER_WATERGIRL)
         {
-            printf("%d + 1", tile);
+            printf("%d", tile);
         }
 
         // 危险地形判定（死亡）
