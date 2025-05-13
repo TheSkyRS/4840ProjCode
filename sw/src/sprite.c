@@ -230,7 +230,6 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
     lvr->base_frame[0] = LEVER_BASE_FRAME + 0;
     lvr->base_frame[1] = LEVER_BASE_FRAME + 1;
     lvr->handle_frames[0] = LEVER_ANIM_FRAME + 0; // ←
-    lvr->handle_frames[1] = LEVER_ANIM_FRAME + 1; // 中
     lvr->handle_frames[2] = LEVER_ANIM_FRAME + 2; // →
 
     // 设置底座精灵（2 tile）
@@ -244,15 +243,22 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
         sprite_update(&lvr->base_sprites[i]);
     }
 
-    // 设置拉杆柄
-    sprite_set(&lvr->handle_sprite, sprite_index_base + 2, 0);
-    lvr->handle_sprite.x = (uint16_t)(lvr->x + 5);
-    lvr->handle_sprite.y = (uint16_t)(lvr->y - 16);
-    lvr->handle_sprite.frame_id = lvr->handle_frames[1]; // 中间帧
-    lvr->handle_sprite.enable = true;
-    sprite_update(&lvr->handle_sprite);
-}
+    // 左柄（默认启用）
+    sprite_set(&lvr->handle_sprite_left, sprite_index_base + 2, 0);
+    lvr->handle_sprite_left.x = (uint16_t)(lvr->x + 5);
+    lvr->handle_sprite_left.y = (uint16_t)(lvr->y - 16);
+    lvr->handle_sprite_left.frame_id = lvr->handle_frames[0];
+    lvr->handle_sprite_left.enable = true;
+    sprite_update(&lvr->handle_sprite_left);
 
+    // 右柄（默认隐藏）
+    sprite_set(&lvr->handle_sprite_right, sprite_index_base + 3, 0);
+    lvr->handle_sprite_right.x = (uint16_t)(lvr->x + 5);
+    lvr->handle_sprite_right.y = (uint16_t)(lvr->y - 16);
+    lvr->handle_sprite_right.frame_id = lvr->handle_frames[2];
+    lvr->handle_sprite_right.enable = false;
+    sprite_update(&lvr->handle_sprite_right);
+}
 void lever_update(lever_t *lvr, const player_t *players)
 {
     for (int i = 0; i < NUM_PLAYERS; ++i)
@@ -260,27 +266,33 @@ void lever_update(lever_t *lvr, const player_t *players)
         const player_t *p = &players[i];
         float px = p->x + SPRITE_W_PIXELS / 2.0f;
         float py = p->y + 32;
+
         if (p->type == PLAYER_WATERGIRL)
             printf("Player[%d] foot=(%.1f, %.1f), Lever=(%.1f, %.1f), Activated=%d\n",
                    i, px, py, lvr->x, lvr->y, lvr->activated);
+
         if (fabsf(py - lvr->y) > 12.0f)
             continue;
 
-        // 如果当前为左置，且玩家从左靠近
+        // 切换为右置（玩家从左进）
         if (!lvr->activated && px >= lvr->x + 24 && px <= lvr->x + 32)
         {
             lvr->activated = true;
-            lvr->handle_sprite.frame_id = lvr->handle_frames[2]; // →右
-            sprite_update(&lvr->handle_sprite);
+            lvr->handle_sprite_left.enable = false;
+            lvr->handle_sprite_right.enable = true;
+            sprite_update(&lvr->handle_sprite_left);
+            sprite_update(&lvr->handle_sprite_right);
             break;
         }
 
-        // 如果当前为右置，且玩家从右靠近
+        // 切换为左置（玩家从右进）
         if (lvr->activated && px >= lvr->x && px <= lvr->x + 8)
         {
             lvr->activated = false;
-            lvr->handle_sprite.frame_id = lvr->handle_frames[0]; // ←左
-            sprite_update(&lvr->handle_sprite);
+            lvr->handle_sprite_left.enable = true;
+            lvr->handle_sprite_right.enable = false;
+            sprite_update(&lvr->handle_sprite_left);
+            sprite_update(&lvr->handle_sprite_right);
             break;
         }
     }
