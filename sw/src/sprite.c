@@ -509,7 +509,7 @@ void button_update(button_t *btn, const player_t *players)
                 btn->pressed = true;
         }
     }
-    printf("[3]TOP Got %d, L Got %d, R Got %d\n", btn->top_sprite.index, btn->base_right_sprite.index, btn->base_right_sprite.index);
+    printf("[3]TOP Got %d, L Got %d, R Got %d\n", btn->top_sprite.index, btn->base_left_sprite.index, btn->base_right_sprite.index);
     btn->press_offset = max_depth;
 
     // 视觉：下移 sprite 做出按钮压下效果
