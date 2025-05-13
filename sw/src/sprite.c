@@ -368,7 +368,7 @@ bool is_elevator_blocked(float x, float y, float w, float h, float *vy_out)
 void elevator_update(elevator_t *elv, bool go_up, player_t *players)
 {
     // 决定目标方向
-    if (go_up)
+    if (!go_up)
     {
         if (elv->y > elv->min_y)
         {
