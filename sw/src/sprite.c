@@ -1,11 +1,11 @@
 #include "sprite.h"
 #include "hw_interact.h"
-#include <math.h> // Îª sinf Ìá¹©ÉùÃ÷
+#include <math.h> // Îª sinf ï¿½á¹©ï¿½ï¿½ï¿½ï¿½
 #include "type.h"
 #include <stdio.h>
 
 extern box_t boxes[NUM_BOXES];
-// ³õÊ¼»¯ sprite Ë÷ÒýºÍÖ¡Êý
+// ï¿½ï¿½Ê¼ï¿½ï¿½ sprite ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
 {
     s->index = index;
@@ -16,7 +16,7 @@ void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
     s->frame_count = frame_count;
 }
 
-// ¶¯»­Ö¡µÝÔö£¨Ñ­»·£©
+// ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½
 void sprite_animate(sprite_t *s)
 {
     if (s->frame_count > 0)
@@ -26,13 +26,13 @@ void sprite_animate(sprite_t *s)
     }
 }
 
-// ¸üÐÂ sprite µ½Ó²¼þ
+// ï¿½ï¿½ï¿½ï¿½ sprite ï¿½ï¿½Ó²ï¿½ï¿½
 void sprite_update(sprite_t *s)
 {
     write_sprite(s->index, s->enable, s->flip, s->x, s->y, s->frame_id);
 }
 
-// ¹Ø±Õ sprite ÏÔÊ¾
+// ï¿½Ø±ï¿½ sprite ï¿½ï¿½Ê¾
 void sprite_clear(sprite_t *s)
 {
     s->enable = false;
@@ -61,7 +61,7 @@ void item_update_sprite(item_t *item)
         float offset = 0.0f;
         if (item->float_anim)
         {
-            offset = 0.01f * sinf((float)frame_counter * 0.1f + item->sprite.index); // ¾­Ñé¶¶¶¯·ù¶ÈºÍÆµÂÊ
+            offset = 0.01f * sinf((float)frame_counter * 0.1f + item->sprite.index); // ï¿½ï¿½ï¿½é¶¶ï¿½ï¿½ï¿½ï¿½ï¿½Èºï¿½Æµï¿½ï¿½
         }
 
         item->sprite.x = (uint16_t)item->x;
@@ -126,10 +126,13 @@ void box_try_push(box_t *box, const player_t *p)
     float bx = box->x;
     float by = box->y;
 
-    // ´¹Ö±·½ÏòÓÐ½»¼¯²Å¿¼ÂÇÍÆ¶¯
+    // ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½ï¿½Å¿ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
     bool vertical_overlap = (py + ph > by) && (py < by + bh);
     if (!vertical_overlap)
+    {
+        box->pushing_player_type = PLAYER_NONE;
         return;
+    }
 
     float p_center_x = px + pw / 2.0f;
     float b_left = bx;
@@ -138,28 +141,34 @@ void box_try_push(box_t *box, const player_t *p)
     if ((fabsf(p_center_x - b_left) <= 2.0f) && p->vx > 0)
     {
         box->vx = BOX_PUSH_SPEED;
+        box->pushing_player_type = p->type;
     }
     else if ((fabsf(p_center_x - b_right) <= 2.0f) && p->vx < 0)
     {
         box->vx = -BOX_PUSH_SPEED;
+        box->pushing_player_type = p->type;
+    }
+    else
+    {
+        box->pushing_player_type = PLAYER_NONE;
     }
 }
-
 void box_update_position(box_t *box, player_t *players)
 {
     float next_x = box->x + box->vx;
 
-    // ¼ì²é tile ×èµ²
     bool blocked = false;
     if (box->vx > 0)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
 
-    // ¼ì²éÊÇ·ñ×²ÉÏ player
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
+        if (players[i].type == box->pushing_player_type)
+            continue; // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½
+
         float px = players[i].x;
         float py = players[i].y + PLAYER_HITBOX_OFFSET_Y;
         float pw = SPRITE_W_PIXELS;
@@ -172,13 +181,11 @@ void box_update_position(box_t *box, player_t *players)
         }
     }
 
-    // Èç¹û²»×èµ²£¬ÔòÒÆ¶¯
     if (!blocked && !collides_with_player)
     {
         box->x = next_x;
     }
 
-    // ×îºóÔÙË¥¼õËÙ¶È
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
     else if (box->vx < 0)
