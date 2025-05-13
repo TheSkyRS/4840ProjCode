@@ -55,7 +55,7 @@ bool is_box_blocked(float x, float y, float w, float h);
 bool check_overlap(float x1, float y1, float w1, float h1,
                    float x2, float y2, float w2, float h2);
 
-void lever_init(lever_t *lvr, float x, float y, int sprite_index_base);
+void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_base);
 void lever_update(lever_t *lvr, const player_t *players);
 
 void elevator_init(elevator_t *elv, float x, float y, float min_y, float max_y, int sprite_index_base);
