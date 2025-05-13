@@ -188,7 +188,7 @@ void box_update_position(box_t *box, player_t *players)
                 break;
             }
         }
-        if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
+        if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
             overlaps_any_player = true;
             break;
