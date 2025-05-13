@@ -246,7 +246,7 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
 
     // 设置拉杆柄
     sprite_set(&lvr->handle_sprite, sprite_index_base + 2, 0);
-    lvr->handle_sprite.x = (uint16_t)(lvr->x + 8);
+    lvr->handle_sprite.x = (uint16_t)(lvr->x + 5);
     lvr->handle_sprite.y = (uint16_t)(lvr->y - 12);
     lvr->handle_sprite.frame_id = lvr->handle_frames[1]; // 中间帧
     lvr->handle_sprite.enable = true;
