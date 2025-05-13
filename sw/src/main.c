@@ -103,8 +103,8 @@ int main()
     elevator_init(&elevators[0], 1, 16, 16, 19, 14, 51);
     elevator_init(&elevators[1], 35, 12, 12, 16, 18, 57);
 
-    button_init(&buttons[0], 32, 12, 55);
-    button_init(&buttons[0], 32, 17, 55);
+    button_init(&buttons[0], 32, 12, 26);
+    button_init(&buttons[0], 32, 17, 29);
 
     unsigned col = 0, row = 0;
     while (1)
