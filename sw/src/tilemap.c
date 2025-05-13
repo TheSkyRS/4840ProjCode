@@ -147,6 +147,6 @@ bool is_death(float x, float y, float width, float height, player_type_t p)
             return true;
         if (p == PLAYER_WATERGIRL && (tile == TILE_FIRE || tile == TILE_POISON))
             return true;
-        return false;
     }
+    return false;
 }
