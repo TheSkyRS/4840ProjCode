@@ -162,17 +162,6 @@ void box_update_position(box_t *box, player_t *players)
         float py = players[i].y + PLAYER_HITBOX_OFFSET_Y;
         float pw = SPRITE_W_PIXELS;
         float ph = PLAYER_HITBOX_HEIGHT;
-        float px2, py2;
-        if (i = 0)
-        {
-            px2 = players[1].x;
-            py2 = players[1].y + PLAYER_HITBOX_OFFSET_Y;
-        }
-        else if (i = 1)
-        {
-            px2 = players[0].x;
-            py2 = players[0].y + PLAYER_HITBOX_OFFSET_Y;
-        }
 
         // 玩家纵向必须和箱子有重叠才考虑
         bool vertical_overlap = (py + ph > box->y) && (py < box->y + 32);
@@ -181,30 +170,25 @@ void box_update_position(box_t *box, player_t *players)
 
         float p_center_x = px + pw / 2.0f; // 即 px + 8.0f
 
-        if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
+        if (box->vx > 0)
         {
-            collides_with_player = true;
-            break;
+            float block_x = box->x + 2;
+            if (p_center_x >= block_x && p_center_x <= box->x + 16)
+            {
+                collides_with_player = true;
+                break;
+            }
         }
-        // if (box->vx > 0)
-        // {
-        //     float block_x = box->x + 2;
-        //     if (p_center_x >= block_x && p_center_x <= box->x + 16)
-        //     {
-        //         collides_with_player = true;
-        //         break;
-        //     }
-        // }
-        // else if (box->vx < 0)
-        // {
-        //     float block_x = box->x + 30;
-        //     if (p_center_x <= block_x && p_center_x >= box->x + 16)
-        //     {
-        //         collides_with_player = true;
-        //         break;
-        //     }
-        // }
-        if (is_box_blocked(px2 + SPRITE_W_PIXELS / 2.0f - 2.0f, py2, 4.0f, PLAYER_HITBOX_HEIGHT))
+        else if (box->vx < 0)
+        {
+            float block_x = box->x + 30;
+            if (p_center_x <= block_x && p_center_x >= box->x + 16)
+            {
+                collides_with_player = true;
+                break;
+            }
+        }
+        if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
             c = i;
             overlaps_any_player = true;
@@ -216,7 +200,7 @@ void box_update_position(box_t *box, player_t *players)
     {
         box->x = next_x;
     }
-    printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=%d| player[1]->vx=%.2f | player[2]->vx=%.2f\n",
+    printf("BoxV=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=%d| FireV=%.2f | WaterV=%.2f\n",
            box->vx, blocked, collides_with_player, overlaps_any_player, c + 1, players[0].vx, players[1].vx);
 
     if (box->vx > 0)
