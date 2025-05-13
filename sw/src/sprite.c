@@ -310,7 +310,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
 
     // 左一块
     sprite_set(&elv->sprites[0], sprite_index_base + 0, 0);
-    elv->sprites[0].x = (uint16_t)(x + 0);
+    elv->sprites[0].x = (uint16_t)(x + 1);
     elv->sprites[0].y = (uint16_t)(y);
     elv->sprites[0].frame_id = LIFT_YELLOW_FRAME + 0;
     elv->sprites[0].enable = true;
@@ -318,7 +318,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
 
     // 左中块
     sprite_set(&elv->sprites[1], sprite_index_base + 1, 0);
-    elv->sprites[1].x = (uint16_t)(x + 15);
+    elv->sprites[1].x = (uint16_t)(x + 16);
     elv->sprites[1].y = (uint16_t)(y);
     elv->sprites[1].frame_id = LIFT_YELLOW_FRAME + 1;
     elv->sprites[1].enable = true;
@@ -339,4 +339,28 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     elv->sprites[3].frame_id = LIFT_YELLOW_FRAME + 3;
     elv->sprites[3].enable = true;
     sprite_update(&elv->sprites[3]);
+}
+
+bool is_elevator_blocked(float x, float y, float w, float h, float *vy_out)
+{
+    for (int i = 0; i < NUM_ELEVATORS; i++)
+    {
+        elevator_t *elv = &elevators[i];
+
+        for (int j = 0; j < 4; j++)
+        {
+            sprite_t *s = &elv->sprites[j];
+
+            float ex = s->x;
+            float ey = s->y;
+
+            if (check_overlap(x, y, w, h, ex, ey, 16, 16))
+            {
+                if (vy_out)
+                    *vy_out = elv->vy; // 返回电梯垂直速度（用于随动）
+                return true;
+            }
+        }
+    }
+    return false;
 }
