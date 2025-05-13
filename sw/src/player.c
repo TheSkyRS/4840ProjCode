@@ -4,6 +4,11 @@
 #include <math.h> // 用于 floor()
 #include "type.h"
 #include <stdio.h> // 顶部加这个
+
+#define GRAVITY 0.2f
+#define JUMP_VELOCITY -5.0f
+#define MOVE_SPEED 1.5f
+
 extern box_t boxes[NUM_BOXES];
 void debug_print_player_state(player_t *p, const char *tag)
 {
