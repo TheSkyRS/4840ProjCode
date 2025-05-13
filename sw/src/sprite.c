@@ -202,7 +202,6 @@ void box_update_position(box_t *box, player_t *players)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
-    printf("[BOX] box->vx=%.2f, next_x=%.1f\n", box->vx, next_x);
 
     // 检查是否撞上 player
     bool collides_with_player = false;
@@ -216,7 +215,7 @@ void box_update_position(box_t *box, player_t *players)
 
         float player_center_x = px + pw / 2.0f;
         float box_center_x = box->x + 16;
-
+        printf("       Player[%d] center_x=%.1f, Box center_x=%.1f\n", i, player_center_x, box_center_x);
         // 如果玩家在箱子后面，允许重叠（是推箱子的玩家）
         if ((box->vx > 0 && player_center_x < box_center_x) ||
             (box->vx < 0 && player_center_x > box_center_x))
