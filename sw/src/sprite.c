@@ -268,15 +268,25 @@ void lever_update(lever_t *lvr, const player_t *players)
         float py = p->y + 32;
 
         if (p->type == PLAYER_WATERGIRL)
-            printf("Player[%d] foot=(%.1f, %.1f), Lever=(%.1f, %.1f), Activated=%d\n",
+        {
+            printf("[DEBUG] Player[%d] foot=(%.1f, %.1f), Lever=(%.1f, %.1f), Activated=%d\n",
                    i, px, py, lvr->x, lvr->y, lvr->activated);
+        }
 
+        // 纵向不在范围内
         if (fabsf(py - lvr->y) > 12.0f)
+        {
+            if (p->type == PLAYER_WATERGIRL)
+                printf("[SKIP] Y-axis out of range: %.1f vs %.1f\n", py, lvr->y);
             continue;
+        }
 
-        // 切换为右置（玩家从左进）
+        // 准备判断左右进入区域
         if (!lvr->activated && px >= lvr->x + 24 && px <= lvr->x + 32)
         {
+            if (p->type == PLAYER_WATERGIRL)
+                printf("[TRIGGER] Pull → by Watergirl\n");
+
             lvr->activated = true;
             lvr->handle_sprite_left.enable = false;
             lvr->handle_sprite_right.enable = true;
@@ -285,15 +295,22 @@ void lever_update(lever_t *lvr, const player_t *players)
             break;
         }
 
-        // 切换为左置（玩家从右进）
         if (lvr->activated && px >= lvr->x && px <= lvr->x + 8)
         {
+            if (p->type == PLAYER_WATERGIRL)
+                printf("[TRIGGER] Pull ← by Watergirl\n");
+
             lvr->activated = false;
             lvr->handle_sprite_left.enable = true;
             lvr->handle_sprite_right.enable = false;
             sprite_update(&lvr->handle_sprite_left);
             sprite_update(&lvr->handle_sprite_right);
             break;
+        }
+
+        if (p->type == PLAYER_WATERGIRL)
+        {
+            printf("[CHECKED] No trigger. X=%.1f not in trigger range. Activated=%d\n", px, lvr->activated);
         }
     }
 }
