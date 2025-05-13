@@ -114,36 +114,6 @@ void box_update_sprite(box_t *b)
     }
 }
 
-// void box_try_push(box_t *box, const player_t *p)
-// {
-//     float pw = SPRITE_W_PIXELS;
-//     float ph = PLAYER_HITBOX_HEIGHT;
-//     float px = p->x;
-//     float py = p->y + PLAYER_HITBOX_OFFSET_Y;
-
-//     float bw = 32.0f;
-//     float bh = 32.0f;
-//     float bx = box->x;
-//     float by = box->y;
-
-//     // 垂直方向有交集才考虑推动
-//     bool vertical_overlap = (py + ph > by) && (py < by + bh);
-//     if (!vertical_overlap)
-//         return;
-
-//     float p_center_x = px + pw / 2.0f;
-//     float b_left = bx;
-//     float b_right = bx + bw;
-
-//     if ((fabsf(p_center_x - b_left) <= 2.0f) && p->vx > 0)
-//     {
-//         box->vx = BOX_PUSH_SPEED;
-//     }
-//     else if ((fabsf(p_center_x - b_right) <= 2.0f) && p->vx < 0)
-//     {
-//         box->vx = -BOX_PUSH_SPEED;
-//     }
-// }
 void box_try_push(box_t *box, const player_t *p)
 {
     float pw = SPRITE_W_PIXELS;
@@ -156,6 +126,7 @@ void box_try_push(box_t *box, const player_t *p)
     float bx = box->x;
     float by = box->y;
 
+    // 垂直方向有交集才考虑推动
     bool vertical_overlap = (py + ph > by) && (py < by + bh);
     if (!vertical_overlap)
     {
@@ -186,30 +157,22 @@ void box_update_position(box_t *box, player_t *players)
 {
     float next_x = box->x + box->vx;
 
-    // 检查 tile 阻挡
     bool blocked = false;
     if (box->vx > 0)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
 
-    // 检查是否撞上 player
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
+        if (players[i].type == box->pushing_player_type)
+            continue; // 忽略推动者
+
         float px = players[i].x;
         float py = players[i].y + PLAYER_HITBOX_OFFSET_Y;
         float pw = SPRITE_W_PIXELS;
         float ph = PLAYER_HITBOX_HEIGHT;
-
-        float player_center_x = px + pw / 2.0f;
-        float box_center_x = box->x + 16;
-
-        if ((box->vx > 0 && player_center_x < box_center_x) ||
-            (box->vx < 0 && player_center_x > box_center_x))
-        {
-            continue;
-        }
 
         if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
         {
@@ -218,13 +181,11 @@ void box_update_position(box_t *box, player_t *players)
         }
     }
 
-    // 如果不阻挡，则移动
     if (!blocked && !collides_with_player)
     {
         box->x = next_x;
     }
 
-    // 最后再衰减速度
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
     else if (box->vx < 0)
