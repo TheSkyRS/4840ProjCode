@@ -153,8 +153,7 @@ void box_update_position(box_t *box, player_t *players)
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x + 1, box->y + 2, 1, 28);
 
-    bool collides_with_pusher = false;
-    bool will_overlap_any_player = false;
+    bool will_overlap_non_pusher = false;
 
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
@@ -163,46 +162,29 @@ void box_update_position(box_t *box, player_t *players)
         float pw = SPRITE_W_PIXELS;
         float ph = PLAYER_HITBOX_HEIGHT;
 
-        // 玩家纵向必须和箱子有重叠才考虑
+        float p_center_x = px + pw / 2.0f;
         bool vertical_overlap = (py + ph > box->y) && (py < box->y + 32);
         if (!vertical_overlap)
             continue;
 
-        float p_center_x = px + pw / 2.0f;
+        // 判断是否为贴边推箱者（允许重叠）
+        bool is_pusher = false;
+        if (box->vx > 0 && fabsf(p_center_x - box->x) <= 10.0f && players[i].vx > 0)
+            is_pusher = true;
+        else if (box->vx < 0 && fabsf(p_center_x - (box->x + 32)) <= 10.0f && players[i].vx < 0)
+            is_pusher = true;
 
-        // 判断是不是推箱的人贴近边缘
-        if (box->vx > 0)
+        // 非推箱者且会被压上，阻止
+        if (!is_pusher && check_overlap(next_x, box->y, 32, 32, px, py, pw, ph))
         {
-            float block_x = box->x + 2;
-            if (p_center_x >= block_x && p_center_x <= box->x + 16)
-            {
-                collides_with_pusher = true;
-                continue;
-            }
-        }
-        else if (box->vx < 0)
-        {
-            float block_x = box->x + 30;
-            if (p_center_x <= block_x && p_center_x >= box->x + 16)
-            {
-                collides_with_pusher = true;
-                continue;
-            }
-        }
-
-        // 判断下一帧是否压上其他玩家（不是 pusher）
-        if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
-        {
-            will_overlap_any_player = true;
+            will_overlap_non_pusher = true;
             break;
         }
     }
-
-    if (!blocked && !will_overlap_any_player && !collides_with_pusher)
+    if (!blocked && !will_overlap_non_pusher)
     {
         box->x = next_x;
     }
-
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
     else if (box->vx < 0)
