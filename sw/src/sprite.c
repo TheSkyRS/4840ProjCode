@@ -153,7 +153,7 @@ void box_update_position(box_t *box, player_t *players)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x + 1, box->y + 2, 1, 28);
-
+    int c;
     bool collides_with_player = false;
     bool overlaps_any_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
@@ -190,6 +190,7 @@ void box_update_position(box_t *box, player_t *players)
         }
         if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
+            c = i;
             overlaps_any_player = true;
             break;
         }
@@ -199,8 +200,8 @@ void box_update_position(box_t *box, player_t *players)
     {
         box->x = next_x;
     }
-    printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | pB1=%d | pB2 = %d | player[1]->vx=%.2f | player[2]->vx=%.2f\n",
-           box->vx, blocked, collides_with_player, overlaps_any_player, players[0].vx, players[1].vx);
+    printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=| player[1]->vx=%.2f | player[2]->vx=%.2f\n",
+           box->vx, blocked, collides_with_player, overlaps_any_player, c + 1, players[0].vx, players[1].vx);
 
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
