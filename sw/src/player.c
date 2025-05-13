@@ -129,7 +129,7 @@ void player_update_physics(player_t *p)
         {
             p->vx = 0;
         }
-        else if (is_box_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
+        else if (is_box_blocked(new_x + SPRITE_W_PIXELS / 2.0f, p->y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
             if (boxes[0].vx != 0)
                 p->vx = boxes[0].vx;
