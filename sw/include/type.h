@@ -102,11 +102,11 @@ typedef struct
     bool activated;           // 当前状态：true=拉下，false=未激活
     uint8_t base_frame[2];    // 底座帧（两个）
     uint8_t handle_frames[3]; // 拉杆动画帧（左、中、右）
-    sprite_t base_sprites[3]; // 底座：3 tile，对应3个精灵
-    sprite_t handle_sprite;   // 拉杆主体
-                              //     sprite_t handle_sprite_left;
-                              // sprite_t handle_sprite_right;
-    int sprite_base_index;    // 精灵 index 起点（需初始化分配）
+    sprite_t base_sprites[4]; // 底座：3 tile，对应3个精灵
+    // sprite_t handle_sprite;   // 拉杆主体
+    sprite_t handle_sprite_left;
+    sprite_t handle_sprite_right;
+    int sprite_base_index; // 精灵 index 起点（需初始化分配）
 } lever_t;
 
 typedef struct
