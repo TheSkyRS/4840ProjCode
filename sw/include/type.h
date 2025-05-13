@@ -20,6 +20,7 @@
 #define GRAVITY 0.2f
 #define JUMP_VELOCITY -5.0f
 #define MOVE_SPEED 1.5f
+
 // #define GRAVITY 0.2f
 // #define JUMP_VELOCITY -10.0f
 // #define MOVE_SPEED 5.0f
