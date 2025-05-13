@@ -170,21 +170,6 @@ typedef struct
     bool pressed; // 后续可用于功能判断
 } button_t;
 
-typedef struct
-{
-    float x, y; // 按钮左上角像素坐标（按钮上部 sprite）
-    sprite_t top_sprite;
-    sprite_t base_left_sprite;
-    sprite_t base_right_sprite;
-
-    uint8_t sprite_index_base;
-    uint8_t frame_top;
-    uint8_t frame_base_left;
-    uint8_t frame_base_right;
-
-    bool pressed; // 后续可用于功能判断
-} button_t;
-
 ///////////////////////////////////////数组////////////////////////////////////////////////////
 
 extern player_t players[NUM_PLAYERS];
