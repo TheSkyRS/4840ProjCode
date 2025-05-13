@@ -485,43 +485,32 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
 
 void button_update(button_t *btn, const player_t *players)
 {
-    float min_foot_y = 10000.0f; // 极大值初始化
-    bool any_overlap = false;
+    btn->pressed = false;
+    float max_depth = 0.0f;
 
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
         float px_center = players[i].x + SPRITE_W_PIXELS / 2.0f;
-        float foot_y = players[i].y + PLAYER_HEIGHT_PIXELS;
 
-        if (px_center >= btn->x && px_center <= btn->x + 16 &&
-            foot_y >= btn->y && foot_y <= btn->y + 16)
+        // 判断是否横向站在按钮上
+        if (px_center >= btn->x && px_center <= btn->x + 16)
         {
-            any_overlap = true;
-            if (foot_y < min_foot_y)
-                min_foot_y = foot_y;
+            float dx = fabsf(px_center - (btn->x + 8.0f)); // 离中心偏移
+            if (dx > 8.0f)
+                dx = 8.0f;
+
+            float depth = 8.0f - dx; // 越靠中间 depth 越大
+            if (depth > max_depth)
+                max_depth = depth;
+
+            if (dx <= 2.0f) // 中间 ±2px 范围，触发 pressed
+                btn->pressed = true;
         }
     }
 
-    if (any_overlap)
-    {
-        // 算出相对压下深度（最多 8 像素）
-        float depth = min_foot_y - btn->y;
-        if (depth < 0)
-            depth = 0;
-        if (depth > 8)
-            depth = 8;
-        btn->press_offset = depth;
+    btn->press_offset = max_depth;
 
-        // 若脚底落在 6~10 区间，认为是 pressed
-        btn->pressed = (depth >= 6.0f && depth <= 10.0f);
-    }
-    else
-    {
-        btn->press_offset = 0;
-        btn->pressed = false;
-    }
-
-    // 顶部按钮视觉 y 偏移
+    // 视觉：下移 sprite 做出按钮压下效果
     btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
     sprite_update(&btn->top_sprite);
 }
