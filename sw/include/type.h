@@ -32,6 +32,8 @@
 #define MAP_HEIGHT 30 // tile 纵向数量
 #define TILE_SIZE 16  // 每个 tile 像素大小（单位：px）
 
+#define NUM_BUTTONS 2
+
 #define PLAYER_NONE -1
 
 ////////////////////////////////////结构体///////////////////////////////////////////////////////
@@ -153,6 +155,36 @@ typedef struct
     int sprite_base_index; // 精灵 index 起点
 } elevator_t;
 
+typedef struct
+{
+    float x, y; // 按钮左上角像素坐标（按钮上部 sprite）
+    sprite_t top_sprite;
+    sprite_t base_left_sprite;
+    sprite_t base_right_sprite;
+
+    uint8_t sprite_index_base;
+    uint8_t frame_top;
+    uint8_t frame_base_left;
+    uint8_t frame_base_right;
+
+    bool pressed; // 后续可用于功能判断
+} button_t;
+
+typedef struct
+{
+    float x, y; // 按钮左上角像素坐标（按钮上部 sprite）
+    sprite_t top_sprite;
+    sprite_t base_left_sprite;
+    sprite_t base_right_sprite;
+
+    uint8_t sprite_index_base;
+    uint8_t frame_top;
+    uint8_t frame_base_left;
+    uint8_t frame_base_right;
+
+    bool pressed; // 后续可用于功能判断
+} button_t;
+
 ///////////////////////////////////////数组////////////////////////////////////////////////////
 
 extern player_t players[NUM_PLAYERS];
@@ -160,18 +192,19 @@ extern item_t items[NUM_ITEMS];
 extern box_t boxes[NUM_BOXES];
 extern lever_t levers[NUM_LEVERS];
 extern elevator_t elevators[NUM_ELEVATORS];
+extern button_t buttons[NUM_BUTTONS];
 extern unsigned frame_counter; // 引入主循环中定义的帧计数器
 extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 #endif // TYPEDEFS_H
 
-// 火男0 1
-// 水女2 3
 // 钻石4 5 6 7 8 9
 // 箱子10 11 12 13
 // 电梯黄 14 15 16 17
 // 电梯紫 18 19 20 21
 // 拉杆黄 22 23 24 25
-// 按钮   30 31
-//
+// 按钮   0  1  2  3
+//  26 27
+// 火男28 29
+// 水女30 31

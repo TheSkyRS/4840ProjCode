@@ -13,6 +13,7 @@ item_t items[NUM_ITEMS];
 box_t boxes[NUM_BOXES];
 lever_t levers[NUM_LEVERS];
 elevator_t elevators[NUM_ELEVATORS];
+button_t buttons[NUM_BUTTONS];
 unsigned frame_counter = 0;
 
 int main()
@@ -101,6 +102,9 @@ int main()
 
     elevator_init(&elevators[0], 1, 16, 16, 19, 14, 51);
     elevator_init(&elevators[1], 35, 12, 12, 16, 18, 57);
+
+    button_init(&buttons[0], 32, 12, 55);
+    button_init(&buttons[0], 32, 17, 55);
 
     unsigned col = 0, row = 0;
     while (1)
