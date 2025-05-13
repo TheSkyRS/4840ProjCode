@@ -406,7 +406,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
 
             if (px >= elv->x && px <= elv->x + 64 &&
                 check_overlap(px, py, 1.0f, PLAYER_HITBOX_HEIGHT,
-                              elv->x, next_y + 8.0, 64.0f, 8.0f))
+                              elv->x + 1, next_y + 8.0, 62.0f, 1.0f))
             {
                 will_collide_with_player = true;
                 break;
@@ -485,33 +485,37 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
 
 void button_update(button_t *btn, const player_t *players)
 {
-
     btn->pressed = false;
     float max_depth = 0.0f;
 
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
-
         float px_center = players[i].x + SPRITE_W_PIXELS / 2.0f;
+        float foot_y = players[i].y + PLAYER_HEIGHT_PIXELS;
 
-        // 判断是否横向站在按钮上
+        // 横向必须在按钮区域内
         if (px_center >= btn->x && px_center <= btn->x + 16)
         {
-            float dx = fabsf(px_center - (btn->x + 8.0f)); // 离中心偏移
-            if (dx > 8.0f)
-                dx = 8.0f;
+            // 垂直距离必须接近按钮顶部（贴地）
+            if (fabsf(foot_y - btn->y) <= 4.0f)
+            {
+                float dx = fabsf(px_center - (btn->x + 8.0f)); // 中心偏移
+                if (dx > 8.0f)
+                    dx = 8.0f;
 
-            float depth = 8.0f - dx; // 越靠中间 depth 越大
-            if (depth > max_depth)
-                max_depth = depth;
+                float depth = 8.0f - dx; // 压下值：最大 8px
+                if (depth > max_depth)
+                    max_depth = depth;
 
-            if (dx <= 2.0f) // 中间 ±2px 范围，触发 pressed
-                btn->pressed = true;
+                if (dx <= 3.0f) // ⚠️ 中心 ±3 像素 → 共6px
+                    btn->pressed = true;
+            }
         }
     }
+
     btn->press_offset = max_depth;
 
-    // 视觉：下移 sprite 做出按钮压下效果
+    // sprite视觉下移
     btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
     sprite_update(&btn->top_sprite);
 }
