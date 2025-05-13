@@ -465,7 +465,6 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->top_sprite.frame_id = btn->frame_top;
     btn->top_sprite.enable = true;
     sprite_update(&btn->top_sprite);
-    printf("TOP Got %d\n", btn->top_sprite.index);
 
     // 左基座
     sprite_set(&btn->base_left_sprite, sprite_index_base + 1, 0);
@@ -474,7 +473,6 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->base_left_sprite.frame_id = btn->frame_base_left;
     btn->base_left_sprite.enable = true;
     sprite_update(&btn->base_left_sprite);
-    printf("L Got %d\n", btn->base_left_sprite.index);
 
     // 右基座
     sprite_set(&btn->base_right_sprite, sprite_index_base + 2, 0);
@@ -483,16 +481,17 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->base_right_sprite.frame_id = btn->frame_base_right;
     btn->base_right_sprite.enable = true;
     sprite_update(&btn->base_right_sprite);
-    printf("R Got %d\n", btn->base_right_sprite.index);
 }
 
 void button_update(button_t *btn, const player_t *players)
 {
+    printf("[1]TOP Got %d, L Got %d, R Got %d\n", btn->top_sprite.index, btn->base_right_sprite.index, btn->base_right_sprite.index);
     btn->pressed = false;
     float max_depth = 0.0f;
 
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
+        printf("[2]TOP Got %d, L Got %d, R Got %d\n", btn->top_sprite.index, btn->base_right_sprite.index, btn->base_right_sprite.index);
         float px_center = players[i].x + SPRITE_W_PIXELS / 2.0f;
 
         // 判断是否横向站在按钮上
@@ -510,10 +509,10 @@ void button_update(button_t *btn, const player_t *players)
                 btn->pressed = true;
         }
     }
-
+    printf("[3]TOP Got %d, L Got %d, R Got %d\n", btn->top_sprite.index, btn->base_right_sprite.index, btn->base_right_sprite.index);
     btn->press_offset = max_depth;
 
-    // // 视觉：下移 sprite 做出按钮压下效果
-    // btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
-    // sprite_update(&btn->top_sprite);
+    // 视觉：下移 sprite 做出按钮压下效果
+    btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
+    sprite_update(&btn->top_sprite);
 }
