@@ -483,7 +483,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->base_right_sprite.frame_id = btn->frame_base_right;
     btn->base_right_sprite.enable = true;
     sprite_update(&btn->base_right_sprite);
-    printf("R Got %d\n", btn->base_right_sprite);
+    printf("R Got %d\n", btn->base_right_sprite.index);
 }
 
 void button_update(button_t *btn, const player_t *players)
