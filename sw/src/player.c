@@ -87,6 +87,7 @@ bool player_update_physics(player_t *p)
     // 垂直运动
     float tempVy = 0.0f;
     float new_y = p->y + p->vy;
+    printf("1");
     if (is_death(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS, p->type))
     {
         return false;
