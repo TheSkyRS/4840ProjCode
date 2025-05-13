@@ -190,7 +190,10 @@ void box_update_position(box_t *box, player_t *players)
         }
         if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
-            c = players[i].type;
+            if (i = 0)
+                c = 1;
+            else
+                c = 2;
             overlaps_any_player = true;
             break;
         }
@@ -201,7 +204,7 @@ void box_update_position(box_t *box, player_t *players)
         box->x = next_x;
     }
     printf("BoxV=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=%d| FireV=%.2f | WaterV=%.2f\n",
-           box->vx, blocked, collides_with_player, overlaps_any_player, c + 1, players[0].vx, players[1].vx);
+           box->vx, blocked, collides_with_player, overlaps_any_player, c, players[0].vx, players[1].vx);
 
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
