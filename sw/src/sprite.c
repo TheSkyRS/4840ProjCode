@@ -511,6 +511,6 @@ void button_update(button_t *btn, const player_t *players)
     btn->press_offset = max_depth;
 
     // 视觉：下移 sprite 做出按钮压下效果
-    btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
-    sprite_update(&btn->top_sprite);
+    // btn->top_sprite.y = (uint16_t)(btn->y + btn->press_offset);
+    // sprite_update(&btn->top_sprite);
 }
