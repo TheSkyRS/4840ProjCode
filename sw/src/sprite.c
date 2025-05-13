@@ -507,7 +507,7 @@ void button_update(button_t *btn, const player_t *players)
                 if (depth > max_depth)
                     max_depth = depth;
 
-                if (dx <= 3.0f) // ⚠️ 中心 ±3 像素 → 共6px
+                if (dx <= 4.0f) // ⚠️ 中心 ±3 像素 → 共6px
                     btn->pressed = true;
             }
         }
