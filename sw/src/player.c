@@ -134,7 +134,16 @@ void player_update_physics(player_t *p)
             if (boxes[0].vx != 0)
                 p->vx = boxes[0].vx;
             else
-                p->vx = 0.1f;
+            {
+                int player_index = (p->type == PLAYER_FIREBOY) ? 0 : 1;
+                game_action_t action = get_player_action(player_index);
+                if (action == ACTION_MOVE_RIGHT)
+                    p->vx = 0.5f;
+                else if (action == ACTION_MOVE_LEFT)
+                    p->vx = -0.5f;
+                else
+                    p->vx = 0;
+            }
         }
     }
 
