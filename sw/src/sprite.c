@@ -157,7 +157,7 @@ void box_update_position(box_t *box, player_t *players)
     if (box->vx > 0)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
-        blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
+        blocked |= is_tile_blocked(next_x + 1, box->y + 2, 1, 28);
 
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
@@ -167,22 +167,30 @@ void box_update_position(box_t *box, player_t *players)
         float pw = SPRITE_W_PIXELS;
         float ph = PLAYER_HITBOX_HEIGHT;
 
-        float player_center_x = px + pw / 2.0f;
-        float box_center_x = box->x + 16;
+        bool vertical_overlap = (py + ph > box->y) && (py < box->y + 32);
 
-        // 角色在箱子“后方”的情况应忽略
-        bool in_front = false;
+        if (!vertical_overlap)
+            continue;
+
         if (box->vx > 0)
-            in_front = (px > box->x + 16); // 玩家左边 > 箱子中心 → 真在前方
-        else if (box->vx < 0)
-            in_front = (px + pw < box->x + 16); // 玩家右边 < 箱子中心 → 真在前方
-
-        if (in_front && check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
         {
-            printf("[COLLISION] Box next=(%.1f,%.1f) vs Player[%d] (%.1f,%.1f, w=%.1f h=%.1f)\n",
-                   next_x, box->y, i, px, py, pw, ph);
-            collides_with_player = true;
-            break;
+            float block_x = box->x + 2;
+            if ((px + pw) >= block_x && px < block_x)
+            {
+                printf("[COLLISION-RIGHT] Player[%d] right edge %.1f hit box edge %.1f\n", i, px + pw, block_x);
+                collides_with_player = true;
+                break;
+            }
+        }
+        else if (box->vx < 0)
+        {
+            float block_x = box->x + 30;
+            if (px <= block_x && (px + pw) > block_x)
+            {
+                printf("[COLLISION-LEFT] Player[%d] left edge %.1f hit box edge %.1f\n", i, px, block_x);
+                collides_with_player = true;
+                break;
+            }
         }
     }
 
