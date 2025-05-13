@@ -35,6 +35,13 @@ typedef struct item_t
     item_owner_t owner_type;
 } item_t;
 
+// === player_type_t ===
+typedef enum
+{
+    PLAYER_FIREBOY,
+    PLAYER_WATERGIRL
+} player_type_t;
+
 // === box_t ===
 typedef struct
 {
@@ -44,13 +51,6 @@ typedef struct
     sprite_t sprites[4];
     player_type_t pushing_player_type;
 } box_t;
-
-// === player_type_t ===
-typedef enum
-{
-    PLAYER_FIREBOY,
-    PLAYER_WATERGIRL
-} player_type_t;
 
 // === player_state_t ===
 typedef enum
