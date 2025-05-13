@@ -491,7 +491,7 @@ void button_update(button_t *btn, const player_t *players)
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
         float px_center = players[i].x + SPRITE_W_PIXELS / 2.0f;
-        float foot_y = players[i].y + PLAYER_HEIGHT_PIXELS - 10;
+        float foot_y = players[i].y + PLAYER_HEIGHT_PIXELS - 15;
         if (players[i].type == PLAYER_FIREBOY)
         {
             printf("[DEBUG] Fireboy foot_y=%.1f, button_y=%.1f → diff=%.1f\n",
