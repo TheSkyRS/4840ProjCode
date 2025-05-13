@@ -170,7 +170,7 @@ int main()
 void debug_draw_test_sprites()
 {
     int index = 14;
-    int y = 20;
+    int y = 200;
 
     // 拉杆底盘（2帧）
     for (int i = 0; i < 2; ++i)
