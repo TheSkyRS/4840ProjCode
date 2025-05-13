@@ -218,37 +218,39 @@ bool check_overlap(float x1, float y1, float w1, float h1,
     return (x1 < x2 + w2) && (x1 + w1 > x2) &&
            (y1 < y2 + h2) && (y1 + h1 > y2);
 }
-
-void lever_init(lever_t *lvr, float x, float y, int sprite_index_base)
+void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_base)
 {
-    lvr->x = x * 16;
-    lvr->y = y * 16;
+    float x = tile_x * 16;
+    float y = tile_y * 16;
+
+    lvr->x = x;
+    lvr->y = y;
     lvr->activated = false;
     lvr->sprite_base_index = sprite_index_base;
 
-    // 帧资源分配（你可按需换帧号）
+    // 帧号赋值
     lvr->base_frame[0] = LEVER_BASE_FRAME + 0;
     lvr->base_frame[1] = LEVER_BASE_FRAME + 1;
-    lvr->handle_frames[0] = LEVER_ANIM_FRAME + 0;
-    lvr->handle_frames[1] = LEVER_ANIM_FRAME + 1;
-    lvr->handle_frames[2] = LEVER_ANIM_FRAME + 2;
+    lvr->handle_frames[0] = LEVER_ANIM_FRAME + 0; // ←左
+    lvr->handle_frames[1] = LEVER_ANIM_FRAME + 1; // 中
+    lvr->handle_frames[2] = LEVER_ANIM_FRAME + 2; // →右
 
-    // 设置底座：3格tile，帧交替（0,1,0）
-    for (int i = 0; i < 3; i++)
+    // 设置底座精灵（3 tile）
+    for (int i = 0; i < 3; ++i)
     {
         sprite_set(&lvr->base_sprites[i], sprite_index_base + i, 0);
-        lvr->base_sprites[i].x = x + i * 16;
-        lvr->base_sprites[i].y = y;
-        lvr->base_sprites[i].frame_id = lvr->base_frame[i % 2];
+        lvr->base_sprites[i].x = (uint16_t)(x + i * 16);
+        lvr->base_sprites[i].y = (uint16_t)y;
+        lvr->base_sprites[i].frame_id = lvr->base_frame[i % 2]; // 交替
         lvr->base_sprites[i].enable = true;
         sprite_update(&lvr->base_sprites[i]);
     }
 
-    // 拉杆柄设置（单独 sprite）
+    // 设置拉杆柄 sprite（1 tile，居中上移）
     sprite_set(&lvr->handle_sprite, sprite_index_base + 3, 0);
-    lvr->handle_sprite.x = x + 16;                       // 居中
-    lvr->handle_sprite.y = y - 12;                       // 稍上
-    lvr->handle_sprite.frame_id = lvr->handle_frames[1]; // 初始中间
+    lvr->handle_sprite.x = (uint16_t)(x + 16);
+    lvr->handle_sprite.y = (uint16_t)(y - 12);
+    lvr->handle_sprite.frame_id = lvr->handle_frames[1]; // 初始为中间帧
     lvr->handle_sprite.enable = true;
     sprite_update(&lvr->handle_sprite);
 }
