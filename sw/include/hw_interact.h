@@ -5,6 +5,17 @@
 
 extern int vga_top_fd;
 
+// 将控制值写入 FPGA 的 CONTROL_REG
+void write_ctrl(uint32_t value);
+
+uint32_t make_ctrl_word(uint8_t tilemap_idx,
+                        uint8_t bgm_on,
+                        uint8_t sfx_sel);
+
+void set_map_and_audio(uint8_t tilemap_idx,
+                       uint8_t bgm_on,
+                       uint8_t sfx_sel);
+
 // 将 sprite 属性写入 FPGA SPRITE ATTR TABLE
 void write_sprite(uint8_t index,
                   uint8_t enable, uint8_t flip,

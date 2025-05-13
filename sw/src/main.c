@@ -198,22 +198,32 @@ int main()
     close(vga_top_fd);
     return 0;
 }
-/* build control word */
-static inline uint32_t make_ctrl_word(uint8_t tilemap_idx,
-                                      uint8_t bgm_on,
-                                      uint8_t sfx_sel)
-{
-    uint32_t tmap = (uint32_t)(tilemap_idx & 0x3);   // [1:0]
-    uint32_t audio = ((uint32_t)(bgm_on & 0x1) << 2) // [31:29] bit2 = BGM
-                     | (sfx_sel & 0x3);              // [1:0] = SFX 选择
-    return (audio << 29) | tmap;
-}
+// void debug_draw_test_sprites()
+// {
+// int index = 14;
+// int y = 200;
 
-/* 高层封装：同时设置地图和音频 */
-static void set_map_and_audio(uint8_t tilemap_idx,
-                              uint8_t bgm_on,
-                              uint8_t sfx_sel)
-{
-    uint32_t ctrl = make_ctrl_word(tilemap_idx, bgm_on, sfx_sel);
-    write_ctrl(ctrl);
-}
+// // 拉杆底盘（2帧）
+// for (int i = 0; i < 2; ++i)
+//     write_sprite(index++, 1, 0, 16 * i + 200, y, LEVER_BASE_FRAME + i);
+
+// y += 20;
+// // 拉杆动画（3帧）
+// for (int i = 0; i < 3; ++i)
+//     write_sprite(index++, 1, 0, 16 * i + 200, y, LEVER_ANIM_FRAME + i);
+
+// y += 20;
+// // 黄色升降机（4帧）
+// for (int i = 0; i < 4; ++i)
+//     write_sprite(index++, 1, 0, 16 * i + 200, y, LIFT_YELLOW_FRAME + i);
+
+// y += 20;
+// // 紫色按钮（2帧）
+// for (int i = 0; i < 2; ++i)
+//     write_sprite(index++, 1, 0, 16 * i + 200, y, BUTTON_PURPLE_FRAME + i);
+
+// y += 20;
+// // 紫色升降机（4帧）
+// for (int i = 0; i < 4; ++i)
+//     write_sprite(index++, 1, 0, 16 * i + 200, y, LIFT_PURPLE_FRAME + i);
+// }
