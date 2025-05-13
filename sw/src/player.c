@@ -131,14 +131,8 @@ void player_update_physics(player_t *p)
         }
         else if (is_box_blocked(new_x, p->y, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS))
         {
-            if (boxes[0].vx != 0 && p->vx != 0)
+            if (boxes[0].vx != 0)
                 p->vx = boxes[0].vx;
-            else if (p->vx > 0)
-            {
-                p->vx = 0.5f;
-            }
-            else
-                p->vx = -0.5f;
         }
     }
 
