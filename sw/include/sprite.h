@@ -32,13 +32,6 @@ extern box_t boxes[NUM_BOXES]; //  告诉编译器 boxes[] 是 main.c 提供的�
 // 箱子（4帧）
 #define BOX_FRAME ((uint8_t)61) // 0x3D00 >> 8 = 61
 
-void box_init(box_t *b, int tile_x, int tile_y, int sprite_base_index, uint8_t frame_id);
-void box_try_push(box_t *box, const player_t *player);
-void box_update_position(box_t *box, player_t *players);
-
-bool check_overlap(float x1, float y1, float w1, float h1,
-                   float x2, float y2, float w2, float h2);
-
 // 初始化 sprite，设置 index 与帧数
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count);
 
@@ -54,6 +47,12 @@ void sprite_update(sprite_t *s);
 void sprite_clear(sprite_t *s);
 
 void item_init(item_t *item, float x, float y, uint8_t sprite_index, uint8_t frame_id);
+
+void box_init(box_t *b, int tile_x, int tile_y, int sprite_base_index, uint8_t frame_id);
+void box_try_push(box_t *box, const player_t *player);
+void box_update_position(box_t *box, player_t *players);
 bool is_box_blocked(float x, float y, float w, float h);
-void box_try_push(box_t *box, const player_t *p);
+bool check_overlap(float x1, float y1, float w1, float h1,
+                   float x2, float y2, float w2, float h2);
+
 #endif

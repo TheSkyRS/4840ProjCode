@@ -96,6 +96,36 @@ typedef enum
     TILE_CEIL_L = 8  // 天花板：左低右高（/）
 } tile_type_t;
 
+typedef struct
+{
+    float x, y;               // 左上角位置，单位像素
+    bool activated;           // 当前状态：true=拉下，false=未激活
+    uint8_t base_frame[2];    // 底座帧（两个）
+    uint8_t handle_frames[3]; // 拉杆动画帧（左、中、右）
+    sprite_t base_sprites[3]; // 底座：3 tile，对应3个精灵
+    sprite_t handle_sprite;   // 拉杆主体
+    int sprite_base_index;    // 精灵 index 起点（需初始化分配）
+} lever_t;
+
+typedef struct
+{
+    float x, y;            // 左上角位置
+    float vy;              // 垂直速度（可为0）
+    float min_y, max_y;    // 电梯运动范围
+    bool moving_up;        // 当前方向
+    bool active;           // 是否正在激活/运动
+    sprite_t sprites[4];   // 横向电梯的4个 tile
+    int sprite_base_index; // 精灵 index 起点
+} elevator_t;
+
+typedef enum
+{
+    REGION_LEFT,
+    REGION_CENTER,
+    REGION_RIGHT
+} lever_region_t;
+lever_region_t last_lever_region;
+
 //////////////////////////////////////定量/////////////////////////////////////////////////////
 
 #define NUM_ITEMS 6
@@ -137,3 +167,12 @@ extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 #endif // TYPEDEFS_H
+
+// 火男01
+// 水女23
+// 钻石4 5 6 7 8 9
+// 箱子10 11 12 13
+// 电梯黄 14 15 16 17
+// 电梯紫 18 19 20 21
+// 拉杆黄 22 23 24
+// 按钮

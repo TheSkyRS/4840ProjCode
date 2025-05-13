@@ -12,6 +12,7 @@ player_t players[NUM_PLAYERS];
 item_t items[NUM_ITEMS];
 box_t boxes[NUM_BOXES];
 unsigned frame_counter = 0;
+lever_t lever;
 int main()
 {
     if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
@@ -89,6 +90,8 @@ int main()
 
     box_init(&boxes[0], 17, 10, 10, BOX_FRAME);
 
+    lever_init(lever, 9, 19, 22);
+
     unsigned col = 0, row = 0;
     while (1)
     {
@@ -138,6 +141,7 @@ int main()
                 box_update_position(&boxes[i], players);
             }
         }
+        lever_update(&lever, players);
         // === 2. 等待消隐区 ===
         do
         {
@@ -169,22 +173,22 @@ int main()
 }
 void debug_draw_test_sprites()
 {
-    int index = 14;
-    int y = 200;
+    // int index = 14;
+    // int y = 200;
 
-    // 拉杆底盘（2帧）
-    for (int i = 0; i < 2; ++i)
-        write_sprite(index++, 1, 0, 16 * i + 200, y, LEVER_BASE_FRAME + i);
+    // // 拉杆底盘（2帧）
+    // for (int i = 0; i < 2; ++i)
+    //     write_sprite(index++, 1, 0, 16 * i + 200, y, LEVER_BASE_FRAME + i);
 
-    y += 20;
-    // 拉杆动画（3帧）
-    for (int i = 0; i < 3; ++i)
-        write_sprite(index++, 1, 0, 16 * i + 200, y, LEVER_ANIM_FRAME + i);
+    // y += 20;
+    // // 拉杆动画（3帧）
+    // for (int i = 0; i < 3; ++i)
+    //     write_sprite(index++, 1, 0, 16 * i + 200, y, LEVER_ANIM_FRAME + i);
 
-    y += 20;
-    // 黄色升降机（4帧）
-    for (int i = 0; i < 4; ++i)
-        write_sprite(index++, 1, 0, 16 * i + 200, y, LIFT_YELLOW_FRAME + i);
+    // y += 20;
+    // // 黄色升降机（4帧）
+    // for (int i = 0; i < 4; ++i)
+    //     write_sprite(index++, 1, 0, 16 * i + 200, y, LIFT_YELLOW_FRAME + i);
 
     // y += 20;
     // // 紫色按钮（2帧）

@@ -193,77 +193,6 @@ void box_update_position(box_t *box, player_t *players)
         box->vx = 0;
 }
 
-// void box_update_position(box_t *box, player_t *players)
-// {
-//     float next_x = box->x + box->vx;
-
-//     bool blocked = false;
-//     if (box->vx > 0)
-//         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
-//     else if (box->vx < 0)
-//         blocked |= is_tile_blocked(next_x + 1, box->y + 2, 1, 28);
-//     int c;
-//     bool collides_with_player = false;
-//     bool overlaps_any_player = false;
-//     for (int i = 0; i < NUM_PLAYERS; i++)
-//     {
-//         float px = players[i].x;
-//         float py = players[i].y + PLAYER_HITBOX_OFFSET_Y;
-//         float pw = SPRITE_W_PIXELS;
-//         float ph = PLAYER_HITBOX_HEIGHT;
-
-//         // 玩家纵向必须和箱子有重叠才考虑
-//         bool vertical_overlap = (py + ph > box->y) && (py < box->y + 32);
-//         if (!vertical_overlap)
-//             continue;
-
-//         float p_center_x = px + pw / 2.0f; // 即 px + 8.0f
-
-//         if (box->vx > 0)
-//         {
-//             float block_x = box->x + 2;
-//             if (p_center_x >= block_x && p_center_x <= box->x + 16)
-//             {
-//                 collides_with_player = true;
-//                 break;
-//             }
-//         }
-//         else if (box->vx < 0)
-//         {
-//             float block_x = box->x + 30;
-//             if (p_center_x <= block_x && p_center_x >= box->x + 16)
-//             {
-//                 collides_with_player = true;
-//                 break;
-//             }
-//         }
-//         if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
-//         {
-//             printf("3\n");
-//             if (players[i].type == PLAYER_WATERGIRL)
-//                 c = 2;
-//             else
-//                 c = 1;
-//             overlaps_any_player = true;
-//             break;
-//         }
-//     }
-
-//     if (!blocked && !collides_with_player && !overlaps_any_player)
-//     {
-//         box->x = next_x;
-//     }
-//     printf("BoxV=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=%d| FireV=%.2f | WaterV=%.2f\n",
-//            box->vx, blocked, collides_with_player, overlaps_any_player, c, players[0].vx, players[1].vx);
-
-//     if (box->vx > 0)
-//         box->vx -= BOX_FRICTION;
-//     else if (box->vx < 0)
-//         box->vx += BOX_FRICTION;
-//     if (fabsf(box->vx) < BOX_FRICTION)
-//         box->vx = 0;
-// }
-
 bool is_box_blocked(float x, float y, float w, float h)
 {
     for (int i = 0; i < NUM_BOXES; i++)
@@ -288,4 +217,91 @@ bool check_overlap(float x1, float y1, float w1, float h1,
 {
     return (x1 < x2 + w2) && (x1 + w1 > x2) &&
            (y1 < y2 + h2) && (y1 + h1 > y2);
+}
+
+void lever_init(lever_t *lvr, float x, float y, int sprite_index_base)
+{
+    lvr->x = x * 16;
+    lvr->y = y * 16;
+    lvr->activated = false;
+    lvr->sprite_base_index = sprite_index_base;
+
+    // 帧资源分配（你可按需换帧号）
+    lvr->base_frame[0] = LEVER_BASE_FRAME + 0;
+    lvr->base_frame[1] = LEVER_BASE_FRAME + 1;
+    lvr->handle_frames[0] = LEVER_ANIM_FRAME + 0;
+    lvr->handle_frames[1] = LEVER_ANIM_FRAME + 1;
+    lvr->handle_frames[2] = LEVER_ANIM_FRAME + 2;
+
+    // 设置底座：3格tile，帧交替（0,1,0）
+    for (int i = 0; i < 3; i++)
+    {
+        sprite_set(&lvr->base_sprites[i], sprite_index_base + i, 0);
+        lvr->base_sprites[i].x = x + i * 16;
+        lvr->base_sprites[i].y = y;
+        lvr->base_sprites[i].frame_id = lvr->base_frame[i % 2];
+        lvr->base_sprites[i].enable = true;
+        sprite_update(&lvr->base_sprites[i]);
+    }
+
+    // 拉杆柄设置（单独 sprite）
+    sprite_set(&lvr->handle_sprite, sprite_index_base + 3, 0);
+    lvr->handle_sprite.x = x + 16;                       // 居中
+    lvr->handle_sprite.y = y - 12;                       // 稍上
+    lvr->handle_sprite.frame_id = lvr->handle_frames[1]; // 初始中间
+    lvr->handle_sprite.enable = true;
+    sprite_update(&lvr->handle_sprite);
+}
+
+void lever_update(lever_t *lvr, const player_t *players)
+{
+    for (int i = 0; i < NUM_PLAYERS; ++i)
+    {
+        const player_t *p = &players[i];
+        float px = p->x + SPRITE_W_PIXELS / 2.0f;
+        float py = p->y + PLAYER_HEIGHT_PIXELS / 2.0f;
+
+        if (fabsf(py - lvr->y) > 12.0f)
+            continue;
+
+        // 如果当前为左置，且玩家从左靠近
+        if (!lvr->activated && px >= lvr->x + 24 && px <= lvr->x + 32)
+        {
+            lvr->activated = true;
+            lvr->handle_sprite.frame_id = lvr->handle_frames[2]; // →右
+            sprite_update(&lvr->handle_sprite);
+            break;
+        }
+
+        // 如果当前为右置，且玩家从右靠近
+        if (lvr->activated && px >= lvr->x && px <= lvr->x + 8)
+        {
+            lvr->activated = false;
+            lvr->handle_sprite.frame_id = lvr->handle_frames[0]; // ←左
+            sprite_update(&lvr->handle_sprite);
+            break;
+        }
+    }
+}
+
+void elevator_init(elevator_t *elv, float x, float y, float min_y, float max_y, int sprite_index_base)
+{
+    elv->x = x;
+    elv->y = y;
+    elv->min_y = min_y;
+    elv->max_y = max_y;
+    elv->vy = 0.0f;
+    elv->moving_up = true;
+    elv->active = false;
+    elv->sprite_base_index = sprite_index_base;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        sprite_set(&elv->sprites[i], sprite_index_base + i, 0);
+        elv->sprites[i].x = x + i * 16;
+        elv->sprites[i].y = y;
+        elv->sprites[i].frame_id = LIFT_YELLOW_FRAME + i;
+        elv->sprites[i].enable = true;
+        sprite_update(&elv->sprites[i]);
+    }
 }
