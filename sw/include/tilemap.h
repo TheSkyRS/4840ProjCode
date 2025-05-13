@@ -15,4 +15,5 @@ bool is_tile_blocked(float x, float y, float width, float height);
 void item_place_on_tile(item_t *item, int tile_x, int tile_y);
 
 int get_tile_at_pixel(float x, float y);
+bool is_death(float x, float y, float width, float height, player_type_t player);
 #endif // TILEMAP_H

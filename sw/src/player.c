@@ -81,12 +81,16 @@ void player_handle_input(player_t *p, int player_index)
     }
 }
 
-void player_update_physics(player_t *p)
+bool player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
     // 垂直运动
     float tempVy = 0.0f;
     float new_y = p->y + p->vy;
+    if (is_death(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS, p))
+    {
+        return false;
+    }
 
     if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) &&
         !is_box_blocked(p->x + SPRITE_W_PIXELS / 2.0f, new_y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT) &&
@@ -193,6 +197,7 @@ void player_update_physics(player_t *p)
     }
     // if (p->type == PLAYER_WATERGIRL)
     //     debug_print_player_state(p, p->type == "WATERGIRL");
+    return true;
 }
 void adjust_to_slope_y(player_t *p)
 {

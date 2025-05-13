@@ -45,10 +45,10 @@ Logo:
 Game:
     set_map_and_audio(1, 1, 0);
     input_handler_init();
-    // player_init(&players[0], 64, 360, 0, 1, PLAYER_FIREBOY);
+    player_init(&players[0], 64, 360, 0, 1, PLAYER_FIREBOY);
     player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
 
-    player_init(&players[0], 368, 224, 0, 1, PLAYER_FIREBOY);
+    // player_init(&players[0], 368, 224, 0, 1, PLAYER_FIREBOY);
     // player_init(&players[1], 320, 152, 2, 3, PLAYER_WATERGIRL);
 
     item_init(&items[0], 0, 0, 4, BLUE_GEM_FRAME);
@@ -131,8 +131,13 @@ Game:
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_handle_input(&players[i], i);
-            player_update_physics(&players[i]);
-
+            bool alive = (&players[i]);
+            if (alive == false)
+            {
+                set_map_and_audio(1, 1, 0);
+                set_map_and_audio(1, 1, 1);
+                goto Logo;
+            }
             for (int j = 0; j < NUM_ITEMS; j++)
             {
                 if (!items[j].active)
