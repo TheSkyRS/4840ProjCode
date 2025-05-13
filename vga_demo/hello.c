@@ -1,7 +1,6 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include "vga_top.h"
 #include <sys/ioctl.h>
 #include <sys/types.h>
@@ -55,20 +54,20 @@ static void write_ctrl(uint32_t value)
     }
 }
 
-/* 构造一个 control word */
+/* build control word */
 static inline uint32_t make_ctrl_word(uint8_t tilemap_idx,
-                                      bool    bgm_on,
+                                      uint8_t bgm_on,
                                       uint8_t sfx_sel)
 {
-    uint32_t tmap = (uint32_t)(tilemap_idx & 0x3);      // 2 bits
-    uint32_t audio = ((uint32_t)(bgm_on ? 1 : 0) << 2)  // bit 2
-                   | (sfx_sel & 0x3);                   // bits [1:0]
+    uint32_t tmap  = (uint32_t)(tilemap_idx & 0x3);      // [1:0]
+    uint32_t audio = ((uint32_t)(bgm_on   & 0x1) << 2)   // [31:29] bit2 = BGM
+                   | (sfx_sel    & 0x3);                // [1:0] = SFX 选择
     return (audio << 29) | tmap;
 }
 
 /* 高层封装：同时设置地图和音频 */
 static void set_map_and_audio(uint8_t tilemap_idx,
-                              bool    bgm_on,
+                              uint8_t bgm_on,
                               uint8_t sfx_sel)
 {
     uint32_t ctrl = make_ctrl_word(tilemap_idx, bgm_on, sfx_sel);
