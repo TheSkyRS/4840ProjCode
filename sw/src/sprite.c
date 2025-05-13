@@ -218,6 +218,7 @@ bool check_overlap(float x1, float y1, float w1, float h1,
     return (x1 < x2 + w2) && (x1 + w1 > x2) &&
            (y1 < y2 + h2) && (y1 + h1 > y2);
 }
+
 void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_base)
 {
     lvr->x = tile_x * 16;
@@ -225,7 +226,7 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
     lvr->activated = false;
     lvr->sprite_base_index = sprite_index_base;
 
-    // 帧定义
+    // 帧资源定义
     lvr->base_frame[0] = LEVER_BASE_FRAME + 0;
     lvr->base_frame[1] = LEVER_BASE_FRAME + 1;
     lvr->handle_frames[0] = LEVER_ANIM_FRAME + 0; // ←
@@ -245,8 +246,8 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
 
     // 设置拉杆柄
     sprite_set(&lvr->handle_sprite, sprite_index_base + 2, 0);
-    lvr->handle_sprite.x = (uint16_t)(lvr->x + 8);       // 居中偏左
-    lvr->handle_sprite.y = (uint16_t)(lvr->y - 12);      // 上抬
+    lvr->handle_sprite.x = (uint16_t)(lvr->x + 8);
+    lvr->handle_sprite.y = (uint16_t)(lvr->y - 12);
     lvr->handle_sprite.frame_id = lvr->handle_frames[1]; // 中间帧
     lvr->handle_sprite.enable = true;
     sprite_update(&lvr->handle_sprite);

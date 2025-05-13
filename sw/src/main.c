@@ -90,7 +90,7 @@ int main()
 
     box_init(&boxes[0], 17, 10, 10, BOX_FRAME);
 
-    lever_init(&levers[0], 9, 19, 22, LEVER_BASE_FRAME);
+    lever_init(&levers[0], 9, 19, 22);
 
     unsigned col = 0, row = 0;
     while (1)
