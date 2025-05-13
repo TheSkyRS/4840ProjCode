@@ -372,7 +372,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
     {
         if (elv->y > elv->min_y)
         {
-            elv->vy = -0.5f;
+            elv->vy = -0.1f;
         }
         else
         {
@@ -384,7 +384,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
     {
         if (elv->y < elv->max_y)
         {
-            elv->vy = 0.5f;
+            elv->vy = 0.1f;
         }
         else
         {
