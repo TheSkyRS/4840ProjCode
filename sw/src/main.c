@@ -95,6 +95,10 @@ int main()
     lever_init(&levers[0], 9, 21, 22);
 
     elevator_init(&elevators[0], 1, 16, 16, 18, 14);
+    if (levers[0].activated)
+        elevators[0].y = elevators[0].min_y; // 上升位置
+    else
+        elevators[0].y = elevators[0].max_y; // 下降位置
 
     unsigned col = 0, row = 0;
     while (1)
