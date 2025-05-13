@@ -1,8 +1,10 @@
 `define BGM_BEGIN 16'h0
-`define BGM_END 16'hAFEA
+`define BGM_END 16'hAF8A
 /*
-BGM             Dea               FB jump         WG jump
-0x0000-0xAFEA   0xAFEB-0xC554    0xC555-0xCADD   0xCADE-0xD5BE
+  bgm.mp3: 0x0 to 0xAF8A
+  death.mp3: 0xAF8B to 0xC4F5
+  jumpfb.mp3: 0xC4F6 to 0xCA7E
+  jumpwg.mp3: 0xCA7F to 0xD5BE
 
 audio_ctrl
 bgm-start, 2:0 is sound selection
@@ -20,8 +22,8 @@ module audio_play(input logic        clk,
                 output logic [15:0] sample_data_r,
                 output logic sample_valid_r);
 
-    logic [15:0] sound_begin_addresses [3:0] = '{16'h0 ,16'hAFEB, 16'hc555, 16'hcade};
-    logic [15:0] sound_end_addresses [3:0] = '{16'h0 ,16'hc554, 16'hcadd, 16'hd5be};
+    logic [15:0] sound_begin_addresses [3:0] = '{16'h0 ,16'hAF8B, 16'hC4F6, 16'hCA7F};
+    logic [15:0] sound_end_addresses [3:0]   = '{16'h0 ,16'hC4F5, 16'hCA7E, 16'hD5BE};
 
     logic [15:0] sound_address;
     logic [15:0] sound_end_address;
@@ -83,7 +85,7 @@ module audio_play(input logic        clk,
                     sound_address <= sound_begin_addresses[audio_ctrl[1:0]];
                     sound_end_address <= sound_end_addresses[audio_ctrl[1:0]];
                     sfx_playing <= 1;
-                end begin
+                end else begin
                     sfx_playing <= 0;
                 end    
             end
@@ -102,7 +104,7 @@ module audio_play(input logic        clk,
                                 // repeat bgm
                             end
                             else begin
-                                sound_address <= `BGM_BEGIN;
+                                sound_address <= bgm_address;
                                 sound_end_address <= `BGM_END;
                             end
                         end
