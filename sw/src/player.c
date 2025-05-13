@@ -189,8 +189,7 @@ void adjust_to_slope_y(player_t *p)
 
             // 计算该 tile 的顶部 y 坐标（tile 是 16×16，找出 tile 所在行的起始 y）
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
-            if (tile_top_y < 0)
-                continue;
+
             // // 设置角色的 y 坐标：
             // // - tile_top_y + min_y：得到坡面的 y 高度
             // // - 减去 PLAYER_HEIGHT_PIXELS：让角色站在坡面上
@@ -241,9 +240,6 @@ void adjust_to_platform_y(player_t *p)
         if (tile == 1) // 平台 tile
         {
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
-            // 安全检查：tile 顶部不能太高（即太靠上）
-            if (tile_top_y < 0)
-                continue;
             float new_y = tile_top_y - PLAYER_HEIGHT_PIXELS - 1; // 经验偏移量
 
             float old_y = p->y;
