@@ -294,12 +294,15 @@ void lever_update(lever_t *lvr, const player_t *players)
     }
 }
 
-void elevator_init(elevator_t *elv, float x, float y, float min_y, float max_y, int sprite_index_base)
+void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y, float max_tile_y, uint8_t sprite_index_base)
 {
+    float x = tile_x * 16;
+    float y = tile_y * 16;
+
     elv->x = x;
     elv->y = y;
-    elv->min_y = min_y;
-    elv->max_y = max_y;
+    elv->min_y = min_tile_y * 16;
+    elv->max_y = max_tile_y * 16;
     elv->vy = 0.0f;
     elv->moving_up = true;
     elv->active = false;
@@ -308,8 +311,8 @@ void elevator_init(elevator_t *elv, float x, float y, float min_y, float max_y, 
     for (int i = 0; i < 4; ++i)
     {
         sprite_set(&elv->sprites[i], sprite_index_base + i, 0);
-        elv->sprites[i].x = x + i * 16;
-        elv->sprites[i].y = y;
+        elv->sprites[i].x = (uint16_t)(x + i * 16);
+        elv->sprites[i].y = (uint16_t)(y);
         elv->sprites[i].frame_id = LIFT_YELLOW_FRAME + i;
         elv->sprites[i].enable = true;
         sprite_update(&elv->sprites[i]);
