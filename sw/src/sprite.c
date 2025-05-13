@@ -143,7 +143,6 @@ void box_try_push(box_t *box, const player_t *p)
         box->vx = -BOX_PUSH_SPEED;
     }
 }
-
 void box_update_position(box_t *box, player_t *players)
 {
     float next_x = box->x + box->vx;
@@ -153,9 +152,10 @@ void box_update_position(box_t *box, player_t *players)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x + 1, box->y + 2, 1, 28);
-    int c;
-    bool collides_with_player = false;
-    bool overlaps_any_player = false;
+
+    bool collides_with_pusher = false;
+    bool will_overlap_any_player = false;
+
     for (int i = 0; i < NUM_PLAYERS; i++)
     {
         float px = players[i].x;
@@ -168,15 +168,16 @@ void box_update_position(box_t *box, player_t *players)
         if (!vertical_overlap)
             continue;
 
-        float p_center_x = px + pw / 2.0f; // 即 px + 8.0f
+        float p_center_x = px + pw / 2.0f;
 
+        // 判断是不是推箱的人贴近边缘
         if (box->vx > 0)
         {
             float block_x = box->x + 2;
             if (p_center_x >= block_x && p_center_x <= box->x + 16)
             {
-                collides_with_player = true;
-                break;
+                collides_with_pusher = true;
+                continue;
             }
         }
         else if (box->vx < 0)
@@ -184,28 +185,23 @@ void box_update_position(box_t *box, player_t *players)
             float block_x = box->x + 30;
             if (p_center_x <= block_x && p_center_x >= box->x + 16)
             {
-                collides_with_player = true;
-                break;
+                collides_with_pusher = true;
+                continue;
             }
         }
-        if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
+
+        // 判断下一帧是否压上其他玩家（不是 pusher）
+        if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
         {
-            printf("3\n");
-            if (players[i].type == PLAYER_WATERGIRL)
-                c = 2;
-            else
-                c = 1;
-            overlaps_any_player = true;
+            will_overlap_any_player = true;
             break;
         }
     }
 
-    if (!blocked && !collides_with_player && !overlaps_any_player)
+    if (!blocked && !will_overlap_any_player && !collides_with_pusher)
     {
         box->x = next_x;
     }
-    printf("BoxV=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=%d| FireV=%.2f | WaterV=%.2f\n",
-           box->vx, blocked, collides_with_player, overlaps_any_player, c, players[0].vx, players[1].vx);
 
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
@@ -214,6 +210,77 @@ void box_update_position(box_t *box, player_t *players)
     if (fabsf(box->vx) < BOX_FRICTION)
         box->vx = 0;
 }
+
+// void box_update_position(box_t *box, player_t *players)
+// {
+//     float next_x = box->x + box->vx;
+
+//     bool blocked = false;
+//     if (box->vx > 0)
+//         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
+//     else if (box->vx < 0)
+//         blocked |= is_tile_blocked(next_x + 1, box->y + 2, 1, 28);
+//     int c;
+//     bool collides_with_player = false;
+//     bool overlaps_any_player = false;
+//     for (int i = 0; i < NUM_PLAYERS; i++)
+//     {
+//         float px = players[i].x;
+//         float py = players[i].y + PLAYER_HITBOX_OFFSET_Y;
+//         float pw = SPRITE_W_PIXELS;
+//         float ph = PLAYER_HITBOX_HEIGHT;
+
+//         // 玩家纵向必须和箱子有重叠才考虑
+//         bool vertical_overlap = (py + ph > box->y) && (py < box->y + 32);
+//         if (!vertical_overlap)
+//             continue;
+
+//         float p_center_x = px + pw / 2.0f; // 即 px + 8.0f
+
+//         if (box->vx > 0)
+//         {
+//             float block_x = box->x + 2;
+//             if (p_center_x >= block_x && p_center_x <= box->x + 16)
+//             {
+//                 collides_with_player = true;
+//                 break;
+//             }
+//         }
+//         else if (box->vx < 0)
+//         {
+//             float block_x = box->x + 30;
+//             if (p_center_x <= block_x && p_center_x >= box->x + 16)
+//             {
+//                 collides_with_player = true;
+//                 break;
+//             }
+//         }
+//         if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
+//         {
+//             printf("3\n");
+//             if (players[i].type == PLAYER_WATERGIRL)
+//                 c = 2;
+//             else
+//                 c = 1;
+//             overlaps_any_player = true;
+//             break;
+//         }
+//     }
+
+//     if (!blocked && !collides_with_player && !overlaps_any_player)
+//     {
+//         box->x = next_x;
+//     }
+//     printf("BoxV=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=%d| FireV=%.2f | WaterV=%.2f\n",
+//            box->vx, blocked, collides_with_player, overlaps_any_player, c, players[0].vx, players[1].vx);
+
+//     if (box->vx > 0)
+//         box->vx -= BOX_FRICTION;
+//     else if (box->vx < 0)
+//         box->vx += BOX_FRICTION;
+//     if (fabsf(box->vx) < BOX_FRICTION)
+//         box->vx = 0;
+// }
 
 bool is_box_blocked(float x, float y, float w, float h)
 {
