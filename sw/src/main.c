@@ -23,15 +23,27 @@ int main()
         fprintf(stderr, "Error: cannot open /dev/vga_top\n");
         return -1;
     }
-
-    set_map_and_audio(0, 0, 0); // 启动 VGA 控制器
+Logo:
+    input_handler_init();
     for (int i = 0; i < 32; i++)
     {
         write_sprite(i, 0, 0, 0, 0, 0); // disable=0，位置0，帧0
     }
+    while (1)
+    {
+        set_map_and_audio(0, 0, 0); // 启动 VGA 控制器
+        for (int i = 0; i < NUM_PLAYERS; i++)
+        {
+            game_action_t action = get_player_action(i);
+            if (action != ACTION_NONE)
+            {
+            }
+        }
+    }
     // debug_draw_test_sprites();
+Game:
+    set_map_and_audio(1, 1, 0);
     input_handler_init();
-
     // player_init(&players[0], 64, 360, 0, 1, PLAYER_FIREBOY);
     player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
 
