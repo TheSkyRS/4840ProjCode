@@ -94,7 +94,7 @@ int main()
 
     lever_init(&levers[0], 9, 21, 22);
 
-    elevator_init(&elevators[0], 1, 16, 16, 18, 14);
+    elevator_init(&elevators[0], 1, 16, 16, 19, 14);
 
     unsigned col = 0, row = 0;
     while (1)
