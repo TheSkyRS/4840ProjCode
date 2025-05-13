@@ -153,7 +153,7 @@ int main()
             {
                 lever_update(&levers[0], players);
             }
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < NUM_ELEVATORS; i++)
             {
                 if (i == 0)
                     elevator_update(&elevators[i], levers[0].activated, players);
