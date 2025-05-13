@@ -199,8 +199,9 @@ void box_update_position(box_t *box, player_t *players)
     {
         box->x = next_x;
     }
-    // printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | player_block=%d | player[0]->vx=%.2f\n",
-    //        box->vx, blocked, collides_with_player, players[0].vx);
+    printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | pB1=%d | pB2 = %d | player[1]->vx=%.2f | player[2]->vx=%.2f\n",
+           box->vx, blocked, collides_with_player, overlaps_any_player, players[0].vx, players[1].vx);
+
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
     else if (box->vx < 0)
