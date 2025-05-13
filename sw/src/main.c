@@ -87,7 +87,7 @@ int main()
     items[5].width = 12;  // 碰撞箱宽度
     items[5].height = 12; // 碰撞箱高度
 
-    box_init(&boxes[0], 17, 10, 20, BOX_FRAME);
+    box_init(&boxes[0], 17, 10, 10, BOX_FRAME);
 
     unsigned col = 0, row = 0;
     while (1)
