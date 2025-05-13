@@ -42,7 +42,7 @@ typedef struct
     float vx;
     bool active;
     sprite_t sprites[4];
-    int pushing_player_type; // -1 表示没有玩家正在推动
+    player_type_t pushing_player_type;
 } box_t;
 
 // === player_type_t ===
@@ -124,6 +124,8 @@ typedef enum
 #define MAP_WIDTH 40  // tile 横向数量
 #define MAP_HEIGHT 30 // tile 纵向数量
 #define TILE_SIZE 16  // 每个 tile 像素大小（单位：px）
+
+#define PLAYER_NONE -1
 
 ///////////////////////////////////////数组////////////////////////////////////////////////////
 
