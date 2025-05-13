@@ -237,8 +237,8 @@ game_action_t get_player_action(int player_index)
         update_joypad_state(player_index);
 
         // Determine action based on joypad state
-        // Jump has highest priority (using A or Y button)
-        if (joypads[player_index].btn_a || joypads[player_index].btn_y)
+        // Jump has highest priority (using X button)
+        if (joypads[player_index].btn_x)
         {
             return ACTION_JUMP;
         }
