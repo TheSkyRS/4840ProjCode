@@ -140,6 +140,7 @@ int main()
                 }
                 box_update_position(&boxes[i], players);
             }
+            lever_update(&levers[0], players);
         }
         // === 2. 等待消隐区 ===
         do
