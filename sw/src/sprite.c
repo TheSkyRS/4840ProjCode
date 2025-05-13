@@ -1,11 +1,11 @@
 #include "sprite.h"
 #include "hw_interact.h"
-#include <math.h> // Ϊ sinf �ṩ����
+#include <math.h> //
 #include "type.h"
 #include <stdio.h>
 
 extern box_t boxes[NUM_BOXES];
-// ��ʼ�� sprite ������֡��
+
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
 {
     s->index = index;
@@ -16,7 +16,6 @@ void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
     s->frame_count = frame_count;
 }
 
-// ����֡������ѭ����
 void sprite_animate(sprite_t *s)
 {
     if (s->frame_count > 0)
@@ -26,13 +25,11 @@ void sprite_animate(sprite_t *s)
     }
 }
 
-// ���� sprite ��Ӳ��
 void sprite_update(sprite_t *s)
 {
     write_sprite(s->index, s->enable, s->flip, s->x, s->y, s->frame_id);
 }
 
-// �ر� sprite ��ʾ
 void sprite_clear(sprite_t *s)
 {
     s->enable = false;
@@ -116,8 +113,8 @@ void box_update_sprite(box_t *b)
 
 void box_try_push(box_t *box, const player_t *p)
 {
-    if (p->type != PLAYER_WATERGIRL)
-        return; // ֻ��ӡˮŮ���ĵ�����Ϣ
+    if (p->type != PLAYER_FIREBOY)
+        return;
 
     float pw = SPRITE_W_PIXELS;
     float ph = PLAYER_HITBOX_HEIGHT;
