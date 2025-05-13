@@ -190,7 +190,7 @@ void box_update_position(box_t *box, player_t *players)
         }
         if (is_box_blocked(px + SPRITE_W_PIXELS / 2.0f, py, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
-            c = i;
+            c = players[i].type;
             overlaps_any_player = true;
             break;
         }
