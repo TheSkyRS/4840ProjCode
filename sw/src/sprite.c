@@ -407,7 +407,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
 
             if (px >= elv->x && px <= elv->x + 64 &&
                 check_overlap(px, py, 1.0f, PLAYER_HITBOX_HEIGHT,
-                              elv->x, next_y, 64.0f, 16.0f))
+                              elv->x, next_y + 8.0, 64.0f, 8.0f))
             {
                 will_collide_with_player = true;
                 break;

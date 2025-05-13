@@ -6,7 +6,7 @@
 #include <stdio.h> // 顶部加这个
 
 #define GRAVITY 0.2f
-#define JUMP_VELOCITY -5.0f
+#define JUMP_VELOCITY -4.0f
 #define MOVE_SPEED 1.5f
 
 extern box_t boxes[NUM_BOXES];
