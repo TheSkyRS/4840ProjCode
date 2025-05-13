@@ -133,8 +133,12 @@ void player_update_physics(player_t *p)
         {
             if (boxes[0].vx != 0 && p->vx != 0)
                 p->vx = boxes[0].vx;
+            else if (p->vx > 0)
+            {
+                p->vx = 0.5f;
+            }
             else
-                p->vx = 0.1f;
+                p->vx = -0.5f;
         }
     }
 
@@ -148,7 +152,7 @@ void player_update_physics(player_t *p)
         else
             p->state = STATE_IDLE; // 空中静止（很少见）
     }
-    else if (p->vx != 0)
+    else if (p->vx < 0.5f && p->vx > -0.5f)
     {
         p->state = STATE_RUNNING;
     }
