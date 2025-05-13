@@ -105,6 +105,7 @@ int main()
     unsigned col = 0, row = 0;
     while (1)
     {
+
         // clock_t start = clock();
         frame_counter++;
         // === 帧同步：只在每帧顶部 row==0 时执行一次 ===
