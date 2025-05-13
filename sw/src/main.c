@@ -94,11 +94,6 @@ int main()
     box_init(&boxes[0], 17, 10, 10, BOX_FRAME);
 
     lever_init(&levers[0], 9, 21, 22);
-    for (int i = 0; i < NUM_PLAYERS; ++i)
-    {
-        levers[0].left_entered[i] = false;
-        levers[0].right_entered[i] = false;
-    }
 
     elevator_init(&elevators[0], 1, 16, 16, 19, 14, 51);
     elevator_init(&elevators[1], 35, 12, 12, 16, 18, 57);
