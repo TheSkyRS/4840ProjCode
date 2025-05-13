@@ -308,13 +308,35 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     elv->active = false;
     elv->sprite_base_index = sprite_index_base;
 
-    for (int i = 0; i < 4; ++i)
-    {
-        sprite_set(&elv->sprites[i], sprite_index_base + i, 0);
-        elv->sprites[i].x = (uint16_t)(x + i * 16);
-        elv->sprites[i].y = (uint16_t)(y);
-        elv->sprites[i].frame_id = LIFT_YELLOW_FRAME + i;
-        elv->sprites[i].enable = true;
-        sprite_update(&elv->sprites[i]);
-    }
+    // 左一块
+    sprite_set(&elv->sprites[0], sprite_index_base + 0, 0);
+    elv->sprites[0].x = (uint16_t)(x + 1);
+    elv->sprites[0].y = (uint16_t)(y);
+    elv->sprites[0].frame_id = LIFT_YELLOW_FRAME + 0;
+    elv->sprites[0].enable = true;
+    sprite_update(&elv->sprites[0]);
+
+    // 左中块
+    sprite_set(&elv->sprites[1], sprite_index_base + 1, 0);
+    elv->sprites[1].x = (uint16_t)(x + 16);
+    elv->sprites[1].y = (uint16_t)(y);
+    elv->sprites[1].frame_id = LIFT_YELLOW_FRAME + 1;
+    elv->sprites[1].enable = true;
+    sprite_update(&elv->sprites[1]);
+
+    // 右中块
+    sprite_set(&elv->sprites[2], sprite_index_base + 2, 0);
+    elv->sprites[2].x = (uint16_t)(x + 32);
+    elv->sprites[2].y = (uint16_t)(y);
+    elv->sprites[2].frame_id = LIFT_YELLOW_FRAME + 2;
+    elv->sprites[2].enable = true;
+    sprite_update(&elv->sprites[2]);
+
+    // 右一块
+    sprite_set(&elv->sprites[3], sprite_index_base + 3, 0);
+    elv->sprites[3].x = (uint16_t)(x + 47);
+    elv->sprites[3].y = (uint16_t)(y);
+    elv->sprites[3].frame_id = LIFT_YELLOW_FRAME + 3;
+    elv->sprites[3].enable = true;
+    sprite_update(&elv->sprites[3]);
 }
