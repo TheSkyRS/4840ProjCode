@@ -118,14 +118,6 @@ typedef struct
     int sprite_base_index; // 精灵 index 起点
 } elevator_t;
 
-typedef enum
-{
-    REGION_LEFT,
-    REGION_CENTER,
-    REGION_RIGHT
-} lever_region_t;
-lever_region_t last_lever_region;
-
 //////////////////////////////////////定量/////////////////////////////////////////////////////
 
 #define NUM_ITEMS 6
@@ -163,6 +155,7 @@ lever_region_t last_lever_region;
 extern player_t players[NUM_PLAYERS];
 extern item_t items[NUM_ITEMS];
 extern box_t boxes[NUM_BOXES];
+extern lever_t levers[NUM_LEVERS];
 extern unsigned frame_counter; // 引入主循环中定义的帧计数器
 extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 
