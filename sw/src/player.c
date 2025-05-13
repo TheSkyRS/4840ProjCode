@@ -152,11 +152,11 @@ void player_update_physics(player_t *p)
         else
             p->state = STATE_IDLE; // 空中静止（很少见）
     }
-    else if (p->vx < 0.5f && p->vx > -0.5f)
+    else if (p->vx != 0)
     {
         p->state = STATE_RUNNING;
     }
-    else
+    else if (p->vx < 0.5f && p->vx > -0.5f)
     {
         p->state = STATE_IDLE;
     }
