@@ -146,7 +146,6 @@ void box_try_push(box_t *box, const player_t *p)
     }
     else
     {
-        printf("  [NO PUSH] No proximity or wrong direction\n");
     }
 }
 
@@ -159,7 +158,6 @@ void box_update_position(box_t *box, player_t *players)
         blocked |= is_tile_blocked(next_x + 31, box->y + 2, 1, 28);
     else if (box->vx < 0)
         blocked |= is_tile_blocked(next_x, box->y + 2, 1, 28);
-    printf("[BOX] box->vx=%.2f, next_x=%.1f\n", box->vx, next_x);
 
     bool collides_with_player = false;
     for (int i = 0; i < NUM_PLAYERS; i++)
@@ -182,11 +180,12 @@ void box_update_position(box_t *box, player_t *players)
         // 发生真正意义上的碰撞才认为阻挡
         if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
         {
+            printf("[COLLISION] Box next=(%.1f,%.1f) vs Player[%d] (%.1f,%.1f, w=%.1f h=%.1f)\n",
+                   next_x, box->y, i, px, py, pw, ph);
             collides_with_player = true;
             break;
         }
     }
-    printf("       blocked=%d, collides_with_player=%d\n", blocked, collides_with_player);
 
     if (!blocked && !collides_with_player)
     {
