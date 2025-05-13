@@ -175,7 +175,7 @@ void box_update_position(box_t *box, player_t *players)
             is_pusher = true;
 
         // 非推箱者且会被压上，阻止
-        if (!is_pusher && check_overlap(next_x, box->y, 32, 32, px, py, pw, ph))
+        if (!is_pusher && check_overlap(next_x + 2, box->y + 2, 28, 28, px + SPRITE_W_PIXELS / 2.0f, py + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
             will_overlap_non_pusher = true;
             break;
