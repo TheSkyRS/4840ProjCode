@@ -200,7 +200,8 @@ void box_update_position(box_t *box, player_t *players)
     {
         box->x = next_x;
     }
-
+    printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | player_block=%d | player[0]->vx=%.2f\n",
+           box->vx, blocked, collides_with_player, players[0].vx);
     if (box->vx > 0)
         box->vx -= BOX_FRICTION;
     else if (box->vx < 0)
