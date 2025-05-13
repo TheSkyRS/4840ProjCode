@@ -221,7 +221,7 @@ bool is_box_blocked(float x, float y, float w, float h)
         float bx = boxes[i].x;
         float by = boxes[i].y;
 
-        if (check_overlap(x, y, w, h, bx, by, 32, 32))
+        if (check_overlap(x, y, w, h, bx + 2, by + 2, 28, 28))
         {
             return true;
         }
