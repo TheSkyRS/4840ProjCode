@@ -171,14 +171,13 @@ void box_update_position(box_t *box, player_t *players)
         float box_center_x = box->x + 16;
 
         // 角色在箱子“后方”的情况应忽略
-        if ((box->vx > 0 && player_center_x < box_center_x - 2) ||
-            (box->vx < 0 && player_center_x > box_center_x + 2))
-        {
-            continue;
-        }
+        bool in_front = false;
+        if (box->vx > 0)
+            in_front = (px > box->x + 16); // 玩家左边 > 箱子中心 → 真在前方
+        else if (box->vx < 0)
+            in_front = (px + pw < box->x + 16); // 玩家右边 < 箱子中心 → 真在前方
 
-        // 发生真正意义上的碰撞才认为阻挡
-        if (check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
+        if (in_front && check_overlap(next_x, box->y, 32.0f, 32.0f, px, py, pw, ph))
         {
             printf("[COLLISION] Box next=(%.1f,%.1f) vs Player[%d] (%.1f,%.1f, w=%.1f h=%.1f)\n",
                    next_x, box->y, i, px, py, pw, ph);
