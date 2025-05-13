@@ -113,9 +113,6 @@ void box_update_sprite(box_t *b)
 
 void box_try_push(box_t *box, const player_t *p)
 {
-    if (p->type != PLAYER_FIREBOY)
-        return;
-
     float pw = SPRITE_W_PIXELS;
     float ph = PLAYER_HITBOX_HEIGHT;
     float px = p->x;
