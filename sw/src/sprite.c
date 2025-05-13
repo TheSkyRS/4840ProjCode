@@ -259,43 +259,38 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
     lvr->handle_sprite_right.enable = false;
     sprite_update(&lvr->handle_sprite_right);
 }
+
 void lever_update(lever_t *lvr, const player_t *players)
 {
-    for (int i = 0; i < NUM_PLAYERS; ++i)
-    {
-        const player_t *p = &players[i];
-        float px = p->x + SPRITE_W_PIXELS / 2.0f;
-        float py = p->y + 32;
+    // for (int i = 0; i < NUM_PLAYERS; ++i)
+    // {
+    //     const player_t *p = &players[i];
+    //     float px = p->x + SPRITE_W_PIXELS / 2.0f;
+    //     float py = p->y + 32;
+    //     if (p->type == PLAYER_WATERGIRL)
+    //         printf("Player[%d] foot=(%.1f, %.1f), Lever=(%.1f, %.1f), Activated=%d\n",
+    //                i, px, py, lvr->x, lvr->y, lvr->activated);
+    //     if (fabsf(py - lvr->y) > 12.0f)
+    //         continue;
 
-        if (p->type == PLAYER_WATERGIRL)
-            printf("Player[%d] foot=(%.1f, %.1f), Lever=(%.1f, %.1f), Activated=%d\n",
-                   i, px, py, lvr->x, lvr->y, lvr->activated);
+    //     // 如果当前为左置，且玩家从左靠近
+    //     if (!lvr->activated && px >= lvr->x + 24 && px <= lvr->x + 32)
+    //     {
+    //         lvr->activated = true;
+    //         lvr->handle_sprite.frame_id = lvr->handle_frames[2]; // →右
+    //         sprite_update(&lvr->handle_sprite);
+    //         break;
+    //     }
 
-        if (fabsf(py - lvr->y) > 12.0f)
-            continue;
-
-        // 切换为右置（玩家从左进）
-        if (!lvr->activated && px >= lvr->x + 24 && px <= lvr->x + 32)
-        {
-            lvr->activated = true;
-            lvr->handle_sprite_left.enable = false;
-            lvr->handle_sprite_right.enable = true;
-            sprite_update(&lvr->handle_sprite_left);
-            sprite_update(&lvr->handle_sprite_right);
-            break;
-        }
-
-        // 切换为左置（玩家从右进）
-        if (lvr->activated && px >= lvr->x && px <= lvr->x + 8)
-        {
-            lvr->activated = false;
-            lvr->handle_sprite_left.enable = true;
-            lvr->handle_sprite_right.enable = false;
-            sprite_update(&lvr->handle_sprite_left);
-            sprite_update(&lvr->handle_sprite_right);
-            break;
-        }
-    }
+    //     // 如果当前为右置，且玩家从右靠近
+    //     if (lvr->activated && px >= lvr->x && px <= lvr->x + 8)
+    //     {
+    //         lvr->activated = false;
+    //         lvr->handle_sprite.frame_id = lvr->handle_frames[0]; // ←左
+    //         sprite_update(&lvr->handle_sprite);
+    //         break;
+    //     }
+    // }
 }
 
 void elevator_init(elevator_t *elv, float x, float y, float min_y, float max_y, int sprite_index_base)
