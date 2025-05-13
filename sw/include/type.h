@@ -131,6 +131,7 @@ lever_region_t last_lever_region;
 #define NUM_ITEMS 6
 #define VACTIVE 480
 #define NUM_BOXES 1
+#define NUM_LEVERS 1
 
 #define SPRITE_H_PIXELS 16
 #define SPRITE_W_PIXELS 16

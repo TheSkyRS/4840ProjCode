@@ -12,7 +12,7 @@ player_t players[NUM_PLAYERS];
 item_t items[NUM_ITEMS];
 box_t boxes[NUM_BOXES];
 unsigned frame_counter = 0;
-lever_t lever;
+lever_t levers[NUM_LEVERS];
 int main()
 {
     if ((vga_top_fd = open("/dev/vga_top", O_RDWR)) == -1)
@@ -90,7 +90,7 @@ int main()
 
     box_init(&boxes[0], 17, 10, 10, BOX_FRAME);
 
-    lever_init(lever, 9, 19, 22);
+    lever_init(&levers[0], 9, 19, 22);
 
     unsigned col = 0, row = 0;
     while (1)
