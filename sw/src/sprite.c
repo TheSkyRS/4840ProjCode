@@ -370,8 +370,11 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
     // 决定目标方向
     if (go_up)
     {
-        elv->vy = -0.5f;
-        if (elv->y <= elv->min_y)
+        if (elv->y > elv->min_y)
+        {
+            elv->vy = -0.5f;
+        }
+        else
         {
             elv->y = elv->min_y;
             elv->vy = 0;
@@ -379,8 +382,11 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
     }
     else
     {
-        elv->vy = 0.5f;
-        if (elv->y >= elv->max_y)
+        if (elv->y < elv->max_y)
+        {
+            elv->vy = 0.5f;
+        }
+        else
         {
             elv->y = elv->max_y;
             elv->vy = 0;
