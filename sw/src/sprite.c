@@ -200,7 +200,7 @@ void box_update_position(box_t *box, player_t *players)
     {
         box->x = next_x;
     }
-    printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=| player[1]->vx=%.2f | player[2]->vx=%.2f\n",
+    printf("[BOX DEBUG] box->vx=%.2f | blocked=%d | pB1=%d | pB2 = %d |i=%d| player[1]->vx=%.2f | player[2]->vx=%.2f\n",
            box->vx, blocked, collides_with_player, overlaps_any_player, c + 1, players[0].vx, players[1].vx);
 
     if (box->vx > 0)
