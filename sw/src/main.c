@@ -32,9 +32,10 @@ int main()
     // debug_draw_test_sprites();
     input_handler_init();
 
-    player_init(&players[0], 64, 360, 0, 1, PLAYER_FIREBOY);
+    // player_init(&players[0], 64, 360, 0, 1, PLAYER_FIREBOY);
     player_init(&players[1], 64, 420, 2, 3, PLAYER_WATERGIRL);
-    // player_init(&players[0], 192, 152, 0, 1, PLAYER_FIREBOY);
+
+    player_init(&players[0], 368, 224, 0, 1, PLAYER_FIREBOY);
     // player_init(&players[1], 320, 152, 2, 3, PLAYER_WATERGIRL);
 
     item_init(&items[0], 0, 0, 4, BLUE_GEM_FRAME);

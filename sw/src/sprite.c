@@ -491,7 +491,7 @@ void button_update(button_t *btn, const player_t *players)
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
         float px_center = players[i].x + SPRITE_W_PIXELS / 2.0f;
-        float foot_y = players[i].y + PLAYER_HEIGHT_PIXELS - 6;
+        float foot_y = players[i].y + PLAYER_HEIGHT_PIXELS - 10;
 
         // 横向必须在按钮区域内
         if (px_center >= btn->x && px_center <= btn->x + 16)
