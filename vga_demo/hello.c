@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include "vga_top.h"
 #include <sys/ioctl.h>
 #include <sys/types.h>
@@ -22,6 +23,16 @@ int vga_top_fd;
  *  x,y    : 坐标
  *  frame  : 帧 ID
  */
+/* 
+ * ctrl_reg 位域说明：
+ * [1:0]   tilemap_idx （共 2 位，可选 0~3 地图）
+ * [31:29] audio_ctrl （共 3 位）
+ *    bit 2 = BGM 开关（1=开，0=关）
+ *    bits[1:0] = SFX 选择（00=无音效，01/10/11=三种声效）
+ *                                   Die               FB jump         WG jump
+ */
+
+
 static inline uint32_t make_attr_word(uint8_t enable, uint8_t flip,
                                       uint16_t x, uint16_t y,
                                       uint8_t frame)
@@ -42,6 +53,26 @@ static void write_ctrl(uint32_t value)
         perror("ioctl(VGA_TOP_WRITE_CTRL) failed");
         return;
     }
+}
+
+/* 构造一个 control word */
+static inline uint32_t make_ctrl_word(uint8_t tilemap_idx,
+                                      bool    bgm_on,
+                                      uint8_t sfx_sel)
+{
+    uint32_t tmap = (uint32_t)(tilemap_idx & 0x3);      // 2 bits
+    uint32_t audio = ((uint32_t)(bgm_on ? 1 : 0) << 2)  // bit 2
+                   | (sfx_sel & 0x3);                   // bits [1:0]
+    return (audio << 29) | tmap;
+}
+
+/* 高层封装：同时设置地图和音频 */
+static void set_map_and_audio(uint8_t tilemap_idx,
+                              bool    bgm_on,
+                              uint8_t sfx_sel)
+{
+    uint32_t ctrl = make_ctrl_word(tilemap_idx, bgm_on, sfx_sel);
+    write_ctrl(ctrl);
 }
 
 /* Write one sprite attribute entry */
