@@ -131,7 +131,7 @@ Game:
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_handle_input(&players[i], i);
-            bool alive = (&players[i]);
+            bool alive = player_update_physics(&players[i]);
             if (alive == false)
             {
                 set_map_and_audio(1, 1, 0);
