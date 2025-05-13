@@ -125,7 +125,8 @@ typedef struct
 #define NUM_ITEMS 6
 #define VACTIVE 480
 #define NUM_BOXES 1
-#define NUM_LEVERS 1
+#define NUM_LEVERS 2
+#define NUM_ELEVATOR 2
 
 #define SPRITE_H_PIXELS 16
 #define SPRITE_W_PIXELS 16
@@ -158,6 +159,7 @@ extern player_t players[NUM_PLAYERS];
 extern item_t items[NUM_ITEMS];
 extern box_t boxes[NUM_BOXES];
 extern lever_t levers[NUM_LEVERS];
+extern elevator_t elevators[NUM_ELEVATOR];
 extern unsigned frame_counter; // 引入主循环中定义的帧计数器
 extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 

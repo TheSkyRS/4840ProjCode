@@ -91,6 +91,7 @@ int main()
     box_init(&boxes[0], 17, 10, 10, BOX_FRAME);
 
     lever_init(&levers[0], 9, 21, 22);
+    lever_init(&levers[1], 9, 16, 22);
 
     unsigned col = 0, row = 0;
     while (1)
@@ -140,7 +141,10 @@ int main()
                 }
                 box_update_position(&boxes[i], players);
             }
-            lever_update(&levers[0], players);
+            for (int i = 0; i < NUM_LEVERS; i++)
+            {
+                lever_update(&levers[0], players);
+            }
         }
         // === 2. 等待消隐区 ===
         do
