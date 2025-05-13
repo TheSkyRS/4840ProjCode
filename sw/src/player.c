@@ -6,7 +6,7 @@
 #include <stdio.h> // 顶部加这个
 
 #define GRAVITY 0.2f
-#define JUMP_VELOCITY -4.0f
+#define JUMP_VELOCITY -4.5f
 #define MOVE_SPEED 2.0f
 
 extern box_t boxes[NUM_BOXES];
@@ -87,12 +87,12 @@ void player_update_physics(player_t *p)
 
     if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) &&
         !is_box_blocked(p->x + SPRITE_W_PIXELS / 2.0f, new_y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT) &&
-        !is_elevator_blocked(p->x + SPRITE_W_PIXELS / 2.0f, new_y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT, &tempVy))
+        !is_elevator_blocked(p->x + SPRITE_W_PIXELS / 2.0f - 2, new_y + PLAYER_HITBOX_OFFSET_Y, 4.0f, PLAYER_HITBOX_HEIGHT, &tempVy))
     {
         p->y = new_y;
         p->on_ground = false;
     }
-    else if (is_elevator_blocked(p->x + SPRITE_W_PIXELS / 2.0f, new_y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT, &tempVy))
+    else if (is_elevator_blocked(p->x + SPRITE_W_PIXELS / 2.0f - 2, new_y + PLAYER_HITBOX_OFFSET_Y, 4.0f, PLAYER_HITBOX_HEIGHT, &tempVy))
     {
         // 调用你写的吸附函数
         adjust_to_platform_y(p);
