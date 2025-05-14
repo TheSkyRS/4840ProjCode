@@ -200,7 +200,7 @@ int player_update_physics(player_t *p)
     }
     // if (p->type == PLAYER_WATERGIRL)
     //     debug_print_player_state(p, p->type == "WATERGIRL");
-    return true;
+    return 0;
 }
 void adjust_to_slope_y(player_t *p)
 {
