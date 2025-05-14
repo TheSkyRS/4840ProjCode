@@ -14,7 +14,7 @@
 
 #define SPRITE_H_PIXELS 16
 #define SPRITE_W_PIXELS 16
-#define BOX_PUSH_SPEED 1.0f
+#define BOX_PUSH_SPEED 0.5f
 #define BOX_FRICTION 0.2f
 
 // #define GRAVITY 0.2f
