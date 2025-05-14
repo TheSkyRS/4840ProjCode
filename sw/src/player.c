@@ -91,7 +91,7 @@ int player_update_physics(player_t *p)
     {
         return 1;
     }
-    if (check_goal(players))
+    if (check_both_players_goal(players))
     {
         return 2;
     }
