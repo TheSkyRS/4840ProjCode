@@ -19,10 +19,9 @@ module sprite_drawer (
 );
 
     logic [3:0] idx;          // 0‑15
-    logic [3:0] idx_d;        // 延迟 1 拍
-    logic       valid_d;      // 延迟 1 拍的有效信号
+    logic [3:0] idx_d;
+    logic       valid_d;
 
-    // === 时序 ===========================================================
     always_ff @(posedge clk) begin
         if (reset) begin
             done  <= 1;

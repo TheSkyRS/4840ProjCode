@@ -2,32 +2,36 @@
 -- Sprite Frame Layout (16x16 pixels per frame, 256 lines/frame)
 -- Total Frames: 65 | Total Used Depth: 0x0000 – 0x40FF (16,640 lines)
 -- ==========================================================
--- 火娃头部      : 0000 – 10FF (17帧 =
---     静止2      : 0000–01FF +
---     右走5      : 0200–06FF +
---     上走5      : 0700–0BFF +
---     下走5      : 0C00–10FF)
--- 火娃脚部      : 1100 – 15FF (5帧 =
---     静止1      : 1100–11FF +
---     右走3      : 1200–14FF +
---     上/下共1   : 1500–15FF)
--- 冰娃头部      : 1600 – 26FF (17帧 =
---     静止2      : 1600–17FF +
---     右走5      : 1800–1CFF +
---     上走5      : 1D00–21FF +
---     下走5      : 2200–26FF)
--- 冰娃脚部      : 2700 – 2BFF (5帧 =
---     静止1      : 2700–27FF +
---     右走3      : 2800–2AFF +
---     上/下共1   : 2B00–2BFF)
--- 红钻石        : 2C00 – 2CFF (1帧)
--- 蓝钻石        : 2D00 – 2DFF (1帧)
--- 拉杆底盘      : 2E00 – 2FFF (2帧)
--- 拉杆动画      : 3000 – 32FF (3帧) 
--- 黄色升降机    : 3300 – 36FF (4帧)
--- 紫色按钮      : 3700 – 38FF (2帧)
--- 紫色升降机    : 3900 – 3CFF (4帧)
--- 箱子          : 3D00 – 40FF (4帧)
+–- Fire Boy Head: 0000 – 10FF (17 frames =
+-- Idle (2 frames): 0000–01FF +
+-- Walking Right (5 frames): 0200–06FF +
+-- Walking Up (5 frames): 0700–0BFF +
+-- Walking Down (5 frames): 0C00–10FF)
+
+-- Fire Boy Legs: 1100 – 15FF (5 frames =
+-- Idle (1 frame): 1100–11FF +
+-- Walking Right (3 frames): 1200–14FF +
+-- Walking Up/Down (1 shared frame): 1500–15FF)
+
+-- Water Girl Head: 1600 – 26FF (17 frames =
+-- Idle (2 frames): 1600–17FF +
+-- Walking Right (5 frames): 1800–1CFF +
+-- Walking Up (5 frames): 1D00–21FF +
+-- Walking Down (5 frames): 2200–26FF)
+
+-- Water Girl Legs: 2700 – 2BFF (5 frames =
+-- dle (1 frame): 2700–27FF +
+-- Walking Right (3 frames): 2800–2AFF +
+-- Walking Up/Down (1 shared frame): 2B00–2BFF)
+
+-- Red Diamond: 2C00 – 2CFF (1 frame)
+-- Blue Diamond: 2D00 – 2DFF (1 frame)
+–- Lever Base: 2E00 – 2FFF (2 frames)
+–- Lever Animation: 3000 – 32FF (3 frames)
+–- Yellow Elevator: 3300 – 36FF (4 frames)
+–- Purple Button: 3700 – 38FF (2 frames)
+–- Purple Elevator: 3900 – 3CFF (4 frames)
+–- Box: 3D00 – 40FF (4 frames)
 
 
 

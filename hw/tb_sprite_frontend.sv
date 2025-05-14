@@ -5,7 +5,6 @@ module tb_sprite_frontend;
     parameter NUM_SPRITE = 32;
     parameter MAX_SLOT   = 8;
 
-    // 通用信号
     logic clk;
     logic reset;
     logic start_row;
@@ -31,10 +30,8 @@ module tb_sprite_frontend;
     logic [15:0] pixel_data;
     logic wren;
 
-    // sprite 属性 RAM
     logic [31:0] sprite_attr_ram [NUM_SPRITE];
 
-    // sprite 图像 ROM
     logic [15:0] sprite_rom [0:65535];
 
     // clock generation
@@ -87,11 +84,7 @@ module tb_sprite_frontend;
         rom_q <= sprite_rom[rom_addr];
     end
     integer i;
-    // 初始化流程
     initial begin
-
-
-        // 初始化信号
         clk = 0;
         reset = 1;
         start_row = 0;
@@ -130,17 +123,13 @@ module tb_sprite_frontend;
         sprite_attr_ram[30] = 32'h8322581E;
         sprite_attr_ram[31] = 32'h83226C1F;
 
-
-        // 复位完成
         #20 reset = 0;
 
-        // 启动绘制第一个可见行
         #20;
         next_vcount = 10'd200;
         start_row = 1;
         #10 start_row = 0;
 
-        // 等待 frontend 处理完毕
         wait(fe_done);
         #20;
 

@@ -33,6 +33,11 @@
 //refer to the applicable agreement for further details, at
 //https://fpgasoftware.intel.com/eula.
 
+/*
+80 to ff address (byte address)
+1000 0000 to 1111 1111
+0010 0000 to 0011 1111 (word address)
+*/
 
 // synopsys translate_off
 `timescale 1 ps / 1 ps

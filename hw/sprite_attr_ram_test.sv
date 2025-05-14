@@ -13,10 +13,3 @@ module sprite_attr_ram #(
         q <= mem[ra];
     end
 endmodule
-
-
-/*
-80 to ff address (byte address)
-1000 0000 to 1111 1111
-0010 0000 to 0011 1111 (word address)
-*/

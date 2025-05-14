@@ -32,7 +32,7 @@ module sprite_frontend #(
 
     logic hit;
     assign hit = rd_data[31] && (next_vcount >= {1'b0,rd_data[26:18]}) && (next_vcount < rd_data[26:18]+16);
-    // 环形 FIFO
+    // FIFO
     typedef struct packed { logic [9:0] col; logic flip; logic [7:0] frame; logic [3:0] rowoff; } ent_t;
     ent_t           fifo [MAX_SLOT];
     logic [QPW-1:0] head, tail;
@@ -68,7 +68,7 @@ module sprite_frontend #(
             draw_req<=0;
             drawing <= 0;
             if (next_vcount < 10'd480) begin
-                fe_done <= 0;      // 可见行
+                fe_done <= 0;      // visible line
             end else begin
                 fe_done <= 1; // blank
             end
@@ -96,7 +96,7 @@ module sprite_frontend #(
                 tail <= (tail + 1'b1) & MASK;
             end
 
-            // drawer 空闲 且 队列非空 → Dequeue
+            // drawer idle and queue non empty → Dequeue
             if (dequeue) begin
                 col_base <= fifo[head].col;
                 flip     <= fifo[head].flip;

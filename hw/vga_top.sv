@@ -137,8 +137,6 @@ module vga_top(input logic        clk,
                     tile_start <= 0;
                 end     
                 // sprite start
-                // 2 cycles: start = 1 at hc = 1
-                //           done = 0, start = 0  at hc = 2
                 // 60 clk enough to draw tile
                 if (hcount == 60 && tile_done && sprite_done) begin
                     sprite_start <= 1;

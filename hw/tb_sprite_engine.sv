@@ -10,18 +10,15 @@ module tb_sprite_engine;
     logic sprite_start;
     logic [9:0] vcount;
 
-    // 写入接口模拟
     logic chipselect;
     logic write;
     logic [5:0] address;
     logic [31:0] writedata;
 
-    // sprite_engine 接口连线
     logic spr_wr_en;
     logic [4:0] spr_wr_idx;
     logic [31:0] spr_wr_data;
 
-    // 顶层写入寄存逻辑
     logic sprite_write_reg;
     logic [4:0] sprite_wr_idx;
     logic [31:0] sprite_writedata;
@@ -46,13 +43,11 @@ module tb_sprite_engine;
     assign spr_wr_idx  = sprite_wr_idx;
     assign spr_wr_data = sprite_writedata;
 
-    // 输出接口
     logic [9:0]  sprite_pixel_col;
     logic [15:0] sprite_pixel_data;
     logic        wren_pixel_draw;
     logic        done;
 
-    // 时钟生成
     always #5 clk = ~clk;
 
     // DUT
@@ -73,11 +68,9 @@ module tb_sprite_engine;
         .done(done)
     );
 
-    // 主流程
     initial begin
         integer i;
 
-        // 初始化信号
         clk = 0;
         reset = 1;
         sprite_start = 0;
@@ -90,7 +83,6 @@ module tb_sprite_engine;
 
         #20 reset = 0;
 
-        // 写入几组 sprite 数据
         $display("Writing sprites...");
         write_sprite(0, 32'h83200000);
         write_sprite(1, 32'h83201401);
@@ -126,7 +118,6 @@ module tb_sprite_engine;
         write_sprite(31, 32'h83226C1F);
         $display("Write complete.");
 
-        // 设置行号，启动一行处理
         vcount = 200;
         sprite_start = 1;
         @(posedge clk);
@@ -136,7 +127,7 @@ module tb_sprite_engine;
         @(posedge clk);
         @(posedge clk);
         @(posedge clk);
-        // 等待 sprite_engine 处理完成
+
         wait(done);
 
         @(posedge clk);
@@ -149,7 +140,6 @@ module tb_sprite_engine;
         $stop;
     end
 
-    // 模拟写入 task
     task write_sprite(input [4:0] idx, input [31:0] data);
         begin
             @(posedge clk);
