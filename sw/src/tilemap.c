@@ -154,17 +154,22 @@ bool is_death(float x, float y, float width, float height, player_type_t p)
     return false;
 }
 
-bool check_goal(player_t *player)
+bool check_both_players_goal()
 {
-    float center_x = player->x + SPRITE_W_PIXELS / 2.0f;
-    float center_y = player->y + SPRITE_H_PIXELS / 2.0f;
+    bool fireboy_goal = false;
+    bool watergirl_goal = false;
 
-    int tile = get_tile_at_pixel(center_x, center_y);
+    for (int i = 0; i < NUM_PLAYERS; ++i)
+    {
+        float center_x = players[i].x + SPRITE_W_PIXELS / 2.0f;
+        float center_y = players[i].y + SPRITE_H_PIXELS / 2.0f;
+        int tile = get_tile_at_pixel(center_x, center_y);
 
-    if (player->type == PLAYER_FIREBOY)
-        return tile == TILE_GOAL1;
-    else if (player->type == PLAYER_WATERGIRL)
-        return tile == TILE_GOAL2;
+        if (players[i].type == PLAYER_FIREBOY && tile == TILE_GOAL1)
+            fireboy_goal = true;
+        else if (players[i].type == PLAYER_WATERGIRL && tile == TILE_GOAL2)
+            watergirl_goal = true;
+    }
 
-    return false;
+    return fireboy_goal && watergirl_goal;
 }
