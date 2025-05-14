@@ -142,72 +142,70 @@ static void update_joypad_state(int player_index)
         return;
     }
 
-    // 使用input_event结构体来读取事件
     struct input_event event;
 
-    // 读取所有待处理的事件
     while (read(joypads[player_index].fd, &event, sizeof(event)) > 0)
     {
-        // 处理按键事件 (type=1)
+
         if (event.type == 1)
-        { // EV_KEY
+        {
             switch (event.code)
             {
-            case 288: // X键
+            case 288:
                 joypads[player_index].btn_x = (event.value != 0);
                 break;
-            case 289: // A键
+            case 289:
                 joypads[player_index].btn_a = (event.value != 0);
                 break;
-            case 290: // B键
+            case 290:
                 joypads[player_index].btn_b = (event.value != 0);
                 break;
-            case 291: // Y键
+            case 291:
                 joypads[player_index].btn_y = (event.value != 0);
                 break;
-            case 296: // Select键
-                // 可以添加对Select键的处理
+            case 296:
+
                 break;
-            case 297: // Start键
-                // 可以添加对Start键的处理
+            case 297:
+
                 break;
             }
         }
-        // 处理方向键事件 (type=3)
+
         else if (event.type == 3)
         { // EV_ABS
             if (event.code == 0)
-            { // X轴
+            {
                 if (event.value == 0)
-                { // 左键按下
+                {
                     joypads[player_index].btn_left = true;
                     joypads[player_index].btn_right = false;
                 }
                 else if (event.value == 255)
-                { // 右键按下
+                {
                     joypads[player_index].btn_left = false;
                     joypads[player_index].btn_right = true;
                 }
                 else if (event.value == 127)
-                { // 左右键释放
+                {
                     joypads[player_index].btn_left = false;
                     joypads[player_index].btn_right = false;
                 }
             }
             else if (event.code == 1)
-            { // Y轴
+            {
                 if (event.value == 0)
-                { // 上键按下
+                {
                     joypads[player_index].btn_up = true;
                     joypads[player_index].btn_down = false;
                 }
                 else if (event.value == 255)
-                { // 下键按下
+                {
                     joypads[player_index].btn_up = false;
                     joypads[player_index].btn_down = true;
                 }
                 else if (event.value == 127 || event.value == 126)
-                { // 上下键释放
+                {
                     joypads[player_index].btn_up = false;
                     joypads[player_index].btn_down = false;
                 }

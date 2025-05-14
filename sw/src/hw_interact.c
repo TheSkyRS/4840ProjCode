@@ -29,18 +29,15 @@ void write_ctrl(uint32_t value)
     }
 }
 
-/* build control word */
 inline uint32_t make_ctrl_word(uint8_t tilemap_idx,
                                uint8_t bgm_on,
                                uint8_t sfx_sel)
 {
-    uint32_t tmap = (uint32_t)(tilemap_idx & 0x3);   // [1:0]
-    uint32_t audio = ((uint32_t)(bgm_on & 0x1) << 2) // [31:29] bit2 = BGM
-                     | (sfx_sel & 0x3);              // [1:0] = SFX 选择
+    uint32_t tmap = (uint32_t)(tilemap_idx & 0x3);
+    uint32_t audio = ((uint32_t)(bgm_on & 0x1) << 2) | (sfx_sel & 0x3);
     return (audio << 29) | tmap;
 }
 
-/* 高层封装：同时设置地图和音频 */
 void set_map_and_audio(uint8_t tilemap_idx,
                        uint8_t bgm_on,
                        uint8_t sfx_sel)
