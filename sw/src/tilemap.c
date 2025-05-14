@@ -165,9 +165,9 @@ bool check_both_players_goal()
         float center_y = players[i].y + SPRITE_H_PIXELS / 2.0f;
         int tile = get_tile_at_pixel(center_x, center_y);
 
-        if (players[i].type == PLAYER_FIREBOY && tile == TILE_GOAL1)
+        if (players[i].type == PLAYER_FIREBOY && tile == TILE_GOAL2)
             fireboy_goal = true;
-        else if (players[i].type == PLAYER_WATERGIRL && tile == TILE_GOAL2)
+        else if (players[i].type == PLAYER_WATERGIRL && tile == TILE_GOAL1)
             watergirl_goal = true;
     }
 
