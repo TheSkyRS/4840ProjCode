@@ -4,6 +4,9 @@
 #include "type.h"
 #include <stdio.h>
 
+#define BOX_PUSH_SPEED 0.5f
+#define BOX_FRICTION 0.2f
+
 extern box_t boxes[NUM_BOXES];
 
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count)
