@@ -395,7 +395,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
     // ⚠️ 在运动前预测下一位置是否会撞玩家
     if (elv->vy > 0.0f)
     {
-        float next_y = elv->y + elv->vy;
+        float next_y = elv->y + elv->vy + 4;
         bool will_collide_with_player = false;
 
         for (int i = 0; i < NUM_PLAYERS; ++i)
@@ -405,7 +405,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
             float py = p->y + PLAYER_HITBOX_OFFSET_Y;
 
             if (px >= elv->x && px <= elv->x + 64 &&
-                check_overlap(px, py, 1.0f, SPRITE_H_PIXELS,
+                check_overlap(px, py, 1.0f, PLAYER_HITBOX_HEIGHT,
                               elv->x + 1, next_y + 8.0, 62.0f, 1.0f))
             {
                 will_collide_with_player = true;
