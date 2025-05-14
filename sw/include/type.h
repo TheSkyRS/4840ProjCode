@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-//////////////////////////////////////¶¨Á¿/////////////////////////////////////////////////////
+//////////////////////////////////////ï¿½ï¿½ï¿½ï¿½/////////////////////////////////////////////////////
 
 #define NUM_ITEMS 6
 #define VACTIVE 480
@@ -19,22 +19,22 @@
 // #define JUMP_VELOCITY -10.0f
 // #define MOVE_SPEED 5.0f
 
-#define MAX_FRAME_TIMER 6 // ¿ØÖÆ¶¯»­ÇÐ»»ËÙ¶È
+#define MAX_FRAME_TIMER 6 // ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½Ù¶ï¿½
 #define PLAYER_HEIGHT_PIXELS 28
 #define PLAYER_HITBOX_HEIGHT 24
 #define PLAYER_HITBOX_OFFSET_Y 4
 #define NUM_PLAYERS 2
 
-// === µØÍ¼³£Á¿ ===
-#define MAP_WIDTH 40  // tile ºáÏòÊýÁ¿
-#define MAP_HEIGHT 30 // tile ×ÝÏòÊýÁ¿
-#define TILE_SIZE 16  // Ã¿¸ö tile ÏñËØ´óÐ¡£¨µ¥Î»£ºpx£©
+// === ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ ===
+#define MAP_WIDTH 40  // tile ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define MAP_HEIGHT 30 // tile ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define TILE_SIZE 16  // Ã¿ï¿½ï¿½ tile ï¿½ï¿½ï¿½Ø´ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½pxï¿½ï¿½
 
 #define NUM_BUTTONS 2
 
 #define PLAYER_NONE -1
 
-////////////////////////////////////½á¹¹Ìå///////////////////////////////////////////////////////
+////////////////////////////////////ï¿½á¹¹ï¿½ï¿½///////////////////////////////////////////////////////
 // === sprite_t ===
 typedef struct
 {
@@ -111,7 +111,7 @@ typedef struct player_t
     bool was_on_slope_last_frame;
 } player_t;
 
-// === Tile ÀàÐÍ ===
+// === Tile types ===
 typedef enum
 {
     TILE_EMPTY = 0,
@@ -120,44 +120,44 @@ typedef enum
     TILE_WATER = 3,
     TILE_POISON = 4,
 
-    TILE_SLOPE_L_UP = 5, // µØÃæ£º×ó¸ßÓÒµÍ£¨\£©
-    TILE_SLOPE_R_UP = 6, // µØÃæ£ºÓÒ¸ß×óµÍ£¨/£©
+    TILE_SLOPE_L_UP = 5, // Slope: left high, right low (\)
+    TILE_SLOPE_R_UP = 6, // Slope: right high, left low (/)
 
-    TILE_CEIL_R = 7, // Ìì»¨°å£º×ó¸ßÓÒµÍ£¨\£©
-    TILE_CEIL_L = 8, // Ìì»¨°å£º×óµÍÓÒ¸ß£¨/£©
-    TILE_GOAL1 = 9,  // Ë®ÈËÖÕµã
+    TILE_CEIL_R = 7, // Ceiling: left high, right low (\)
+    TILE_CEIL_L = 8, // Ceiling: left low, right high (/)
+    TILE_GOAL1 = 9,  // Water girl's goal
     TILE_GOAL2 = 10
 } tile_type_t;
 
 typedef struct
 {
-    float x, y;               // ×óÉÏ½ÇÎ»ÖÃ£¬µ¥Î»ÏñËØ
-    bool activated;           // µ±Ç°×´Ì¬£ºtrue=À­ÏÂ£¬false=Î´¼¤»î
-    uint8_t base_frame[2];    // µ××ùÖ¡£¨Á½¸ö£©
-    uint8_t handle_frames[3]; // À­¸Ë¶¯»­Ö¡£¨×ó¡¢ÖÐ¡¢ÓÒ£©
-    sprite_t base_sprites[4]; // µ××ù£º3 tile£¬¶ÔÓ¦3¸ö¾«Áé
-    // sprite_t handle_sprite;   // À­¸ËÖ÷Ìå
+    float x, y;               // ï¿½ï¿½ï¿½Ï½ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
+    bool activated;           // ï¿½ï¿½Ç°×´Ì¬ï¿½ï¿½true=ï¿½ï¿½ï¿½Â£ï¿½false=Î´ï¿½ï¿½ï¿½ï¿½
+    uint8_t base_frame[2];    // ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    uint8_t handle_frames[3]; // ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ò£ï¿½
+    sprite_t base_sprites[4]; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3 tileï¿½ï¿½ï¿½ï¿½Ó¦3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // sprite_t handle_sprite;   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     sprite_t handle_sprite_left;
     sprite_t handle_sprite_right;
-    int sprite_base_index;           // ¾«Áé index Æðµã£¨Ðè³õÊ¼»¯·ÖÅä£©
-    bool left_entered[NUM_PLAYERS];  // ¼ÇÂ¼Ã¿¸ö½ÇÉ«ÊÇ·ñÔÚ×ó²à½øÈë
-    bool right_entered[NUM_PLAYERS]; // ¼ÇÂ¼Ã¿¸ö½ÇÉ«ÊÇ·ñÔÚÓÒ²à½øÈë
+    int sprite_base_index;           // ï¿½ï¿½ï¿½ï¿½ index ï¿½ï¿½ã£¨ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ä£©
+    bool left_entered[NUM_PLAYERS];  // ï¿½ï¿½Â¼Ã¿ï¿½ï¿½ï¿½ï¿½É«ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    bool right_entered[NUM_PLAYERS]; // ï¿½ï¿½Â¼Ã¿ï¿½ï¿½ï¿½ï¿½É«ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½
 } lever_t;
 
 typedef struct
 {
-    float x, y;            // ×óÉÏ½ÇÎ»ÖÃ
-    float vy;              // ´¹Ö±ËÙ¶È£¨¿ÉÎª0£©
-    float min_y, max_y;    // µçÌÝÔË¶¯·¶Î§
-    bool moving_up;        // µ±Ç°·½Ïò
-    bool active;           // ÊÇ·ñÕýÔÚ¼¤»î/ÔË¶¯
-    sprite_t sprites[4];   // ºáÏòµçÌÝµÄ4¸ö tile
-    int sprite_base_index; // ¾«Áé index Æðµã
+    float x, y;            // ï¿½ï¿½ï¿½Ï½ï¿½Î»ï¿½ï¿½
+    float vy;              // ï¿½ï¿½Ö±ï¿½Ù¶È£ï¿½ï¿½ï¿½Îª0ï¿½ï¿½
+    float min_y, max_y;    // ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½Î§
+    bool moving_up;        // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
+    bool active;           // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½/ï¿½Ë¶ï¿½
+    sprite_t sprites[4];   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½4ï¿½ï¿½ tile
+    int sprite_base_index; // ï¿½ï¿½ï¿½ï¿½ index ï¿½ï¿½ï¿½
 } elevator_t;
 
 typedef struct
 {
-    float x, y; // °´Å¥×óÉÏ½ÇÏñËØ×ø±ê£¨°´Å¥ÉÏ²¿ sprite£©
+    float x, y; // ï¿½ï¿½Å¥ï¿½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê£¨ï¿½ï¿½Å¥ï¿½Ï²ï¿½ spriteï¿½ï¿½
     sprite_t top_sprite;
     sprite_t base_left_sprite;
     sprite_t base_right_sprite;
@@ -166,11 +166,11 @@ typedef struct
     uint8_t frame_top;
     uint8_t frame_base_left;
     uint8_t frame_base_right;
-    float press_offset; // µ±Ç°Ñ¹ÏÂÉî¶È£¬µ¥Î»ÏñËØ£¨0~8£©
-    bool pressed;       // ºóÐø¿ÉÓÃÓÚ¹¦ÄÜÅÐ¶Ï
+    float press_offset; // ï¿½ï¿½Ç°Ñ¹ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ø£ï¿½0~8ï¿½ï¿½
+    bool pressed;       // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
 } button_t;
 
-///////////////////////////////////////Êý×é////////////////////////////////////////////////////
+///////////////////////////////////////ï¿½ï¿½ï¿½ï¿½////////////////////////////////////////////////////
 
 extern player_t players[NUM_PLAYERS];
 extern item_t items[NUM_ITEMS];
@@ -178,18 +178,18 @@ extern box_t boxes[NUM_BOXES];
 extern lever_t levers[NUM_LEVERS];
 extern elevator_t elevators[NUM_ELEVATORS];
 extern button_t buttons[NUM_BUTTONS];
-extern unsigned frame_counter; // ÒýÈëÖ÷Ñ­»·ÖÐ¶¨ÒåµÄÖ¡¼ÆÊýÆ÷
+extern unsigned frame_counter; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 extern const int tilemap[MAP_HEIGHT][MAP_WIDTH];
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 #endif // TYPEDEFS_H
 
-// ×êÊ¯4 5 6 7 8 9
-// Ïä×Ó10 11 12 13
-// µçÌÝ»Æ 14 15 16 17
-// µçÌÝ×Ï 18 19 20 21
-// À­¸Ë»Æ 22 23 24 25
-// °´Å¥   26 17 28
+// ï¿½ï¿½Ê¯4 5 6 7 8 9
+// ï¿½ï¿½ï¿½ï¿½10 11 12 13
+// ï¿½ï¿½ï¿½Ý»ï¿½ 14 15 16 17
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 18 19 20 21
+// ï¿½ï¿½ï¿½Ë»ï¿½ 22 23 24 25
+// ï¿½ï¿½Å¥   26 17 28
 //        29 30 21
-// »ðÄÐ0 1
+// ï¿½ï¿½ï¿½ï¿½0 1
 // Ë®Å®2 3
