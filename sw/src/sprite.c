@@ -395,7 +395,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
     // ⚠️ 在运动前预测下一位置是否会撞玩家
     if (elv->vy > 0.0f)
     {
-        float next_y = elv->y + elv->vy + 4;
+        float next_y = elv->y + elv->vy + 6;
         bool will_collide_with_player = false;
 
         for (int i = 0; i < NUM_PLAYERS; ++i)
