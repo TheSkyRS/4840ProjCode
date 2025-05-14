@@ -1,13 +1,13 @@
 // tilemap.c
-// 地形图数据与 tile 碰撞检测实现
+// Terrain map data and tile collision detection implementation
 #include "tilemap.h"
-#include <math.h> // 用于 floor()
+#include <math.h> // For floor()
 #include "player.h"
-#include "sprite.h" // 若没有可添加包含 item_t 定义
+#include "sprite.h" // If missing, include for item_t definition
 #include "type.h"
 #include <stdio.h>
-// === 示例地图数据 ===
-// 0: 空地  1: 墙壁  2: 火池  3: 水池  4: 终点
+// === Example map data ===
+// 0: Empty  1: Wall  2: Fire pit  3: Water pool  4: Goal
 const int tilemap[30][40] = {
     //               x              1              5              2              5              3              5              4
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -60,7 +60,7 @@ bool is_tile_blocked(float x, float y, float width, float height)
 
         int tile = tilemap[ty][tx];
 
-        // 普通墙壁
+        // Normal wall
         if (tile == TILE_WALL)
             return true;
 
@@ -70,7 +70,7 @@ bool is_tile_blocked(float x, float y, float width, float height)
             if (y_in_tile >= 8.0f)
                 return true;
         }
-        // 斜天花板处理（角色头顶打到）
+        // Sloped ceiling handling (character head collision)
         if (tile == TILE_CEIL_L || tile == TILE_CEIL_R)
         {
             float x_in_tile = fmod(sx, TILE_SIZE);
@@ -80,14 +80,14 @@ bool is_tile_blocked(float x, float y, float width, float height)
             int y_local = (int)y_in_tile;
 
             int max_y = (tile == TILE_CEIL_L)
-                            ? TILE_SIZE - 1 - x_local // 左低右高
-                            : x_local;                // 右低左高
+                            ? TILE_SIZE - 1 - x_local // Left low, right high
+                            : x_local;                // Right low, left high
 
             if (y_local <= max_y)
                 return true;
         }
 
-        // 斜地板处理（角色脚底踩上去）
+        // Sloped floor handling (character foot collision)
         if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
         {
             float x_in_tile = fmod(sx, TILE_SIZE);
@@ -97,8 +97,8 @@ bool is_tile_blocked(float x, float y, float width, float height)
             int y_local = (int)y_in_tile;
 
             int min_y = (tile == TILE_SLOPE_L_UP)
-                            ? x_local                  // \ ← 左高右低
-                            : TILE_SIZE - 1 - x_local; // / ← 右高左低
+                            ? x_local                  // \ ← Left high, right low
+                            : TILE_SIZE - 1 - x_local; // / ← Right high, left low
 
             if (y_local >= min_y)
                 return true;
@@ -113,7 +113,7 @@ int get_tile_at_pixel(float x, float y)
     int ty = (int)(y / TILE_SIZE);
 
     if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
-        return TILE_WALL; // 越界当作墙体
+        return TILE_WALL; // Treat out of bounds as wall
 
     return tilemap[ty][tx];
 }
@@ -144,7 +144,7 @@ bool is_death(float x, float y, float width, float height, player_type_t p)
 
         int tile = tilemap[ty][tx];
 
-        // 危险地形判定（死亡）
+        // Dangerous terrain detection (death)
         if (p == PLAYER_FIREBOY && (tile == TILE_WATER || tile == TILE_POISON))
             return true;
         if (p == PLAYER_WATERGIRL && (tile == TILE_FIRE || tile == TILE_POISON))

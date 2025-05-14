@@ -4,7 +4,7 @@
 #include "hw_interact.h"
 #include "player.h"
 #include "joypad_input.h"
-#include "sprite.h" // 新增
+#include "sprite.h" 
 #include "type.h"
 #include <time.h>
 

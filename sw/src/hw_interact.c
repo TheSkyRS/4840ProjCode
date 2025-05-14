@@ -36,11 +36,11 @@ inline uint32_t make_ctrl_word(uint8_t tilemap_idx,
 {
     uint32_t tmap = (uint32_t)(tilemap_idx & 0x3);   // [1:0]
     uint32_t audio = ((uint32_t)(bgm_on & 0x1) << 2) // [31:29] bit2 = BGM
-                     | (sfx_sel & 0x3);              // [1:0] = SFX 选择
+                     | (sfx_sel & 0x3);              // [1:0] = SFX selection
     return (audio << 29) | tmap;
 }
 
-/* 高层封装：同时设置地图和音频 */
+/* High-level wrapper: set map and audio simultaneously */
 void set_map_and_audio(uint8_t tilemap_idx,
                        uint8_t bgm_on,
                        uint8_t sfx_sel)
