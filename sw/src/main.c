@@ -141,6 +141,7 @@ Game:
             }
             else if (situation == 2)
             {
+                printf("2");
                 goto Logo;
             }
 
