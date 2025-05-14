@@ -63,6 +63,9 @@ bool is_tile_blocked(float x, float y, float width, float height)
         // 普通墙壁
         if (tile == TILE_WALL)
             return true;
+        // 危险地形判定（死亡）
+        if (tile == TILE_WATER || tile == TILE_POISON || tile == TILE_FIRE)
+            return true;
 
         // 斜天花板处理（角色头顶打到）
         if (tile == TILE_CEIL_L || tile == TILE_CEIL_R)
@@ -148,5 +151,20 @@ bool is_death(float x, float y, float width, float height, player_type_t p)
         if (p == PLAYER_WATERGIRL && (tile == TILE_FIRE || tile == TILE_POISON))
             return true;
     }
+    return false;
+}
+
+bool check_goal(player_t *player)
+{
+    float center_x = player->x + SPRITE_W_PIXELS / 2.0f;
+    float center_y = player->y + SPRITE_H_PIXELS / 2.0f;
+
+    int tile = get_tile_at_pixel(center_x, center_y);
+
+    if (player->type == PLAYER_FIREBOY)
+        return tile == TILE_GOAL1;
+    else if (player->type == PLAYER_WATERGIRL)
+        return tile == TILE_GOAL2;
+
     return false;
 }

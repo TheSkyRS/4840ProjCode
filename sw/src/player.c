@@ -81,7 +81,7 @@ void player_handle_input(player_t *p, int player_index)
     }
 }
 
-bool player_update_physics(player_t *p)
+int player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
     // 垂直运动
@@ -89,9 +89,12 @@ bool player_update_physics(player_t *p)
     float new_y = p->y + p->vy;
     if (is_death(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS, p->type))
     {
-        return false;
+        return 1;
     }
-
+    if (check_goal(players))
+    {
+        return 2;
+    }
     if (!is_tile_blocked(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS) &&
         !is_box_blocked(p->x + SPRITE_W_PIXELS / 2.0f, new_y + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT) &&
         !is_elevator_blocked(p->x + SPRITE_W_PIXELS / 2.0f - 2, new_y + PLAYER_HITBOX_OFFSET_Y, 4.0f, PLAYER_HITBOX_HEIGHT, &tempVy))

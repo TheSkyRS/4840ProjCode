@@ -131,13 +131,19 @@ Game:
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_handle_input(&players[i], i);
-            bool alive = player_update_physics(&players[i]);
-            if (alive == false)
+            int situation = player_update_physics(&players[i]);
+            if (situation == 1)
             {
                 set_map_and_audio(1, 1, 0);
-                set_map_and_audio(1, 1, 1);
+                set_map_and_audio(1, 1, 2);
+                sleep(1);
                 goto Logo;
             }
+            else if (situation == 2)
+            {
+                goto Logo;
+            }
+
             for (int j = 0; j < NUM_ITEMS; j++)
             {
                 if (!items[j].active)
