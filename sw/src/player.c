@@ -2,12 +2,18 @@
 #include "joypad_input.h"
 #include "tilemap.h"
 #include "hw_interact.h"
+<<<<<<< HEAD
 #include <math.h> // For floor()
 #include "type.h"
 #include <stdio.h> // Adding this at the top
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+=======
+#include <math.h>
+#include "type.h"
+#include <stdio.h>
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
 #define GRAVITY 0.2f
 #define JUMP_VELOCITY -4.5f
@@ -55,7 +61,10 @@ void player_handle_input(player_t *p, int player_index)
 {
     game_action_t action = get_player_action(player_index);
 
+<<<<<<< HEAD
     // Handle jumping, must be placed first
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     if (action == ACTION_JUMP && p->on_ground)
     {
         set_map_and_audio(1, 1, 0);
@@ -65,7 +74,10 @@ void player_handle_input(player_t *p, int player_index)
         p->state = STATE_JUMPING;
     }
 
+<<<<<<< HEAD
     // Handle horizontal movement
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     if (action == ACTION_MOVE_LEFT)
     {
         p->vx = -MOVE_SPEED;
@@ -78,7 +90,11 @@ void player_handle_input(player_t *p, int player_index)
         p->lower_sprite.flip = 0;
         p->upper_sprite.flip = 0;
     }
+<<<<<<< HEAD
     else if (p->on_ground) // Don't immediately cancel horizontal velocity in air
+=======
+    else if (p->on_ground)
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     {
         p->vx = 0;
     }
@@ -87,7 +103,11 @@ void player_handle_input(player_t *p, int player_index)
 int player_update_physics(player_t *p)
 {
     p->vy += GRAVITY;
+<<<<<<< HEAD
     // Vertical movement
+=======
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     float tempVy = 0.0f;
     float new_y = p->y + p->vy;
     if (is_death(p->x, new_y + 1, SPRITE_W_PIXELS, PLAYER_HEIGHT_PIXELS, p->type))
@@ -107,7 +127,11 @@ int player_update_physics(player_t *p)
     }
     else if (is_elevator_blocked(p->x + SPRITE_W_PIXELS / 2.0f - 2, new_y + PLAYER_HITBOX_OFFSET_Y, 4.0f, PLAYER_HITBOX_HEIGHT, &tempVy))
     {
+<<<<<<< HEAD
         // Call your attachment function
+=======
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         adjust_to_platform_y(p);
 
         if (p->vy > 0)
@@ -117,7 +141,11 @@ int player_update_physics(player_t *p)
     }
     else
     {
+<<<<<<< HEAD
         // Call your attachment function
+=======
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         adjust_to_platform_y(p);
 
         if (p->vy > 0)
@@ -125,15 +153,24 @@ int player_update_physics(player_t *p)
 
         p->vy = 0;
     }
+<<<<<<< HEAD
     // Horizontal movement
     float new_x = p->x + p->vx;
 
     // Calculate current position and target position's foot center point
+=======
+
+    float new_x = p->x + p->vx;
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     float cur_foot_x = p->x + SPRITE_W_PIXELS / 2.0f;
     float new_foot_x = new_x + SPRITE_W_PIXELS / 2.0f;
     float foot_y = p->y + PLAYER_HEIGHT_PIXELS;
 
+<<<<<<< HEAD
     // Determine whether current position's foot adjacent to left and right are in slope range
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     bool on_slope = false;
     for (int dx = -1; dx <= 1; ++dx)
     {
@@ -183,7 +220,10 @@ int player_update_physics(player_t *p)
         }
     }
 
+<<<<<<< HEAD
     // State switching
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     if (!p->on_ground)
     {
         if (p->vy < -0.1f)
@@ -191,7 +231,11 @@ int player_update_physics(player_t *p)
         else if (p->vy > 0.1f)
             p->state = STATE_FALLING;
         else
+<<<<<<< HEAD
             p->state = STATE_IDLE; // Rarely seen motionless in air
+=======
+            p->state = STATE_IDLE;
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     }
     else if (p->vx != 0)
     {
@@ -201,12 +245,12 @@ int player_update_physics(player_t *p)
     {
         p->state = STATE_IDLE;
     }
-    // if (p->type == PLAYER_WATERGIRL)
-    //     debug_print_player_state(p, p->type == "WATERGIRL");
+
     return 0;
 }
 void adjust_to_slope_y(player_t *p)
 {
+<<<<<<< HEAD
     // Calculate the horizontal position of the character's foot center
     float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
 
@@ -232,10 +276,30 @@ void adjust_to_slope_y(player_t *p)
             // Calculate the y height that this x offset should correspond to in the current slope tile
             // Left slope rises from bottom-left to top-right: the more right, the higher → y = x
             // Right slope rises from bottom-right to top-left: the more left, the higher → y = TILE_SIZE - 1 - x
+=======
+
+    float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
+
+    float base_foot_y = p->y + PLAYER_HEIGHT_PIXELS;
+
+    for (int dy = -4; dy <= 2; ++dy)
+    {
+        float foot_y = base_foot_y + dy;
+
+        int tile = get_tile_at_pixel(center_x, foot_y);
+
+        if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
+        {
+
+            float x_in_tile = fmod(center_x, TILE_SIZE);
+            int x_local = (int)x_in_tile;
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
             int min_y = (tile == TILE_SLOPE_L_UP)
                             ? x_local
                             : TILE_SIZE - 1 - x_local;
 
+<<<<<<< HEAD
             // Calculate the top y-coordinate of the tile (tile is 16×16, find the starting y of the tile row)
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
 
@@ -263,11 +327,26 @@ void adjust_to_slope_y(player_t *p)
             {
                 p->y = new_y;
                 // Preserve vy, don't force set to 0
+=======
+            float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
+
+            float old_y = p->y;
+
+            float new_y = tile_top_y + min_y - PLAYER_HEIGHT_PIXELS - 3;
+
+            if (fabsf(new_y - old_y) < 0.2f)
+            {
+                p->y = new_y;
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
             }
             else
             {
                 p->y = new_y;
+<<<<<<< HEAD
                 p->vy = 0; // Only reset to zero when there's significant attachment
+=======
+                p->vy = 0;
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
             }
 
             p->on_ground = true;
@@ -278,6 +357,7 @@ void adjust_to_slope_y(player_t *p)
 
 void adjust_to_platform_y(player_t *p)
 {
+<<<<<<< HEAD
     // Calculate character's foot center horizontal position
     float foot_center_x = p->x + SPRITE_W_PIXELS / 2.0f; 
     
@@ -297,13 +377,30 @@ void adjust_to_platform_y(player_t *p)
         {
             float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
             float new_y = tile_top_y - PLAYER_HEIGHT_PIXELS - 1; // Empirical offset
+=======
+    float center_x = p->x + SPRITE_W_PIXELS / 2.0f;
+    float base_foot_y = p->y + PLAYER_HEIGHT_PIXELS;
+
+    for (int dy = -8; dy <= 8; ++dy)
+    {
+        float foot_y = base_foot_y + dy;
+        int tile = get_tile_at_pixel(center_x, foot_y);
+
+        if (tile == 1)
+        {
+            float tile_top_y = ((int)(foot_y / TILE_SIZE)) * TILE_SIZE;
+            float new_y = tile_top_y - PLAYER_HEIGHT_PIXELS - 1;
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
             float old_y = p->y;
 
             if (fabsf(new_y - old_y) < 0.2f)
             {
                 p->y = new_y;
+<<<<<<< HEAD
                 // Preserve vy
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
             }
             else
             {
@@ -316,7 +413,11 @@ void adjust_to_platform_y(player_t *p)
         }
     }
 }
+<<<<<<< HEAD
 // Fireboy
+=======
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 #define FB_HEAD_IDLE ((uint8_t)0)      // 0x0000 >> 8 = 0
 #define FB_HEAD_WALK ((uint8_t)2)      // 0x0200 >> 8 = 2
 #define FB_HEAD_UPDOWN ((uint8_t)7)    // 0x0700 >> 8 = 7
@@ -326,7 +427,10 @@ void adjust_to_platform_y(player_t *p)
 #define FB_LEG_WALK ((uint8_t)18)         // 0x1200 >> 8 = 18
 #define FB_LEG_UPorDOWNWALK ((uint8_t)21) // 0x1500 >> 8 = 21
 
+<<<<<<< HEAD
 // Watergirl
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 #define WG_HEAD_IDLE ((uint8_t)22)     // 0x1600 >> 8 = 22
 #define WG_HEAD_WALK ((uint8_t)24)     // 0x1800 >> 8 = 24
 #define WG_HEAD_UPWALK ((uint8_t)29)   // 0x2100 >> 8 = 29
@@ -336,7 +440,10 @@ void adjust_to_platform_y(player_t *p)
 #define WG_LEG_WALK ((uint8_t)40)         // 0x2800 >> 8 = 40
 #define WG_LEG_UPorDOWNWALK ((uint8_t)43) // 0x2B00 >> 8 = 43
 
+<<<<<<< HEAD
 // Called each frame: automatically cycles between walking frames
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 static int get_frame_id(player_t *p, bool is_upper)
 {
     int base = 0;
@@ -388,25 +495,38 @@ int get_frame_count(player_t *p, bool is_upper)
             return is_upper ? 5 : 3;
     }
 
-    return 1; // fallback
+    return 1;
 }
 
 void player_update_sprite(player_t *p)
 {
+<<<<<<< HEAD
     // Determine if animation is needed
+=======
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     bool animate = false;
 
     switch (p->state)
     {
     case STATE_RUNNING:
     case STATE_IDLE:
+<<<<<<< HEAD
         animate = true; // Both walking and standing can cycle through animations (like blinking)
+=======
+        animate = true;
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         break;
     case STATE_JUMPING:
     case STATE_FALLING:
     default:
+<<<<<<< HEAD
         animate = false; // No animation in air or unknown states
         break;
+=======
+        animate = false; // As long as you confirm that the animation frames are correct, these things can theoretically be opened. I haven't fully tested it and can't guarantee. In the early stage, the animation wasn't fully prepared,
+        break;           // so I turned it off. But embarrassingly, I kept forgetting it on later utill I checked the code for the last time before submission and deleted some comments >.<
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     }
 
     if (animate)
@@ -415,7 +535,11 @@ void player_update_sprite(player_t *p)
         if (p->frame_timer >= MAX_FRAME_TIMER)
         {
             p->frame_timer = 0;
+<<<<<<< HEAD
             int frame_count = get_frame_count(p, true); // Upper body determines frame length
+=======
+            int frame_count = get_frame_count(p, true);
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
             p->frame_index = (p->frame_index + 1) % frame_count;
         }
     }
@@ -426,6 +550,7 @@ void player_update_sprite(player_t *p)
 
     if (p->type == PLAYER_FIREBOY)
     {
+<<<<<<< HEAD
         // Set frame ID
         p->lower_sprite.frame_id = get_frame_id(p, false);
         p->upper_sprite.frame_id = get_frame_id(p, true);
@@ -436,11 +561,22 @@ void player_update_sprite(player_t *p)
         p->lower_sprite.y = p->y + SPRITE_H_PIXELS - 1;
         p->lower_sprite.enable = true;
         // Head
+=======
+
+        p->lower_sprite.frame_id = get_frame_id(p, false);
+        p->upper_sprite.frame_id = get_frame_id(p, true);
+
+        p->lower_sprite.x = p->x;
+        p->lower_sprite.y = p->y + SPRITE_H_PIXELS - 1;
+        p->lower_sprite.enable = true;
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         p->upper_sprite.x = p->x;
         p->upper_sprite.y = p->y + 5;
         p->upper_sprite.enable = true;
     }
     if (p->type == PLAYER_WATERGIRL)
+<<<<<<< HEAD
     { // Set frame ID
         p->lower_sprite.frame_id = get_frame_id(p, false);
         p->upper_sprite.frame_id = get_frame_id(p, true);
@@ -451,6 +587,16 @@ void player_update_sprite(player_t *p)
         p->lower_sprite.y = p->y + SPRITE_H_PIXELS - 2;
         p->lower_sprite.enable = true;
         // Head
+=======
+    {
+        p->lower_sprite.frame_id = get_frame_id(p, false);
+        p->upper_sprite.frame_id = get_frame_id(p, true);
+
+        p->lower_sprite.x = p->x;
+        p->lower_sprite.y = p->y + SPRITE_H_PIXELS - 2;
+        p->lower_sprite.enable = true;
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         p->upper_sprite.x = p->x;
         p->upper_sprite.y = p->y + 4;
         p->upper_sprite.enable = true;

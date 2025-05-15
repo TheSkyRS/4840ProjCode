@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // tilemap.c
 // Terrain map data and tile collision detection implementation
 #include "tilemap.h"
@@ -8,6 +9,16 @@
 #include <stdio.h>
 // === Example map data ===
 // 0: Empty  1: Wall  2: Fire pit  3: Water pool  4: Goal
+=======
+
+#include "tilemap.h"
+#include <math.h>
+#include "player.h"
+#include "sprite.h"
+#include "type.h"
+#include <stdio.h>
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 const int tilemap[30][40] = {
     //               x              1              5              2              5              3              5              4
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -60,7 +71,10 @@ bool is_tile_blocked(float x, float y, float width, float height)
 
         int tile = tilemap[ty][tx];
 
+<<<<<<< HEAD
         // Normal wall
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         if (tile == TILE_WALL)
             return true;
 
@@ -70,7 +84,11 @@ bool is_tile_blocked(float x, float y, float width, float height)
             if (y_in_tile >= 8.0f)
                 return true;
         }
+<<<<<<< HEAD
         // Sloped ceiling handling (character head collision)
+=======
+
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         if (tile == TILE_CEIL_L || tile == TILE_CEIL_R)
         {
             float x_in_tile = fmod(sx, TILE_SIZE);
@@ -80,14 +98,22 @@ bool is_tile_blocked(float x, float y, float width, float height)
             int y_local = (int)y_in_tile;
 
             int max_y = (tile == TILE_CEIL_L)
+<<<<<<< HEAD
                             ? TILE_SIZE - 1 - x_local // Left low, right high
                             : x_local;                // Right low, left high
 
+=======
+                            ? TILE_SIZE - 1 - x_local
+                            : x_local;
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
             if (y_local <= max_y)
                 return true;
         }
 
+<<<<<<< HEAD
         // Sloped floor handling (character foot collision)
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         if (tile == TILE_SLOPE_L_UP || tile == TILE_SLOPE_R_UP)
         {
             float x_in_tile = fmod(sx, TILE_SIZE);
@@ -97,8 +123,13 @@ bool is_tile_blocked(float x, float y, float width, float height)
             int y_local = (int)y_in_tile;
 
             int min_y = (tile == TILE_SLOPE_L_UP)
+<<<<<<< HEAD
                             ? x_local                  // \ ← Left high, right low
                             : TILE_SIZE - 1 - x_local; // / ← Right high, left low
+=======
+                            ? x_local
+                            : TILE_SIZE - 1 - x_local;
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
             if (y_local >= min_y)
                 return true;
@@ -113,7 +144,11 @@ int get_tile_at_pixel(float x, float y)
     int ty = (int)(y / TILE_SIZE);
 
     if (tx < 0 || tx >= MAP_WIDTH || ty < 0 || ty >= MAP_HEIGHT)
+<<<<<<< HEAD
         return TILE_WALL; // Treat out of bounds as wall
+=======
+        return TILE_WALL;
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
     return tilemap[ty][tx];
 }
@@ -144,7 +179,10 @@ bool is_death(float x, float y, float width, float height, player_type_t p)
 
         int tile = tilemap[ty][tx];
 
+<<<<<<< HEAD
         // Dangerous terrain detection (death)
+=======
+>>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         if (p == PLAYER_FIREBOY && (tile == TILE_WATER || tile == TILE_POISON))
             return true;
         if (p == PLAYER_WATERGIRL && (tile == TILE_FIRE || tile == TILE_POISON))

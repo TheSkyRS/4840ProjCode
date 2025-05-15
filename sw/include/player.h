@@ -6,14 +6,12 @@
 #include "sprite.h"
 #include "type.h"
 
-// 初始化角色（初始坐标，sprite index，角色类型）
 void player_init(player_t *p, int x, int y,
                  uint8_t upper_index, uint8_t lower_index,
                  player_type_t type);
 
 int get_frame_count(player_t *p, bool is_upper);
 
-// 每帧调用流程
 void player_handle_input(player_t *p, int player_index);
 int player_update_physics(player_t *p);
 void player_check_collision(player_t *p);
