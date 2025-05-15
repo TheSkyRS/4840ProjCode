@@ -8,7 +8,6 @@
 #include "type.h"
 extern box_t boxes[NUM_BOXES]; // Tells the compiler that boxes[] is a global definition provided by main.c
 
-<<<<<<< HEAD
 // Red diamond
 #define RED_GEM_FRAME ((uint8_t)44) // 0x2C00 >> 8 = 44
 
@@ -37,39 +36,14 @@ extern box_t boxes[NUM_BOXES]; // Tells the compiler that boxes[] is a global de
 void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count);
 
 // Frame cycle update (frame_id++)
-=======
-#define RED_GEM_FRAME ((uint8_t)44) // 0x2C00 >> 8 = 44
-
-#define BLUE_GEM_FRAME ((uint8_t)45) // 0x2D00 >> 8 = 45
-
-#define LEVER_BASE_FRAME ((uint8_t)46) // 0x2E00 >> 8 = 46
-
-#define LEVER_ANIM_FRAME ((uint8_t)48) // 0x3000 >> 8 = 48
-
-#define LIFT_YELLOW_FRAME ((uint8_t)51) // 0x3300 >> 8 = 51
-
-#define BUTTON_PURPLE_FRAME ((uint8_t)55) // 0x3700 >> 8 = 55
-
-#define LIFT_PURPLE_FRAME ((uint8_t)57) // 0x3900 >> 8 = 57
-
-#define BOX_FRAME ((uint8_t)61) // 0x3D00 >> 8 = 61
-
-void sprite_set(sprite_t *s, uint8_t index, uint8_t frame_count);
-
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 void sprite_animate(sprite_t *s);
 
 void item_update_sprite(item_t *item);
 
-<<<<<<< HEAD
 // Write to VGA
 void sprite_update(sprite_t *s);
 
 // Turn off display
-=======
-void sprite_update(sprite_t *s);
-
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 void sprite_clear(sprite_t *s);
 
 void item_init(item_t *item, float x, float y, uint8_t sprite_index, uint8_t frame_id);

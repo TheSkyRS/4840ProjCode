@@ -142,7 +142,6 @@ static void update_joypad_state(int player_index)
         return;
     }
 
-<<<<<<< HEAD
     // Using input_event structure to read events
     struct input_event event;
 
@@ -150,18 +149,10 @@ static void update_joypad_state(int player_index)
     while (read(joypads[player_index].fd, &event, sizeof(event)) > 0)
     {
         // Handle button events (type=1)
-=======
-    struct input_event event;
-
-    while (read(joypads[player_index].fd, &event, sizeof(event)) > 0)
-    {
-
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         if (event.type == 1)
         {
             switch (event.code)
             {
-<<<<<<< HEAD
             case 288: // X button
                 joypads[player_index].btn_x = (event.value != 0);
                 break;
@@ -189,85 +180,34 @@ static void update_joypad_state(int player_index)
             { // X axis
                 if (event.value == 0)
                 { // Left button pressed
-=======
-            case 288:
-                joypads[player_index].btn_x = (event.value != 0);
-                break;
-            case 289:
-                joypads[player_index].btn_a = (event.value != 0);
-                break;
-            case 290:
-                joypads[player_index].btn_b = (event.value != 0);
-                break;
-            case 291:
-                joypads[player_index].btn_y = (event.value != 0);
-                break;
-            case 296:
-
-                break;
-            case 297:
-
-                break;
-            }
-        }
-
-        else if (event.type == 3)
-        { // EV_ABS
-            if (event.code == 0)
-            {
-                if (event.value == 0)
-                {
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                     joypads[player_index].btn_left = true;
                     joypads[player_index].btn_right = false;
                 }
                 else if (event.value == 255)
-<<<<<<< HEAD
                 { // Right button pressed
-=======
-                {
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                     joypads[player_index].btn_left = false;
                     joypads[player_index].btn_right = true;
                 }
                 else if (event.value == 127)
-<<<<<<< HEAD
                 { // Left and right buttons released
-=======
-                {
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                     joypads[player_index].btn_left = false;
                     joypads[player_index].btn_right = false;
                 }
             }
             else if (event.code == 1)
-<<<<<<< HEAD
             { // Y axis
                 if (event.value == 0)
                 { // Up button pressed
-=======
-            {
-                if (event.value == 0)
-                {
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                     joypads[player_index].btn_up = true;
                     joypads[player_index].btn_down = false;
                 }
                 else if (event.value == 255)
-<<<<<<< HEAD
                 { // Down button pressed
-=======
-                {
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                     joypads[player_index].btn_up = false;
                     joypads[player_index].btn_down = true;
                 }
                 else if (event.value == 127 || event.value == 126)
-<<<<<<< HEAD
                 { // Up and down buttons released
-=======
-                {
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                     joypads[player_index].btn_up = false;
                     joypads[player_index].btn_down = false;
                 }

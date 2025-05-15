@@ -1,27 +1,27 @@
-# 顶层目录路径
+# Top directory path
 INCLUDEDIR = include
 SRCDIR = src
 TESTDIR = test
 
-# 所有源文件
+# All source files
 SRCS = $(wildcard $(SRCDIR)/*.c)
 TEST_SRCS = $(wildcard $(TESTDIR)/*.c)
 
-# 头文件路径
+# Header file path
 INCLUDES = -I$(INCLUDEDIR)
 
-# 目标文件列表（.c → .o）
+# Target file list (.c → .o)
 OBJS = $(SRCS:.c=.o)
 TEST_OBJS = $(filter-out $(SRCDIR)/main.o, $(OBJS)) $(TEST_SRCS:.c=.o)
 
-# 最终可执行文件名
+# Final executable file name
 TARGET = game
 TEST_TARGET = test_joypad
 
-# 编译器与选项
+# Compiler and options
 CC = gcc
 CFLAGS = -Wall -O2 $(INCLUDES)
-LDLIBS = -lm  # 添加数学库链接
+LDLIBS = -lm  # Add math library link
 
 .PHONY: all clean test
 

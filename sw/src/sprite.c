@@ -61,11 +61,7 @@ void item_update_sprite(item_t *item)
         float offset = 0.0f;
         if (item->float_anim)
         {
-<<<<<<< HEAD
             offset = 0.01f * sinf((float)frame_counter * 0.1f + item->sprite.index); // Different amplitude and frequency for floating animation
-=======
-            offset = 0.01f * sinf((float)frame_counter * 0.1f + item->sprite.index);
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         }
 
         item->sprite.x = (uint16_t)item->x;
@@ -139,11 +135,7 @@ void box_try_push(box_t *box, const player_t *p)
     float p_center_x = px + pw / 2.0f;
     float b_left = bx;
     float b_right = bx + bw;
-<<<<<<< HEAD
     const float PUSH_TOLERANCE = 5.0f; // Expanded to 5 pixel range
-=======
-    const float PUSH_TOLERANCE = 5.0f;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
     if ((fabsf(p_center_x - b_left) <= PUSH_TOLERANCE) && p->vx > 0)
     {
@@ -178,20 +170,14 @@ void box_update_position(box_t *box, player_t *players)
         if (!vertical_overlap)
             continue;
 
-<<<<<<< HEAD
         // Check if player is at edge and pushing the box (overlap allowed)
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         bool is_pusher = false;
         if (box->vx > 0 && fabsf(p_center_x - box->x) <= 10.0f && players[i].vx > 0)
             is_pusher = true;
         else if (box->vx < 0 && fabsf(p_center_x - (box->x + 32)) <= 10.0f && players[i].vx < 0)
             is_pusher = true;
 
-<<<<<<< HEAD
         // Non-pusher that will be overlapped, prevent movement
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         if (!is_pusher && check_overlap(next_x + 2, box->y + 2, 28, 28, px + SPRITE_W_PIXELS / 2.0f, py + PLAYER_HITBOX_OFFSET_Y, 1.0f, PLAYER_HITBOX_HEIGHT))
         {
             will_overlap_non_pusher = true;
@@ -243,7 +229,6 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
     lvr->activated = false;
     lvr->sprite_base_index = sprite_index_base;
 
-<<<<<<< HEAD
     // Frame resource definitions
     lvr->base_frame[0] = LEVER_BASE_FRAME + 0;
     lvr->base_frame[1] = LEVER_BASE_FRAME + 1;
@@ -252,14 +237,6 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
     lvr->handle_frames[2] = LEVER_ANIM_FRAME + 2; // →
 
     // Set up base sprites (2 tiles)
-=======
-    lvr->base_frame[0] = LEVER_BASE_FRAME + 0;
-    lvr->base_frame[1] = LEVER_BASE_FRAME + 1;
-    lvr->handle_frames[0] = LEVER_ANIM_FRAME + 0; //
-    lvr->handle_frames[1] = LEVER_ANIM_FRAME + 1; //
-    lvr->handle_frames[2] = LEVER_ANIM_FRAME + 2; //
-
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     for (int i = 0; i < 2; ++i)
     {
         sprite_set(&lvr->base_sprites[i], sprite_index_base + i, 0);
@@ -270,7 +247,6 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
         sprite_update(&lvr->base_sprites[i]);
     }
 
-<<<<<<< HEAD
     // Set up lever handle
     sprite_set(&lvr->handle_sprite_left, sprite_index_base + 2, 0);
     lvr->handle_sprite_left.x = (uint16_t)(lvr->x + 5);
@@ -283,19 +259,6 @@ void lever_init(lever_t *lvr, float tile_x, float tile_y, uint8_t sprite_index_b
     lvr->handle_sprite_right.x = (uint16_t)(lvr->x + 13);
     lvr->handle_sprite_right.y = (uint16_t)(lvr->y - 16);
     lvr->handle_sprite_right.frame_id = lvr->handle_frames[2]; // Middle frame
-=======
-    sprite_set(&lvr->handle_sprite_left, sprite_index_base + 2, 0);
-    lvr->handle_sprite_left.x = (uint16_t)(lvr->x + 5);
-    lvr->handle_sprite_left.y = (uint16_t)(lvr->y - 16);
-    lvr->handle_sprite_left.frame_id = lvr->handle_frames[1];
-    lvr->handle_sprite_left.enable = false;
-    sprite_update(&lvr->handle_sprite_left);
-
-    sprite_set(&lvr->handle_sprite_right, sprite_index_base + 3, 0);
-    lvr->handle_sprite_right.x = (uint16_t)(lvr->x + 13);
-    lvr->handle_sprite_right.y = (uint16_t)(lvr->y - 16);
-    lvr->handle_sprite_right.frame_id = lvr->handle_frames[2];
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     lvr->handle_sprite_right.enable = true;
     sprite_update(&lvr->handle_sprite_right);
 }
@@ -311,10 +274,7 @@ void lever_update(lever_t *lvr, const player_t *players)
         if (fabsf(py - lvr->y) > 12.0f)
             continue;
 
-<<<<<<< HEAD
         // Current position is right (false), player moves from right to left → switch to left position
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         if (!lvr->activated && px >= lvr->x + 20 && px <= lvr->x + 28 && p->vx < -0.3f)
         {
             lvr->activated = true;
@@ -325,10 +285,7 @@ void lever_update(lever_t *lvr, const player_t *players)
             break;
         }
 
-<<<<<<< HEAD
         // Current position is left (true), player moves from left to right → switch to right position
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         if (lvr->activated && px >= lvr->x + 4 && px <= lvr->x + 12 && p->vx > 0.3f)
         {
             lvr->activated = false;
@@ -355,10 +312,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     elv->active = false;
     elv->sprite_base_index = sprite_index_base;
 
-<<<<<<< HEAD
     // Left block
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     sprite_set(&elv->sprites[0], sprite_index_base + 0, 0);
     elv->sprites[0].x = (uint16_t)(x + 1);
     elv->sprites[0].y = (uint16_t)(y);
@@ -366,10 +320,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     elv->sprites[0].enable = true;
     sprite_update(&elv->sprites[0]);
 
-<<<<<<< HEAD
     // Left middle block
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     sprite_set(&elv->sprites[1], sprite_index_base + 1, 0);
     elv->sprites[1].x = (uint16_t)(x + 16);
     elv->sprites[1].y = (uint16_t)(y);
@@ -377,10 +328,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     elv->sprites[1].enable = true;
     sprite_update(&elv->sprites[1]);
 
-<<<<<<< HEAD
     // Right middle block
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     sprite_set(&elv->sprites[2], sprite_index_base + 2, 0);
     elv->sprites[2].x = (uint16_t)(x + 32);
     elv->sprites[2].y = (uint16_t)(y);
@@ -388,10 +336,7 @@ void elevator_init(elevator_t *elv, float tile_x, float tile_y, float min_tile_y
     elv->sprites[2].enable = true;
     sprite_update(&elv->sprites[2]);
 
-<<<<<<< HEAD
     // Right block
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     sprite_set(&elv->sprites[3], sprite_index_base + 3, 0);
     elv->sprites[3].x = (uint16_t)(x + 47);
     elv->sprites[3].y = (uint16_t)(y);
@@ -415,11 +360,7 @@ bool is_elevator_blocked(float x, float y, float w, float h, float *vy_out)
             if (check_overlap(x, y, w, h, ex, ey, 16, 16))
             {
                 if (vy_out)
-<<<<<<< HEAD
                     *vy_out = elv->vy; // Return elevator vertical speed (for synchronization)
-=======
-                    *vy_out = elv->vy;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                 return true;
             }
         }
@@ -428,10 +369,7 @@ bool is_elevator_blocked(float x, float y, float w, float h, float *vy_out)
 }
 void elevator_update(elevator_t *elv, bool go_up, player_t *players)
 {
-<<<<<<< HEAD
     // Determine target direction
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     if (!go_up)
     {
         if (elv->y > elv->min_y)
@@ -457,10 +395,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
         }
     }
 
-<<<<<<< HEAD
     // ⚠️ Predict if next position will collide with player before moving
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     if (elv->vy > 0.0f)
     {
         float next_y = elv->y + elv->vy + 6;
@@ -487,11 +422,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
             return;
         }
     }
-<<<<<<< HEAD
     // Apply movement
-=======
-
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     elv->y += elv->vy;
 
     for (int i = 0; i < 4; ++i)
@@ -500,10 +431,7 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
         sprite_update(&elv->sprites[i]);
     }
 
-<<<<<<< HEAD
     // Player movement synchronization
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     for (int i = 0; i < NUM_PLAYERS; ++i)
     {
         player_t *p = &players[i];
@@ -521,29 +449,19 @@ void elevator_update(elevator_t *elv, bool go_up, player_t *players)
 void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index_base)
 {
     float x = tile_x * 16;
-<<<<<<< HEAD
     float y = tile_y * 16 - 16; // Top position of button sprite's upper-left corner
-=======
-    float y = tile_y * 16 - 16;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
     btn->x = x;
     btn->y = y;
     btn->pressed = false;
     btn->sprite_index_base = sprite_index_base;
 
-<<<<<<< HEAD
     // Fixed frame numbers
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     btn->frame_top = BUTTON_PURPLE_FRAME;         // 55
     btn->frame_base_left = LEVER_BASE_FRAME;      // 57
     btn->frame_base_right = LEVER_BASE_FRAME + 1; // 60
 
-<<<<<<< HEAD
     // Upper button
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     sprite_set(&btn->top_sprite, sprite_index_base + 0, 0);
     btn->top_sprite.x = (uint16_t)x;
     btn->top_sprite.y = (uint16_t)y + 2;
@@ -551,10 +469,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->top_sprite.enable = true;
     sprite_update(&btn->top_sprite);
 
-<<<<<<< HEAD
     // Left base
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     sprite_set(&btn->base_left_sprite, sprite_index_base + 1, 0);
     btn->base_left_sprite.x = (uint16_t)x - 8;
     btn->base_left_sprite.y = (uint16_t)(y + 13);
@@ -562,10 +477,7 @@ void button_init(button_t *btn, float tile_x, float tile_y, uint8_t sprite_index
     btn->base_left_sprite.enable = true;
     sprite_update(&btn->base_left_sprite);
 
-<<<<<<< HEAD
     // Right base
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     sprite_set(&btn->base_right_sprite, sprite_index_base + 2, 0);
     btn->base_right_sprite.x = (uint16_t)(x + 7);
     btn->base_right_sprite.y = (uint16_t)(y + 13);
@@ -583,7 +495,6 @@ void button_update(button_t *btn, const player_t *players)
     {
         float px_center = players[i].x + SPRITE_W_PIXELS / 2.0f;
         float foot_y = players[i].y + PLAYER_HEIGHT_PIXELS - 15;
-<<<<<<< HEAD
         // Player must be within button area horizontally
         if (px_center >= btn->x && px_center <= btn->x + 16)
         {
@@ -596,24 +507,6 @@ void button_update(button_t *btn, const player_t *players)
                     max_depth = depth;
 
                 if (dx <= 5.0f) // ⚠️ Center ±3 pixels → total 6px
-=======
-
-        if (px_center >= btn->x && px_center <= btn->x + 16)
-        {
-
-            if (fabsf(foot_y - btn->y) <= 4.0f)
-            {
-
-                float dx = fabsf(px_center - (btn->x + 8.0f));
-                if (dx > 8.0f)
-                    dx = 8.0f;
-
-                float depth = 8.0f - dx;
-                if (depth > max_depth)
-                    max_depth = depth;
-
-                if (dx <= 5.0f)
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                     btn->pressed = true;
             }
         }
@@ -621,10 +514,7 @@ void button_update(button_t *btn, const player_t *players)
 
     btn->press_offset = max_depth;
 
-<<<<<<< HEAD
     // Visual sprite downward movement
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     btn->top_sprite.y = (uint16_t)(btn->y + 2 + btn->press_offset);
     sprite_update(&btn->top_sprite);
 }

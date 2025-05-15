@@ -4,11 +4,7 @@
 #include "hw_interact.h"
 #include "player.h"
 #include "joypad_input.h"
-<<<<<<< HEAD
 #include "sprite.h" 
-=======
-#include "sprite.h"
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 #include "type.h"
 #include <time.h>
 
@@ -31,19 +27,11 @@ Logo:
     input_handler_init();
     for (int i = 0; i < 32; i++)
     {
-<<<<<<< HEAD
         write_sprite(i, 0, 0, 0, 0, 0); // disable=0, position 0, frame 0
     }
     while (1)
     {
         set_map_and_audio(0, 0, 0); // Start VGA controller
-=======
-        write_sprite(i, 0, 0, 0, 0, 0); //
-    }
-    while (1)
-    {
-        set_map_and_audio(0, 0, 0); //
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             game_action_t action = get_player_action(i);
@@ -69,27 +57,17 @@ Game:
     items[0].sprite.frame_start = BLUE_GEM_FRAME;
     items[0].owner_type = ITEM_WATERGIRL_ONLY;
     items[0].float_anim = true;
-<<<<<<< HEAD
     items[0].width = 12;  // Collision box width
     items[0].height = 12; // Collision box height
 
-=======
-    items[0].width = 12;
-    items[0].height = 12;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     item_init(&items[1], 0, 0, 5, RED_GEM_FRAME);
     item_place_on_tile(&items[1], 29, 26);
     items[1].sprite.frame_count = 1;
     items[1].sprite.frame_start = RED_GEM_FRAME;
     items[1].owner_type = ITEM_FIREBOY_ONLY;
     items[1].float_anim = true;
-<<<<<<< HEAD
     items[1].width = 12;  // Collision box width
     items[1].height = 12; // Collision box height
-=======
-    items[1].width = 12;
-    items[1].height = 12;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
     item_init(&items[2], 0, 0, 6, RED_GEM_FRAME);
     item_place_on_tile(&items[2], 6, 14);
@@ -97,13 +75,8 @@ Game:
     items[2].sprite.frame_start = RED_GEM_FRAME;
     items[2].owner_type = ITEM_FIREBOY_ONLY;
     items[2].float_anim = true;
-<<<<<<< HEAD
     items[2].width = 12;  // Collision box width
     items[2].height = 12; // Collision box height
-=======
-    items[2].width = 12;
-    items[2].height = 12;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
     item_init(&items[3], 0, 0, 7, BLUE_GEM_FRAME);
     item_place_on_tile(&items[3], 23, 14);
@@ -111,13 +84,8 @@ Game:
     items[3].sprite.frame_start = BLUE_GEM_FRAME;
     items[3].owner_type = ITEM_WATERGIRL_ONLY;
     items[3].float_anim = true;
-<<<<<<< HEAD
     items[3].width = 12;  // Collision box width
     items[3].height = 12; // Collision box height
-=======
-    items[3].width = 12;
-    items[3].height = 12;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
     item_init(&items[4], 0, 0, 8, BLUE_GEM_FRAME);
     item_place_on_tile(&items[4], 11, 7);
@@ -125,13 +93,8 @@ Game:
     items[4].sprite.frame_start = BLUE_GEM_FRAME;
     items[4].owner_type = ITEM_WATERGIRL_ONLY;
     items[4].float_anim = true;
-<<<<<<< HEAD
     items[4].width = 12;  // Collision box width
     items[4].height = 12; // Collision box height
-=======
-    items[4].width = 12;
-    items[4].height = 12;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
     item_init(&items[5], 0, 0, 9, RED_GEM_FRAME);
     item_place_on_tile(&items[5], 1, 4);
@@ -139,13 +102,8 @@ Game:
     items[5].sprite.frame_start = RED_GEM_FRAME;
     items[5].owner_type = ITEM_FIREBOY_ONLY;
     items[5].float_anim = true;
-<<<<<<< HEAD
     items[5].width = 12;  // Collision box width
     items[5].height = 12; // Collision box height
-=======
-    items[5].width = 12;
-    items[5].height = 12;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
 
     box_init(&boxes[0], 17, 10, 10, BOX_FRAME);
 
@@ -162,21 +120,13 @@ Game:
     {
 
         frame_counter++;
-<<<<<<< HEAD
         // === Frame synchronization: execute only once at the top of each frame (row==0) ===
-=======
-
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         do
         {
             read_status(&col, &row);
         } while (row != 0);
 
-<<<<<<< HEAD
         // === 1. Logic update phase ===
-=======
-        // ======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_handle_input(&players[i], i);
@@ -198,28 +148,18 @@ Game:
                 if (!items[j].active)
                     continue;
 
-<<<<<<< HEAD
                 // Determine if the character is allowed to collect
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                 if ((items[j].owner_type == ITEM_FIREBOY_ONLY && players[i].type != PLAYER_FIREBOY) ||
                     (items[j].owner_type == ITEM_WATERGIRL_ONLY && players[i].type != PLAYER_WATERGIRL))
                 {
                     continue;
                 }
 
-<<<<<<< HEAD
                 float pw = SPRITE_W_PIXELS;      // Width stays at 16
                 float ph = PLAYER_HITBOX_HEIGHT; // Actual height that participates in collision
                 float px = players[i].x;
                 float py = players[i].y + PLAYER_HITBOX_OFFSET_Y; // Skip transparent pixel area at the top
 
-=======
-                float pw = SPRITE_W_PIXELS;
-                float ph = PLAYER_HITBOX_HEIGHT;
-                float px = players[i].x;
-                float py = players[i].y + PLAYER_HITBOX_OFFSET_Y;
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
                 if (check_overlap(px, py, pw, ph,
                                   items[j].x, items[j].y, items[j].width, items[j].height))
                 {
@@ -252,21 +192,13 @@ Game:
                 button_update(&buttons[i], players);
             }
         }
-<<<<<<< HEAD
         // === 2. Wait for blanking area ===
-=======
-        // ======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         do
         {
             read_status(&col, &row);
         } while (row < VACTIVE);
 
-<<<<<<< HEAD
         // === 3. Write sprites to VGA ===
-=======
-        // ======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             player_update_sprite(&players[i]);
@@ -284,16 +216,11 @@ Game:
         // printf("[FRAME] duration = %.2f ms\n", duration);
     }
 
-<<<<<<< HEAD
     // Will not reach here. If there are exit conditions in the future, resources can be released:
-=======
-    //
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
     input_handler_cleanup();
     close(vga_top_fd);
     return 0;
 }
-<<<<<<< HEAD
 // void debug_draw_test_sprites()
 // {
 // int index = 14;
@@ -323,5 +250,3 @@ Game:
 // for (int i = 0; i < 4; ++i)
 //     write_sprite(index++, 1, 0, 16 * i + 200, y, LIFT_PURPLE_FRAME + i);
 // }
-=======
->>>>>>> 4f608ee652ff7b35f73d017e49539271ca3c7ea6
